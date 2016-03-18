@@ -1,0 +1,89 @@
+<div class="div3">
+    <div class="container">
+        <div class="page-header">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 id="Operaciones">Operaciones</h1>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <h2 id="Suma">Suma</h2>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="control-label" for="ponerNumero1">Primer número</label>
+                        <input type="text" class="form-control" id="ponerNumero1" title="Debes poner un número" required ng-model="operacionSuma.num1">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="ponerNumero2">Segundo número</label>
+                        <input type="text" class="form-control" id="ponerNumero2" title="Debes poner una número" required ng-model="operacionSuma.num2">
+                    </div>
+                    <p>
+                        <button type="button" class="btn btn-primary" ng-click="sumar(operacionSuma)" ng-class="[{'btn-success':resultado3=='correcto'},{'btn-danger':resultado3=='incorrecto'}]">Sumar</button>
+                    </p>
+                    <div class="col-lg-12">
+                        <div class="well" id="resultadoSuma"> Resultado </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <h2 id="Resta">Resta</h2>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="control-label" for="ponerNumero3">Primer número</label>
+                        <input type="text" class="form-control" id="ponerNumero3" title="Debes poner un número" required ng-model="operacionResta.num1">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="ponerNumero4">Segundo número</label>
+                        <input type="text" class="form-control" id="ponerNumero4" title="Debes poner una número" required ng-model="operacionResta.num2">
+                    </div>
+                    <p>
+                        <button type="button" class="btn btn-primary" ng-click="restar(operacionResta)" ng-class="[{'btn-success':resultado4=='correcto'},{'btn-danger':resultado4=='incorrecto'}]">Restar</button>
+                    </p>
+                    <div class="col-lg-12">
+                        <div class="well" id="resultadoResta"> Resultado </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <h2 id="Multiplicación">Multiplicación</h2>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="control-label" for="ponerNumero5">Primer número</label>
+                        <input type="text" class="form-control" id="ponerNumero5" title="Debes poner un número" required ng-model="operacionMulti.num1">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="ponerNumero6">Segundo número</label>
+                        <input type="text" class="form-control" id="ponerNumero6" title="Debes poner una número" required ng-model="operacionMulti.num2">
+                    </div>
+                    <p>
+                        <button type="button" class="btn btn-primary" ng-click="multiplicar(operacionMulti)" ng-class="[{'btn-success':resultado5=='correcto'},{'btn-danger':resultado5=='incorrecto'}]">Multiplicar</button>
+                    </p>
+                    <div class="col-lg-12">
+                        <div class="well" id="resultadoMulti"> Resultado </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <h2 id="División">División</h2>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="control-label" for="ponerNumero7">Primer número</label>
+                        <input type="text" class="form-control" id="ponerNumero7" title="Debes poner un número" required ng-model="operacionDivi.num1">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="ponerNumero8">Segundo número</label>
+                        <input type="text" class="form-control" id="ponerNumero8" title="Debes poner una número" required ng-model="operacionDivi.num2">
+                    </div>
+                    <p>
+                        <button type="button" class="btn btn-primary" ng-click="dividir(operacionDivi)" ng-class="[{'btn-success':resultado6=='correcto'},{'btn-danger':resultado6=='incorrecto'}]">Dividir</button>
+                    </p>
+                    <div class="col-lg-12">
+                        <div class="well" id="resultadoDivi"> Resultado </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

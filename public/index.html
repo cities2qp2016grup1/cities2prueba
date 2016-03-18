@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html ng-app='cities2'>
+<head>
+    <title>Smart Cities II</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/css/reset.css" />
+    <link rel="stylesheet" href="assets/css/csspropios.css" />
+</head>
+<body>
+<!-- para que la img no se mueva: ng-style="{'background-image': 'url(assets/images/wallpaper.jpg)','background-attachment': 'fixed'}" -->
+    <div id="main">
+    <!-- Aquí inyectamos las vistas  -->
+        <div class="navbar navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+                    <a class="navbar-brand" href="#/">Cities 2 prueba</a> </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="#/server">Home</a></li>
+                        <li><a href="#/operaciones">Operaciones</a></li>
+                        <li><a href="#/about">About</a></li>
+                        <li><a href="#/contact">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="connect">
+                <div class="container">
+                    <p>
+                        Probando Angular, Node, Express y Mongo para Smart Cities II
+                    </p>
+                </div>
+            </div>
+        </div>
+    <div ng-view></div>
+    </div>
+    <!-- jQuery and...-->
+    <script src="assets/js/scripts/jquery.js"></script>
+    <script src="assets/js/scripts/jquery.min.js"></script>
+    <script src="assets/js/scripts/bootstrap.min.js"></script>
+    <script src="assets/js/scripts/respond.min.js"></script>
+    <script src="assets/js/scripts/holder.js"></script>
+    <script src="assets/js/scripts/angular.min.js"></script>
+    <script src="assets/js/scripts/angular-route.min.js"></script>
+    <script src="assets/js/scripts/angular-ui-router.min.js"></script>
+    <!--Scripts -->
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/scripts/rsa-bignum.js"></script>
+    <!-- Controllers -->
+    <script src="assets/js/controllers/userCtrl.js"></script>
+    <script src="assets/js/controllers/operacionesCtrl.js"></script>
+</body>
+</html>

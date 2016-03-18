@@ -1,0 +1,42 @@
+<div class="div2">
+  <div class="container">
+    <div class="page-header">
+      <div class="row">
+        <div class="col-lg-12">
+          <h1 id="Funciones">Funciones</h1>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <h2 id="Postear">Postear</h2>
+        <div class="col-lg-4">
+          <div class="form-group">
+            <label class="control-label" for="ponerNombre">Nombre</label>
+            <input type="text" class="form-control" id="ponerNombre" title="Debes poner un nombre" required ng-model="newUser.nombre">
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="ponerCiudad">Ciudad</label>
+            <input type="text" class="form-control" id="ponerCiudad" title="Debes poner una ciudad" required ng-model="newUser.ciudad">
+          </div>
+          <p>
+            <button type="button" class="btn btn-primary" ng-click="addUser(newUser)" ng-class="[{'btn-success':resultado=='correcto'},{'btn-danger':resultado=='incorrecto'}]">Enviar datos</button>
+          </p>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <h2 id="Get">Get</h2>
+        <div class="col-lg-12">
+          <div class="form-group">
+            <p>
+              <button type="button" class="btn btn-primary" ng-click="AllUsers()" ng-class="[{'btn-success':resultado2=='correcto'},{'btn-danger':resultado2=='incorrecto'}]">Obtener datos</button>
+            </p>
+            <div class="col-lg-12">
+              <div class="well" id="datosUsers"> Aquí recibirás los datos </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

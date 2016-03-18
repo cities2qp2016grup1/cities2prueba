@@ -1,0 +1,14 @@
+{
+  "name": "rsa-bignum",
+  "version": "0.0.1",
+  "description": "A very simple RSA implementation based on the bignum module. I just implements key generation, encryption and decryption",
+  "private": true,
+  "author": "Juanelas",
+  "main": "rsa-bignum.js",
+  "scripts": {
+    "test": "node test"
+  },
+  "dependencies": {
+    "bignum": ""
+  }
+}
