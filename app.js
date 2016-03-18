@@ -5,6 +5,9 @@ var mongoose = require('mongoose'); // Mongoose: Libreria para conectar con Mong
 var io = require('socket.io');
 // Iniciando express
 var app = express();
+var users = require('./routes/users');
+var operaciones = require('./routes/operaciones');
+var ttp = require('./routes/ttp');
 
 //Middlewares express
 app.use(bodyParser.json());
@@ -21,10 +24,9 @@ app.engine('html', require('ejs').renderFile);
 var router = express.Router();
 var server = require('http').Server(app);
 app.use(router);
+app.use('/users', users);
+app.use('/operaciones', operaciones);
 
-// API Rutas
-routes = require('./routes/users')(app);
-routes = require('./routes/operaciones')(app);
 
 // Conexión a la base de datos de MongoDB que tenemos en local
 require('mongoose-middleware').initialize(mongoose);
