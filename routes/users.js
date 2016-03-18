@@ -3,7 +3,7 @@ var router = express.Router();
 var User = require('../models/user.js');
 
 //GET - GET All Users By Into DB
-router.get('/AllUsers', function (req, res) {
+router.get('/allusers', function (req, res) {
   User.find(function (err, users) {
     if (err) res.send(500, err.message);
     console.log('GET /allusers');

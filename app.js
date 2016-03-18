@@ -24,7 +24,7 @@ app.engine('html', require('ejs').renderFile);
 var router = express.Router();
 var server = require('http').Server(app);
 app.use(router);
-app.use('/users', users);
+app.use('/server', users);
 app.use('/operaciones', operaciones);
 
 
@@ -55,11 +55,11 @@ app2.use(express.static(path.join(__dirname, 'public')));
 app2.set('views', path.join(__dirname, 'views'));
 app2.set('view engine', 'jade');
 //Pagina en '/' (para ver algo)
-app2.get('/', function(req, res, next) {
+/*app2.get('/', function(req, res, next) {
   res.render('index', { title: 'Servidor TTP (Trusted Third Party)' });
-});
+});*/
 //rutas
-routes = require('./routes/ttp')(app2);
+app2.use('/ttp', ttp);
 var server2 = require('http').Server(app2);
 server2.listen(3000, function() {
   console.log("Servidor TTP en http://localhost:3000/");

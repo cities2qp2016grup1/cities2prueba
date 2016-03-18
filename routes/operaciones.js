@@ -3,7 +3,7 @@ var router = express.Router();
 var Operacion = require('../models/operacion.js');
 
 //Hacer suma y devolver resultado
-router.get('/sumar', function (req, res) {
+router.post('/sumar', function (req, res) {
     console.log('Suma');
     console.log(req.body);
     var x = parseInt(req.body.num1);
