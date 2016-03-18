@@ -8,6 +8,7 @@ var app = express();
 var users = require('./routes/users');
 var operaciones = require('./routes/operaciones');
 var ttp = require('./routes/ttp');
+var key = require('./routes/claves');
 
 //Middlewares express
 app.use(bodyParser.json());
@@ -26,7 +27,7 @@ var server = require('http').Server(app);
 app.use(router);
 app.use('/server', users);
 app.use('/operaciones', operaciones);
-
+app.use('/key', key);
 
 // Conexión a la base de datos de MongoDB que tenemos en local
 require('mongoose-middleware').initialize(mongoose);
