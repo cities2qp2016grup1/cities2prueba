@@ -12,7 +12,12 @@ router.get('/',function (req, res) {
     console.log("--------------");
     console.log(keys);
     console.log("--------------");
-    res.status(200).json(keys.publicKey);
+    var pubKey = {
+        bits: keys.publicKey.bits,
+        n: keys.publicKey.n.toString(),
+        e: keys.publicKey.e.toString()
+    };
+    res.status(200).jsonp(pubKey);
 });
 
 module.exports = router;
