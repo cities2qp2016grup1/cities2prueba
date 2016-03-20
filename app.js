@@ -3,12 +3,16 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose'); // Mongoose: Libreria para conectar con MongoDB
 var io = require('socket.io');
+var request = require("request");
+var EventEmitter = require("events").EventEmitter;
 // Iniciando express
 var app = express();
 var users = require('./routes/users');
 var operaciones = require('./routes/operaciones');
 var ttp = require('./routes/ttp');
 var key = require('./routes/claves');
+var body = new EventEmitter();
+
 
 //Middlewares express
 app.use(bodyParser.json());
@@ -20,6 +24,53 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.engine('html', require('ejs').renderFile);
+
+////////////////////////////////////////////////////////////////////
+
+
+request({
+  url: 'http://localhost:8000/key', //URL to hit
+  //qs: {from: 'blog example', time: +new Date()}, //Query string data
+  method: 'GET', //Specify the method
+/*headers: { //We can define headers too
+    'Content-Type': 'MyContentType',
+    'Custom-Header': 'Custom Value'
+  }*/
+}, function(error, response, body){
+  if(error) {
+    console.log(error);
+  } else {
+    console.log(response.statusCode, body);
+  }
+});
+
+
+
+//Guardar la clave en Local Storage al inicializarse NO FUNCIONA
+/*window.onload = function() {
+
+  // Check for LocalStorage support.
+  if (localStorage) {
+
+    // Add an event listener for form submissions
+
+    document.getElementById('contactForm').addEventListener('submit', function() {
+      // Get the value of the name field.
+      var clave = document.getElementById('name').value;
+
+      // Save the name in localStorage.
+      localStorage.setItem('name', name);
+    });
+
+  }
+
+}
+
+Cogemos la clave de local storage y la mostramos por pantalla
+var name = localStorage.getItem('name');
+console.log('name');*/
+///////////////////////////////////////////////////////////////////
+
 
 //servidor
 var router = express.Router();

@@ -19,6 +19,9 @@ cities2.controller('userCtrl',['$scope', '$state','$http', function($scope, $sta
                 })
         }
     };
+
+
+
     $scope.AllUsers = function(){
         $scope.hi();
         $http.get('/ttp/allusers')

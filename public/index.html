@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="assets/css/reset.css" />
     <link rel="stylesheet" href="assets/css/csspropios.css" />
 </head>
-<body>
+<body onload="myFunction()"> <!--Metodo para cargar la funcion justo al inicializarse
 <!-- para que la img no se mueva: ng-style="{'background-image': 'url(assets/images/wallpaper.jpg)','background-attachment': 'fixed'}" -->
     <div id="main">
     <!-- Aquí inyectamos las vistas  -->
@@ -46,6 +46,19 @@
     <script src="assets/js/scripts/angular-route.min.js"></script>
     <script src="assets/js/scripts/angular-ui-router.min.js"></script>
     <!--Scripts -->
+    <script> // Añadido como prueba este script para que se cargase cuando el cliente carga la pagina en su servidor
+    function myFunction() { //Creo que no funciona porque se inicializa localhost/8000 y no /key
+        request("localhost:8000/key", function (error, response, data) {
+            body.data = data;
+            body.emit('update');
+        });
+
+        body.on('update', function () {
+            console.log(body.data,"WORKS"); // HOORAY! THIS WORKS!
+        });
+        alert("Public Key received correctly");
+    }
+    </script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/scripts/rsa-bignum.js"></script>
     <!-- Controllers -->
