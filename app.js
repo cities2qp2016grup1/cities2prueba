@@ -3,16 +3,20 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose'); // Mongoose: Libreria para conectar con MongoDB
 var io = require('socket.io');
-var request = require("request");
-var EventEmitter = require("events").EventEmitter;
+
 // Iniciando express
 var app = express();
 var users = require('./routes/users');
 var operaciones = require('./routes/operaciones');
 var ttp = require('./routes/ttp');
 var key = require('./routes/claves');
-var body = new EventEmitter();
 
+//permitir CORS
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 //Middlewares express
 app.use(bodyParser.json());
@@ -27,22 +31,6 @@ app.engine('html', require('ejs').renderFile);
 
 ////////////////////////////////////////////////////////////////////
 
-
-request({
-  url: 'http://localhost:8000/key', //URL to hit
-  //qs: {from: 'blog example', time: +new Date()}, //Query string data
-  method: 'GET', //Specify the method
-/*headers: { //We can define headers too
-    'Content-Type': 'MyContentType',
-    'Custom-Header': 'Custom Value'
-  }*/
-}, function(error, response, body){
-  if(error) {
-    console.log(error);
-  } else {
-    console.log(response.statusCode, body);
-  }
-});
 
 
 

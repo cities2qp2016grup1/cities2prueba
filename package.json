@@ -11,15 +11,14 @@
     "bignum": "",
     "body-parser": "^1.15.0",
     "consolidate": "",
-    "ejs": "latest",
+    "ejs": "",
     "express": "~4.13.1",
     "jade": "~1.11.0",
-    "jquery": "latest",
+    "jquery": "",
     "localstorage": "^0.1.0",
-    "mongoose": "^3.8.23",
-    "mongoose-middleware": "^0.2.17",
+    "mongoose": "",
+    "mongoose-middleware": "",
     "node-localstorage": "^1.1.2",
-    "request": "^2.69.0",
     "socket.io": ""
   }
 }

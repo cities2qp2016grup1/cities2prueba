@@ -10,7 +10,9 @@ cities2.controller('userCtrl',['$scope', '$state','$http', function($scope, $sta
         else if (!newUser.ciudad){
         }
         else{
-            $http.post('/ttp/adduser', newUser)
+            var m=body.encrypt(newUser);
+            console.log(m);
+            $http.post('/ttp/adduser', m)
                 .success(function (data) {
                     $scope.resultado = 'correcto'
                 })

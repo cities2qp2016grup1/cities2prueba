@@ -7,7 +7,8 @@ cities2.config(function ($routeProvider, $stateProvider) {
 
 $routeProvider
     .when('/', {
-        templateUrl: '/assets/views/indice.html'
+        templateUrl: '/assets/views/indice.html',
+        controller:'mainCtrl'
     })
     .when('/server', {
         templateUrl: '/assets/views/user.html',
