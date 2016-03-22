@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose'); // Mongoose: Libreria para conectar con MongoDB
 var io = require('socket.io');
 
+
 // Iniciando express
 var app = express();
 var users = require('./routes/users');
@@ -28,36 +29,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.engine('html', require('ejs').renderFile);
-
-////////////////////////////////////////////////////////////////////
-
-
-
-
-//Guardar la clave en Local Storage al inicializarse NO FUNCIONA
-/*window.onload = function() {
-
-  // Check for LocalStorage support.
-  if (localStorage) {
-
-    // Add an event listener for form submissions
-
-    document.getElementById('contactForm').addEventListener('submit', function() {
-      // Get the value of the name field.
-      var clave = document.getElementById('name').value;
-
-      // Save the name in localStorage.
-      localStorage.setItem('name', name);
-    });
-
-  }
-
-}
-
-Cogemos la clave de local storage y la mostramos por pantalla
-var name = localStorage.getItem('name');
-console.log('name');*/
-///////////////////////////////////////////////////////////////////
 
 
 //servidor
