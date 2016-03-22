@@ -35,6 +35,10 @@ router.post('/sumar', function (require, result) {
 });
 //POST - Reenviar resta a server
 router.post ('/restar',function (require, result) {
+    TTPhiserver(function(saludo){
+        console.log(saludo);
+        console.log("+++++++++++++++++++++")
+    });
     console.log('POST /reenvio resta');
     console.log(require.body);
     var data = JSON.stringify(require.body);
@@ -59,6 +63,10 @@ router.post ('/restar',function (require, result) {
 });
     //POST - Reenviar multiplicación a server
 router.post('/multiplicar',function (require, result) {
+    TTPhiserver(function(saludo){
+        console.log(saludo);
+        console.log("+++++++++++++++++++++")
+    });
     console.log('POST /reenvio multiplicacion');
     console.log(require.body);
     var data = JSON.stringify(require.body);
@@ -83,6 +91,10 @@ router.post('/multiplicar',function (require, result) {
 });
 //POST - Reenviar división a server
 router.post('/division',function (require, result) {
+    TTPhiserver(function(saludo){
+        console.log(saludo);
+        console.log("+++++++++++++++++++++")
+    });
     console.log('POST /reenvio division');
     console.log(require.body);
     var data = JSON.stringify(require.body);
@@ -105,16 +117,13 @@ router.post('/division',function (require, result) {
     req.write(data);
     req.end();
 });
-//GET - Cliente saluda a TTP y TTP devuelve saludo
-router.get('/hi', function (require, result){
-    console.log("+++++++++++++++++++++");
-    console.log("Cliente saluda a TTP");
-    result.status(200).send("OK");
-    console.log("TTP contesta a cliente");
-    console.log("+++++++++++++++++++++");
-});
+
 //GET - Recibir todos los usuarios
 router.get('/allusers',function (require, result){
+    TTPhiserver(function(saludo){
+        console.log(saludo);
+        console.log("+++++++++++++++++++++")
+    });
     console.log("Cliente pide recibir users a TTP");
     var options = {
         host: 'localhost',
@@ -126,11 +135,16 @@ router.get('/allusers',function (require, result){
         res.on('data', function(chunk){
             console.log("Devuelto a TTP:"+ chunk);
             result.status(200).send(chunk);
+            console.log("Usuarios enviados al cliente");
             });
     });
 });
 //POST - Reenviar nuevo usuario a server
 router.post('/adduser',function (require, result) {
+    TTPhiserver(function(saludo){
+        console.log(saludo);
+        console.log("+++++++++++++++++++++")
+    });
     console.log('POST /reenvio nuevo user');
     console.log(require.body);
     var data = JSON.stringify(require.body);
@@ -153,6 +167,15 @@ router.post('/adduser',function (require, result) {
     req.write(data);
     req.end();
 });
+
+//Cliente saluda a TTP y TTP devuelve saludo
+router.get('/hi', function (require, result){
+    console.log("+++++++++++++++++++++");
+    console.log("Cliente saluda a TTP");
+    result.status(200).send("OK");
+    console.log("TTP contesta a cliente");
+    console.log("+++++++++++++++++++++");
+});
 //Saludar a server y obtener respuesta
 function TTPhiserver(callback){
     console.log("+++++++++++++++++++++");
@@ -165,11 +188,10 @@ function TTPhiserver(callback){
     };
     http.get(options, function(res){
         res.on('data', function(chunk){
-            console.log("Devuelto a TTP:"+ chunk);
+            //console.log("Devuelto a TTP:"+ chunk);
         });
     });
     var ok = "Server responde a TTP";
-    callback (ok);
-};
-
+    return callback (ok);
+}
 module.exports = router;

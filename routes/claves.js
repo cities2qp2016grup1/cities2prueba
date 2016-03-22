@@ -10,9 +10,9 @@ router.get('/',function (req, res) {
 
     //crear claves pública y privada y enviar al cliente la pública
     var keys = rsa.generateKeys(1024); // Change to at least 2048 bits in production state
-    /*console.log("--------------"); // Comentado para estar seguro que no se activaban estos logs al pedir la clave
+    console.log("--------------"); 
     console.log(keys);
-    console.log("--------------");*/
+    console.log("--------------");
     var pubKey = {
         bits: keys.publicKey.bits,
         n: keys.publicKey.n.toString(),
@@ -22,3 +22,10 @@ router.get('/',function (req, res) {
 });
 
 module.exports = router;
+
+/* ejemplo para cuando encriptemos (esto se pone en el cliente antes de enviar)
+ var mensaje = {'nombre':'a', 'ciudad':'a'};
+ m = bignum.fromBuffer(new Buffer(mensaje.toString()));
+ var crip = keys.publicKey.encrypt(m);
+ console.log(crip.toString());
+ */

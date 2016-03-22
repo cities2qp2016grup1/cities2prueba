@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/user.js');
+var rsa = require('../rsa/rsa-bignum.js');
+var bignum = require('bignum');
 
 //GET - GET All Users By Into DB
 router.get('/allusers', function (req, res) {
@@ -11,7 +13,7 @@ router.get('/allusers', function (req, res) {
   });
 });
 //POST - Add User in DB
-router.post('/addUser',  function (req, res) {
+router.post('/adduser',  function (req, res) {
   console.log('POST /user');
   console.log(req.body);
   var user = new User({
@@ -30,6 +32,5 @@ router.post('/addUser',  function (req, res) {
 router.get('/hiserver', function (require, result){
   result.status(200).send("OK");
 });
-
 
 module.exports = router;

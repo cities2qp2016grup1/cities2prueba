@@ -4,7 +4,8 @@
 cities2.controller('mainCtrl',['$scope', '$state','$http','$rootScope', function($scope, $state, $http, $rootScope, storage) {
     $scope.init = function ()
     {
-        $http.get('http://localhost:8000/key').success(function (data)
+        $http.get('http://localhost:8000/key')
+            .success(function (data)
             {
 
                 //storage.bind($scope, 'data');
