@@ -21,11 +21,12 @@ router.get('/',function (req, res) {
     console.log(pubKey);
     res.status(200).jsonp(pubKey);
 */
-    Clave.find(function (err, clave) {
+    Clave.findOne("privateKey",function (err, clave) {
         if (err) res.send(500, err.message);
         console.log('GET /claves');
-        console.log(clave);
-        res.status(200).jsonp(clave);
+        console.log("publicKey: "+ JSON.stringify(clave.publicKey, null, 2));
+        console.log("Clave publica enviada al cliente");
+        res.status(200).jsonp(clave.publicKey);
     });
 });    
 module.exports = router;

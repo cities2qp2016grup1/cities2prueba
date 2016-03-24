@@ -7,7 +7,7 @@ cities2.controller('mainCtrl',['$scope', '$state','$http','$rootScope', function
         $http.get('http://localhost:8000/key')
             .success(function (data)
             {
-
+                console.log(data);
                 //storage.bind($scope, 'data');
                 /*storage.set('key','data');
                 console.log(storage.get('key'));
