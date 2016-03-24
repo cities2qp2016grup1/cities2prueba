@@ -1,5 +1,5 @@
 #Proyecto de Cities 2
-probando angular, node, mongo y express
+Probando angular, node, mongo y express
 
 #Dependencias
 - angular
@@ -8,9 +8,17 @@ probando angular, node, mongo y express
 - consolidate
 - ejs
 - express
+- http
 - jade
 - jquery
-- localstorage
 - mongoose
-- node-localstorage
 - socket.io
+
+#MongoDB
+Crear 2 collections dentro de la base de datos cities2:
+
+`users`
+Usar el archivo users.json
+
+`claves`
+Usar el archivo keys.json

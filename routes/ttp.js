@@ -90,7 +90,7 @@ router.post('/multiplicar',function (require, result) {
     req.end();
 });
 //POST - Reenviar división a server
-router.post('/division',function (require, result) {
+router.post('/dividir',function (require, result) {
     TTPhiserver(function(saludo){
         console.log(saludo);
         console.log("+++++++++++++++++++++")

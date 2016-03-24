@@ -3,10 +3,10 @@
  */
 var express = require('express');
 var router = express.Router();
-var rsa = require('../rsa/rsa-bignum.js');
-var bignum = require('bignum');
+var Clave = require('../models/clave.js');
 
 router.get('/',function (req, res) {
+/*  EN DESUSO PERO AQUI SE QUEDA POR SI ACASO
 
     //crear claves pública y privada y enviar al cliente la pública
     var keys = rsa.generateKeys(1024); // Change to at least 2048 bits in production state
@@ -18,9 +18,16 @@ router.get('/',function (req, res) {
         n: keys.publicKey.n.toString(),
         e: keys.publicKey.e.toString()
     };
+    console.log(pubKey);
     res.status(200).jsonp(pubKey);
-});
-
+*/
+    Clave.find(function (err, clave) {
+        if (err) res.send(500, err.message);
+        console.log('GET /claves');
+        console.log(clave);
+        res.status(200).jsonp(clave);
+    });
+});    
 module.exports = router;
 
 /* ejemplo para cuando encriptemos (esto se pone en el cliente antes de enviar)
