@@ -19,14 +19,3 @@ cities2.controller
         }
     ]
 );
-
-
-
-//storage.bind($scope, 'data');
-/*storage.set('key','data');
- console.log(storage.get('key'));
- */
-/*localStorage.setItem(data);
- var key = localStorage.getItem("key");
- console.log(key);*/
-//console.log(data);

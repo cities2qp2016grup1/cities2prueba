@@ -1,4 +1,4 @@
-db.claves.insert({
+{
   publicKey:
   {
     bits: 1024,
@@ -18,4 +18,3 @@ db.claves.insert({
     }
   }
 }
-)
