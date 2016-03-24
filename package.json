@@ -13,11 +13,12 @@
     "consolidate": "",
     "ejs": "",
     "express": "~4.13.1",
-    "http":"",
+    "http": "",
     "jade": "~1.11.0",
     "jquery": "",
     "mongoose": "",
     "mongoose-middleware": "",
+    "ngstorage": "^0.3.10",
     "socket.io": ""
   }
 }
