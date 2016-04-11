@@ -17,20 +17,35 @@ router.post('/adduser',  function (req, res) {
   console.log('POST /user');
   console.log(req.body);
   var user = new User({
-    nombre:    req.body.nombre,
-    ciudad:     req.body.ciudad
+    nombre:    req.body.L.nombre,
+    ciudad:     req.body.L.ciudad
   });
-
+  console.log('\n');
+  console.log("4: B-->TTP: (L, Pr)");
   user.save(function(err, user) {
     if(err) return res.status(500).send( err.message);
-    res.status(200).jsonp(user);
+    var a="A";
+    var ttp="localhost:3000/ttp/adduser";
+    var L=user;
+    var Po=req.body.Po;
+    var Pr={
+      ttp:ttp,
+      a:a,
+      L:L,
+      Po:Po
+    }; //debera ir encriptado por la privada de B (server)
+    var mensajeToTTP ={
+      L:L,
+      Pr:Pr
+    };
+    console.log(mensajeToTTP);
+    res.status(200).jsonp(mensajeToTTP);
   });
 });
 
-
-//GET - TTP saluda a server y server devuelve saludo
-router.get('/hiserver', function (require, result){
-  result.status(200).send("OK");
+//POST - Add User in DB
+router.post('/final',  function (req, res) {
+  console.log(req.body);
+  res.status(200).send("OK");
 });
-
 module.exports = router;

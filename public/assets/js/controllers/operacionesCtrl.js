@@ -4,7 +4,6 @@ cities2.controller('operacionesCtrl',['$scope', '$state','$http','$rootScope', f
     $scope.OperacionMulti = {};
     $scope.OperacionDivi = {};
     $scope.sumar = function(OperacionSuma){
-        $scope.hi();
         $http.post('/ttp/sumar',OperacionSuma)
             .success(function (data) {
                 $scope.resultado3 = 'correcto';
@@ -16,7 +15,6 @@ cities2.controller('operacionesCtrl',['$scope', '$state','$http','$rootScope', f
             });
     };
     $scope.restar = function(OperacionResta){
-        $scope.hi();
         $http.post('/ttp/restar',OperacionResta)
             .success(function (data) {
                 $scope.resultado4 = 'correcto';
@@ -28,7 +26,6 @@ cities2.controller('operacionesCtrl',['$scope', '$state','$http','$rootScope', f
             });
     };
     $scope.multiplicar = function(Operacion3){
-        $scope.hi();
         $http.post('/ttp/multiplicar',Operacion3)
             .success(function (data) {
                 $scope.resultado5 = 'correcto';
@@ -40,7 +37,6 @@ cities2.controller('operacionesCtrl',['$scope', '$state','$http','$rootScope', f
             });
     };
     $scope.dividir = function(Operacion4){
-        $scope.hi();
         $http.post('/ttp/dividir',Operacion4)
             .success(function (data) {
                 $scope.resultado6 = 'correcto';
@@ -51,15 +47,4 @@ cities2.controller('operacionesCtrl',['$scope', '$state','$http','$rootScope', f
                 console.log('Error: ' + data)
             });
     };
-    $scope.hi = function(){
-        $http.get('/ttp/hi')
-            .success(function(data){
-                $scope.resultado7 = 'correcto';
-                console.log("Cliente contestado: "+data);
-            })
-            .error(function (data) {
-                $scope.resultado7 = 'incorrecto';
-                console.log('Error: ' + data)
-            });
-    }
 }]);

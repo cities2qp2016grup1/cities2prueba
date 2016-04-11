@@ -2,7 +2,8 @@
 var cities2 = angular.module('cities2',[
     'ui.router',
     'ngRoute',
-    'ngStorage'
+    'ngStorage',
+    'angular-md5'
 ]);
 
 cities2.config(function ($routeProvider, $stateProvider) {

@@ -25,7 +25,7 @@ router.get('/',function (req, res) {
         if (err) res.send(500, err.message);
         console.log('GET /claves');
         console.log("publicKey: "+ JSON.stringify(clave.publicKey, null, 2));
-        console.log("Clave publica enviada al cliente");
+        console.log("Clave publica enviada al cliente"+'\n');
         res.status(200).jsonp(clave.publicKey);
     });
 });    

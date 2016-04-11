@@ -11,9 +11,7 @@ cities2.controller
                 $http.get('http://localhost:8000/key').success(function (data)
                 {
                     $localStorage.save = data;
-
                     console.log(data);
-
                 }).error(function (data) {});
             };
         }

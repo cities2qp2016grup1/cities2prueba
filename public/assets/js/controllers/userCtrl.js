@@ -1,8 +1,7 @@
-cities2.controller('userCtrl',['$scope', '$state','$http', function($scope, $state, $http) {
+cities2.controller('userCtrl',['$scope', '$state','$http','md5', function($scope, $state, $http, md5) {
     $scope.newUser = {};
     // Funcion para crear un usuario
     $scope.addUser = function (newUser) {
-        $scope.hi();
         if ((!newUser.ciudad) && (!newUser.nombre)){
         }
         else if (!newUser.nombre){
@@ -10,41 +9,56 @@ cities2.controller('userCtrl',['$scope', '$state','$http', function($scope, $sta
         else if (!newUser.ciudad){
         }
         else{
-            var m=body.encrypt(newUser);
-            console.log(m);
-            $http.post('/ttp/adduser', m)
-                .success(function (data) {
+            console.log("1: A-->TTP: (TTP, B, M, Po)");
+            var ttp="localhost:3000/ttp/adduser";
+            var b="localhost:8000/server/adduser";
+            var M=newUser;
+            var Mhash=md5.createHash(JSON.stringify(M));
+            var Po={
+                ttp:ttp,
+                b:b,
+                Mhash:Mhash    //deberá ser el HASH de M
+            };
+            var mensaje ={
+                ttp:ttp,
+                b:b,
+                M:M,
+                Po:Po
+            };
+            $http.post('/ttp/adduser', mensaje)
+                .success(function (data,data2) {
                     $scope.resultado = 'correcto'
                 })
-                .error(function (data) {
+                .error(function (data, data2) {
                     $scope.resultado = 'incorrecto'
                 })
         }
     };
-
-
-
     $scope.AllUsers = function(){
-        $scope.hi();
-        $http.get('/ttp/allusers')
+        console.log("1: A-->TTP: (TTP, B, M, Po)");
+        var ttp="localhost:3000/ttp/allusers";
+        var b="localhost:8000/server/allusers";
+        var M="GET ALLUSERS";
+        var Mhash=md5.createHash(M);
+        var Po={
+            ttp:ttp,
+            b:b,
+            Mhash:Mhash     //deberá ser el HASH de M
+        };
+        var mensaje ={
+            ttp:ttp,
+            b:b,
+            M:M,
+            Po:Po
+        };
+        $http.post('/ttp/allusers', mensaje)
             .success(function (data) {
                 $scope.resultado2 = 'correcto';
-                document.getElementById("datosUsers").innerHTML = JSON.stringify(data, undefined, 2)
+                document.getElementById("datosUsers").innerHTML = JSON.stringify(data.body.data2, undefined, 2)
             })
             .error(function (data) {
                 $scope.resultado2 = 'incorrecto';
-                console.log('Error: ' + data)
+                console.log('Error: ' + data.body.data2)
             });
     };
-    $scope.hi = function(){
-        $http.get('/ttp/hi')
-            .success(function(data){
-                $scope.resultado7 = 'correcto';
-                console.log("Cliente contestado: "+data);
-            })
-            .error(function (data) {
-                $scope.resultado7 = 'incorrecto';
-                console.log('Error: ' + data)
-            });
-    }
 }]);
