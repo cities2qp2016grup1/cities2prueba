@@ -48,7 +48,6 @@ mongoose.connect('mongodb://localhost/cities2', function(err, res) {
 
 // Start server
 server.listen(8000, function() {
-  console.log("Servidor Principal http://localhost:8000/");
 });
 
 //

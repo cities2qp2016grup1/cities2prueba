@@ -6,11 +6,31 @@ var bignum = require('bignum');
 
 //GET - GET All Users By Into DB
 router.get('/allusers', function (req, res) {
+  console.log('GET /allusers');
+  console.log(req.body);
   User.find(function (err, users) {
     if (err) res.send(500, err.message);
-    console.log('GET /allusers');
-    res.status(200).jsonp(users);
+    console.log(users);
+    console.log('\n');
+    console.log("4: B-->TTP: (L, Pr)");
+    var a="A";
+    var ttp="localhost:3000/ttp/allusers";
+    var L=users;
+    var Po=req.body.Po;
+    var Pr={
+      ttp:ttp,
+      a:a,
+      L:L,
+      Po:Po
+    }; //debera ir encriptado por la privada de B (server)
+    var mensajeToTTP ={
+      L:L,
+      Pr:Pr
+    };
+    console.log(mensajeToTTP);
+    res.status(200).jsonp(mensajeToTTP);
   });
+
 });
 //POST - Add User in DB
 router.post('/adduser',  function (req, res) {

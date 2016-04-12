@@ -26,10 +26,10 @@ cities2.controller('userCtrl',['$scope', '$state','$http','md5', function($scope
                 Po:Po
             };
             $http.post('/ttp/adduser', mensaje)
-                .success(function (data,data2) {
+                .success(function (data) {
                     $scope.resultado = 'correcto'
                 })
-                .error(function (data, data2) {
+                .error(function (data) {
                     $scope.resultado = 'incorrecto'
                 })
         }
@@ -54,11 +54,11 @@ cities2.controller('userCtrl',['$scope', '$state','$http','md5', function($scope
         $http.post('/ttp/allusers', mensaje)
             .success(function (data) {
                 $scope.resultado2 = 'correcto';
-                document.getElementById("datosUsers").innerHTML = JSON.stringify(data.body.data2, undefined, 2)
+                document.getElementById("datosUsers").innerHTML = JSON.stringify(data.data2.L, undefined, 2)
             })
             .error(function (data) {
                 $scope.resultado2 = 'incorrecto';
-                console.log('Error: ' + data.body.data2)
+                console.log('Error: ' + data)
             });
     };
 }]);

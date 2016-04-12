@@ -149,14 +149,56 @@ router.post('/allusers',function (require, result){
             'Content-Type': 'application/json'
         }
     };
-    var req = http.request(options, function(res) {
-        res.on('data', function (chunk) {
-            console.log("Devuelto a TTP: " + chunk);
-            result.status(200).send({data:mensajeToA, data2:chunk});
-        });
+    http.get(options, function(res){
+         res.on('data', function(chunk){
+             var respuesta = JSON.parse(chunk);
+             console.log('\n');
+             console.log("5: TTP-->A: (A, B, Td, L, K, Pr, Pd)");
+             var Pd = {
+                 a:a,
+                 b:b,
+                 Td:Date.now(),
+                 L:respuesta.L,
+                 Pr:respuesta.Pr
+             };
+             var mensajeFinalA = {
+                 a:a,
+                 b:b,
+                 Td:Date.now(),
+                 L:respuesta.L,
+                 K:"K",
+                 Pr:respuesta.Pr,
+                 Pd:Pd
+             };
+             console.log(mensajeFinalA);
+             console.log('\n');
+             result.status(200).send({data:mensajeToA, data2:mensajeFinalA});
+             console.log("6: TTP-->B: (L, M)");
+             var mensajeFinalB = {
+                 L:respuesta.L,
+                 M:require.body.M
+             };
+             var data2 = JSON.stringify(mensajeFinalB);
+             var options = {
+                 host: 'localhost',
+                 port: 8000,
+                 path: '/server/final',
+                 method: 'POST',
+                 json:true,
+                 headers: {
+                     'Content-Type': 'application/json'
+                 }
+             };
+             var req2 = http.request(options, function(res2) {
+                 res2.on('data', function (chunk) {
+                     console.log("Transmisión finalizada");
+                     console.log('\n');
+                 })
+             });
+             req2.write(data2);
+             req2.end();
+         });
     });
-    req.write(data);
-    req.end();
 });
 //POST - Reenviar nuevo usuario a server
 router.post('/adduser',function (require, result) {
