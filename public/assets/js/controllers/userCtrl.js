@@ -18,13 +18,13 @@ cities2.controller('userCtrl',['$scope', '$state','$http','md5', function($scope
                 ttp:ttp,
                 b:b,
                 Mhash:Mhash    //deberá ser el HASH de M
-            };
+            };  //encriptado con la privada de A (Firmado)
             var mensaje ={
                 ttp:ttp,
                 b:b,
-                M:M,
+                M:M,    //encriptado con la publica de B
                 Po:Po
-            };
+            };  //encriptado con la publica de TTP
             $http.post('/ttp/adduser', mensaje)
                 .success(function (data) {
                     $scope.resultado = 'correcto'
@@ -44,13 +44,13 @@ cities2.controller('userCtrl',['$scope', '$state','$http','md5', function($scope
             ttp:ttp,
             b:b,
             Mhash:Mhash     //deberá ser el HASH de M
-        };
+        };  //encriptado con la privada de A (Firmado)
         var mensaje ={
             ttp:ttp,
             b:b,
-            M:M,
+            M:M,    //encriptado con la publica de B
             Po:Po
-        };
+        };  //encriptado con la publica de TTP
         $http.post('/ttp/allusers', mensaje)
             .success(function (data) {
                 $scope.resultado2 = 'correcto';

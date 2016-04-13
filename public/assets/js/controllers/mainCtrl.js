@@ -8,7 +8,12 @@ cities2.controller
         {
             $scope.init = function ()
             {
-                $http.get('http://localhost:8000/key').success(function (data)
+                $http.get('http://localhost:8000/key/server').success(function (data)
+                {
+                    $localStorage.save = data;
+                    console.log(data);
+                }).error(function (data) {});
+                $http.get('http://localhost:8000/key/ttp').success(function (data)
                 {
                     $localStorage.save = data;
                     console.log(data);

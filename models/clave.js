@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
     Schema = mongoose.Schema;
 
 var claveSchema = new Schema({
+    name:{type: String},
     publicKey: {
         bits: {type: Number},
         n: {type: String},
@@ -18,4 +19,4 @@ var claveSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('Claves', claveSchema);
+module.exports = mongoose.model('claves', claveSchema);
