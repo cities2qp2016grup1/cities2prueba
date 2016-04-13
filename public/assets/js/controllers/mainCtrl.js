@@ -11,11 +11,13 @@ cities2.controller
                 $http.get('http://localhost:8000/key/server').success(function (data)
                 {
                     $localStorage.save = data;
+                    window.localStorage.setItem('Server', JSON.stringify(data));
                     console.log(data);
                 }).error(function (data) {});
                 $http.get('http://localhost:8000/key/ttp').success(function (data)
                 {
                     $localStorage.save = data;
+                    window.localStorage.setItem('TTP', JSON.stringify(data));
                     console.log(data);
                 }).error(function (data) {});
             };
