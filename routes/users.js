@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/user.js');
 var rsa = require('../rsa/rsa-bignum.js');
+var biginteger = require('../rsa/rsa-big-integer');
+var BigInt = require('../rsa/big-integer-scii');
 var bignum = require('bignum');
 
 //GET - GET All Users By Into DB
@@ -12,12 +14,19 @@ router.get('/allusers', function (req, res) {
     if (err) res.send(500, err.message);
     console.log(users);
     console.log('\n');
+    
+    //Generamos claves
+    var keys = biginteger.generateKeys(512);
+    console.log(keys);
+    //Mostradas por pantalla
+    
     console.log("4: B-->TTP: (L, Pr)");
     var a="A";
     var ttp="localhost:3000/ttp/allusers";
     var L=users;
     var Po=req.body.Po;
-    var Pr={
+    var Pr=
+    {
       ttp:ttp,
       a:a,
       L:L,

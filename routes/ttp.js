@@ -5,6 +5,8 @@ var express = require('express');
 var router = express.Router();
 var http = require("http");
 var crypto = require('crypto');
+var biginteger = require('../rsa/rsa-big-integer');
+var BigInt = require('../rsa/big-integer-scii');
 //var hash = crypto.createHash('md5').update(data).digest('hex');
 
 //POST - Reenviar suma a server
@@ -122,7 +124,8 @@ router.post('/allusers',function (require, result){
         Tr:Tr,
         L:L,
         Po:Po
-    }; //debera ir encriptado por la privada del TTP
+    };
+        //debera ir encriptado por la privada del TTP
     var mensajeToA ={
         a:a,
         b:b,
@@ -130,8 +133,27 @@ router.post('/allusers',function (require, result){
         L:L,
         Ps:Ps
     };
+
     console.log(mensajeToA);
     console.log('\n');
+
+    //Generamos claves
+    var keys = biginteger.generateKeys(512);
+    console.log(keys);
+    //Mostradas por pantalla
+
+    var x = JSON.stringify(Ps);
+    console.log(x);
+    var cleartext = new Buffer(x);
+    var PsEn, EncryptedPs;
+    PsEn = BigInt(cleartext.toString('hex'), 16);
+    console.log('\n\n\nCleartext:', new Buffer(PsEn.toString(16),'hex').toString(),'\n');
+
+    EncryptedPs = keys.publicKey.encrypt(PsEn);
+    console.log('encryption with public:', '\n', EncryptedPs.toString(10), '\n');
+
+
+
     console.log("3: TTP-->B: (A, L, Po)");
     var mensajeToB={
         a:a,
