@@ -4,10 +4,15 @@
 var express = require('express');
 var router = express.Router();
 var Clave = require('../models/clave.js');
+var LocalStorage = require('node-localstorage').LocalStorage;
+
+localStorage = new LocalStorage('./scratch');
 
 router.get('/ttp',function (req, res) {
     Clave.findOne({"name":"ttp"},function (err, clave) {
         if (err) res.send(500, err.message);
+        localStorage.setItem("TTPprivada", JSON.stringify(clave.privateKey));
+        localStorage.setItem("TTPpublica", JSON.stringify(clave.publicKey));
         console.log('GET /claves');
         console.log("publicKey: "+ JSON.stringify(clave.publicKey, null, 2));
         console.log("Clave publica enviada al cliente"+'\n');
@@ -17,6 +22,8 @@ router.get('/ttp',function (req, res) {
 router.get('/server',function (req, res) {
     Clave.findOne({"name":"server"},function (err, clave) {
         if (err) res.send(500, err.message);
+        localStorage.setItem("Serverprivada", JSON.stringify(clave.privateKey));
+        localStorage.setItem("Serverpublica", JSON.stringify(clave.publicKey));
         console.log('GET /claves');
         console.log("publicKey: "+ JSON.stringify(clave.publicKey, null, 2));
         console.log("Clave publica enviada al cliente"+'\n');

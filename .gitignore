@@ -4,3 +4,4 @@ config
 .idea/
 # User-specific stuff:
 .idea/workspace.xml
+scratch

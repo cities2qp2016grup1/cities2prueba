@@ -3,6 +3,7 @@ Probando angular, node, mongo y express
 
 #Dependencias
 - angular
+- big-integer
 - bignum
 - body-parser
 - consolidate
@@ -12,6 +13,9 @@ Probando angular, node, mongo y express
 - jade
 - jquery
 - mongoose
+- mongoose-middleware
+- ngstorage
+- node-localstorage
 - socket.io
 
 #MongoDB
@@ -22,12 +26,12 @@ Importar los archivos users.json y claves.json como collections de una DB llamad
 `users`
 Usar el archivo users.json
 
-`mongoimport --db cities2 --collection users < users.json`
+`mongoimport --db cities2 --collection users --drop < users.json`
 
 ----------
 `claves`
 Usar el archivo claves.json
 
-`mongoimport --db cities2 --collection claves < claves.json`
+`mongoimport --db cities2 --collection claves --drop < claves.json`
 
 ----------
