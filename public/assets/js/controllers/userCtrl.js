@@ -34,11 +34,12 @@ cities2.controller('userCtrl',['$scope', '$state','$http','md5', function($scope
                 })
         }
     };
+    
     $scope.AllUsers = function(){
         console.log("1: A-->TTP: (TTP, B, M, Po)");
         var ttp="localhost:3000/ttp/allusers";
         var b="localhost:8000/server/allusers";
-        var M="GET ALLUSERS";
+        var M="GET ALL USERS";
         var Mhash=md5.createHash(M);
         var Po={
             ttp:ttp,
