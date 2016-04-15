@@ -12,6 +12,7 @@ Probando angular, node, mongo y express
 - http
 - jade
 - jquery
+- jsbn
 - mongoose
 - mongoose-middleware
 - ngstorage

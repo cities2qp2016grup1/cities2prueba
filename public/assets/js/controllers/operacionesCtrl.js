@@ -4,10 +4,15 @@ cities2.controller('operacionesCtrl',['$scope', '$state','$http','$rootScope', f
     $scope.OperacionMulti = {};
     $scope.OperacionDivi = {};
     $scope.sumar = function(OperacionSuma){
+        var keys = paillier.generateKeys(1024);
+        var encA = keys.pub.encrypt(nbv(OperacionSuma.num1));
+        var encB = keys.pub.encrypt(nbv(OperacionSuma.num2));
+        var encAB = keys.pub.add(encA,encB);
+        var plaintext = keys.sec.decrypt(encAB).toString(10);
         $http.post('/ttp/sumar',OperacionSuma)
             .success(function (data) {
                 $scope.resultado3 = 'correcto';
-                document.getElementById("resultadoSuma").innerHTML = (data);
+                document.getElementById("resultadoSuma").innerHTML = (plaintext);
             })
             .error(function (data) {
                 $scope.resultado3 = 'incorrecto';
