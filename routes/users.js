@@ -7,9 +7,10 @@ var LocalStorage = require('node-localstorage').LocalStorage;
 localStorage = new LocalStorage('./scratch');
 
 //GET - GET All Users By Into DB
-router.get('/allusers', function (req, res) {
+router.post('/allusers', function (req, res) {
   console.log('GET /allusers');
-  console.log(req.body);
+  var recibido = req.body;
+  console.log(recibido);
   User.find(function (err, users) {
     if (err) res.send(500, err.message);
     console.log(users);
@@ -19,10 +20,14 @@ router.get('/allusers', function (req, res) {
     //cojo la privateKey de B
     var prikServer = JSON.parse(localStorage.getItem("Serverprivada"));
     var pubkServer = JSON.parse(localStorage.getItem("Serverpublica"));
-    var publicKServer = new rsa.publicKey(pubkServer.bits, pubkServer.n, pubkServer.e);
-    var privateKServer = new rsa.privateKey(prikServer.p, prikServer.q, prikServer.d, publicKServer);
+    var keys ={};
+    keys.publicKey= new rsa.publicKey(pubkServer.bits, bignum(pubkServer.n), bignum(pubkServer.e));
+    keys.privateKey= new rsa.privateKey(bignum(prikServer.p), bignum(prikServer.q), bignum(prikServer.d), keys.publicKey);
+    //console.log(keys);
     //encripto con la privada de B
-    var reqdecrip = privateKServer.decrypt(req);
+    var recibidoBignum = bignum(req.body.mensaje);
+    console.log(recibidoBignum);
+    var reqdecrip = keys.privateKey.decrypt(recibidoBignum);
     console.log(reqdecrip);
     //  coje los datos necesarios para crear los mensajes
     var a="A";

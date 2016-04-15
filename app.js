@@ -21,7 +21,7 @@ app.use(function(req, res, next) {
 
 //Middlewares express
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: true}));
 
 //la ruta a los archivos estaticos (HTML, JS, ...
 app.use(express.static(path.join(__dirname, 'public')));
@@ -56,9 +56,16 @@ server.listen(8000, function() {
 //para el servidor ttp:
 var app2 = express();
 app2.use(router);
+
+//permitir CORS
+app2.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 //Middlewares express
 app2.use(bodyParser.json());
-app2.use(bodyParser.urlencoded({extended: false}));
+app2.use(bodyParser.urlencoded({extended: true}));
 //la ruta a los archivos estaticos (HTML, JS, ...
 app2.use(express.static(path.join(__dirname, 'public')));
 // Plantillas jade

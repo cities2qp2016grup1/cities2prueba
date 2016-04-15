@@ -133,11 +133,12 @@ router.post('/allusers',function (require, result){
     //cojo la publicKey y private Key de TTP
     var prikTTP = JSON.parse(localStorage.getItem("TTPprivada"));
     var pubkTTP = JSON.parse(localStorage.getItem("TTPpublica"));
-    var publicKTTP = new rsa.publicKey(pubkTTP.bits, pubkTTP.n, pubkTTP.e);
-    var privateKTTP = new rsa.privateKey(prikTTP.p, prikTTP.q, prikTTP.d, publicKTTP);
+    var keys= {};
+    keys.publicKey = new rsa.publicKey(pubkTTP.bits, bignum(pubkTTP.n), bignum(pubkTTP.e));
+    keys.privateKey = new rsa.privateKey(bignum(prikTTP.p), bignum(prikTTP.q), bignum(prikTTP.d), keys.privateKey);
     //encripto Ps con la privada
     var Psbignum = bignum.fromBuffer(new Buffer(Ps.toString()));
-    var Pscrip = privateKTTP.encrypt(Psbignum);
+    var Pscrip = keys.publicKey.encrypt(Psbignum);
     console.log(Pscrip);
     var mensajeToA ={
         a:a,
@@ -160,29 +161,32 @@ router.post('/allusers',function (require, result){
     };  //encriptado con la publica de B
     //cojo la publicKey de B
     var pubkServer = JSON.parse(localStorage.getItem("Serverpublica"));
-    var publicKServer = new rsa.publicKey(pubkServer.bits, pubkServer.n, pubkServer.e);
+    var keys2= {};
+    keys2.publicKey = new rsa.publicKey(pubkServer.bits, bignum(pubkServer.n), bignum(pubkServer.e));
     //encripto el mensaje a B
     var mensajeToBbignum = bignum.fromBuffer(new Buffer(mensajeToB.toString()));
-    var mensajeToBcrip = privateKTTP.encrypt(mensajeToBbignum);
+    var mensajeToBcrip = keys2.publicKey.encrypt(mensajeToBbignum);
     //
-    var data = mensajeToBcrip.toString();
+    var data = {"mensaje":mensajeToBcrip.toString()};
+    console.log("Mensaje encriptado a B: ");
+    console.log(data);
     var options = {
         host: 'localhost',
         port: 8000,
         path: '/server/allusers',
-        method: 'GET',
-        json:true,
+        method: 'POST',
+        json: true,
         headers: {
             'Content-Type': 'application/json'
         }
     };
-    http.get(options, function(res){
+    var req= http.request(options, function(res){
          res.on('data', function(chunk){
              var respuesta = JSON.parse(chunk);
              console.log('\n');
              console.log("5: TTP-->A: (A, B, Td, L, K, Pr, Pd)");
              // TTP desencripta el mensaje de B con la privada de TTP
-             
+
              // coje los datos necesarios para crear el mensaje
              var Pd = {
                  a:a,
@@ -230,6 +234,8 @@ router.post('/allusers',function (require, result){
              req2.end();
          });
     });
+    req.write(JSON.stringify(data));
+    req.end();
 });
 //POST - Reenviar nuevo usuario a server
 router.post('/adduser',function (require, result) {
