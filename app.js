@@ -71,6 +71,7 @@ app2.use(express.static(path.join(__dirname, 'public')));
 // Plantillas jade
 app2.set('views', path.join(__dirname, 'views'));
 app2.set('view engine', 'jade');
+app2.engine('html', require('ejs').renderFile);
 //Pagina en '/' (para ver algo)
 /*app2.get('/', function(req, res, next) {
   res.render('index', { title: 'Servidor TTP (Trusted Third Party)' });

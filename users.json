@@ -1,4 +1,6 @@
 {
   "nombre" : "admin",
-  "ciudad" : "barcelona"
+  "email" : "admin@admin",
+  "rol" : "profesor",
+  "password" : "6a4deaae9e6ac5e15cfc1a07374d311b"
 }

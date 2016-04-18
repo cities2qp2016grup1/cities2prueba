@@ -28,3 +28,22 @@
     height:100%;
     position:relative;
 }
+/* boton redondo*/
+.btn2 {
+    border: 0;
+    border-radius: 300px;
+    text-transform: uppercase;
+    font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif;
+    font-weight: 700;
+}
+.btn-xl {
+    padding: 15px 30px;
+}
+.registrar-jumbo{
+    margin-left: 30%;
+    margin-right: 30%;
+    align-self: center;
+    align-content: center;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.35);
+}

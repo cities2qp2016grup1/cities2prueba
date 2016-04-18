@@ -9,6 +9,7 @@ cities2.controller('operacionesCtrl',['$scope', '$state','$http','$rootScope', f
         var encB = keys.pub.encrypt(nbv(OperacionSuma.num2));
         var encAB = keys.pub.add(encA,encB);
         var plaintext = keys.sec.decrypt(encAB).toString(10);
+        console.log(plaintext);
         $http.post('/ttp/sumar',OperacionSuma)
             .success(function (data) {
                 $scope.resultado3 = 'correcto';

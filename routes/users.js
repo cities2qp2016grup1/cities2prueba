@@ -28,7 +28,8 @@ router.post('/allusers', function (req, res) {
     var recibidoBignum = bignum(req.body.mensaje);
     console.log(recibidoBignum);
     var reqdecrip = keys.privateKey.decrypt(recibidoBignum);
-    console.log(reqdecrip);
+    var claro=reqdecrip.toBuffer().toString();
+    console.log(claro);
     //  coje los datos necesarios para crear los mensajes
     var a="A";
     var ttp="localhost:3000/ttp/allusers";
@@ -54,29 +55,43 @@ router.post('/adduser',  function (req, res) {
   console.log('POST /user');
   console.log(req.body);
   var user = new User({
-    nombre:    req.body.L.nombre,
-    ciudad:     req.body.L.ciudad
+    nombre:    req.body.nombre,
+    email:     req.body.email,
+    rol:    req.body.rol,
+    password: req.body.password
   });
   console.log('\n');
-  console.log("4: B-->TTP: (L, Pr)");
+  console.log("Devuelve el user registrado");
   user.save(function(err, user) {
-    if(err) return res.status(500).send( err.message);
-    var a="A";
-    var ttp="localhost:3000/ttp/adduser";
-    var L=user;
-    var Po=req.body.Po;
-    var Pr={
-      ttp:ttp,
-      a:a,
-      L:L,
-      Po:Po
-    }; //debera ir encriptado por la privada de B (server)
-    var mensajeToTTP ={
-      L:L,
-      Pr:Pr
-    };
-    console.log(mensajeToTTP);
-    res.status(200).jsonp(mensajeToTTP);
+    if(err) return res.status(500).send(err.message);
+    console.log(user);
+    res.status(200).jsonp(user);
+  });
+});
+
+//POST - Comprovar user en DB
+router.post('/login',  function (req, res) {
+  console.log('LOGIN /user');
+  console.log("Comprueba si la contraseña es correcta");
+  User.find({email:req.body.email},function(err, user) {
+    if (user.length == 0) {
+      return res.status(404).jsonp({"loginSuccessful": false, "email": req.body.email});
+    }
+    else{
+      var usuario = JSON.stringify(user);
+      var trozos = usuario.split(",");
+      var password = trozos[4].split(":");
+      var pwd2 = password[1];
+      var pwd1 = JSON.stringify(req.body.password);
+      if (pwd1 == pwd2) {
+        console.log ("Login Correcto");
+        return res.status(200).jsonp({"loginSuccessful": true, "user": user});
+      }
+      else {
+        console.log("Contraseña erronea");
+        return res.status(404).jsonp({"loginSuccessful": false, "email": req.body.email});
+      }
+    }
   });
 });
 

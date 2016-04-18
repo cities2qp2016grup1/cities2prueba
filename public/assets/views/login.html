@@ -1,0 +1,20 @@
+<div class="div3">
+    <div class="container">
+        <br>
+        <br>
+        <div class="jumbotron registrar-jumbo">
+            <h3>Iniciar Sesión</h3>
+            <div class="form-group">
+                <h5 class="control-label" for="ponerEmail">E-mail</h5>
+                <input type="text" style="text-align: center" class="form-control" id="ponerEmail" title="Debes poner un email" required ng-model="logUser.email">
+
+                <h5 class="control-label" for="ponerPassword">Contraseña</h5>
+                <input type="password" style="text-align: center" class="form-control" id="ponerPassword" title="Debes poner una contraseña" required ng-model="logUser.password">
+            </div>
+            <div class="form-group">
+                <a type="button" class="btn2 btn-default btn" ng-click="login(logUser)">Iniciar Sesión</a>
+            </div>
+        </div>
+        <p align="center">&copy; 2016 Todos los derechos reservados</p>
+    </div>
+</div>

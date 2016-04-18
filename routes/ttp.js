@@ -118,18 +118,22 @@ router.post('/allusers',function (require, result){
     // TTP desencripta el mensaje de A con la privada de TTP
 
     // coje los datos necesarios para crear los mensajes:
+    var total =require.body.mensaje;
+    console.log(total);
+    var trozos = total.split(",");
     var a="A";
-    var b=require.body.b;
+    var b=trozos[1];
     var Tr= Date.now();
-    var L=require.body.M;
-    var Po=require.body.Po;
-    var Ps={
+    var L="L";
+    var Po=trozos[2];
+    var PsJSON={
         a:a,
         b:b,
         Tr:Tr,
         L:L,
         Po:Po
-    }; //debera ir encriptado por la privada del TTP (firmado)
+    };
+    var Ps= PsJSON.a+','+PsJSON.b+','+PsJSON.Tr+','+PsJSON.L+','+PsJSON.Po;//debera ir encriptado por la privada del TTP (firmado)
     //cojo la publicKey y private Key de TTP
     var prikTTP = JSON.parse(localStorage.getItem("TTPprivada"));
     var pubkTTP = JSON.parse(localStorage.getItem("TTPpublica"));
@@ -139,13 +143,12 @@ router.post('/allusers',function (require, result){
     //encripto Ps con la privada
     var Psbignum = bignum.fromBuffer(new Buffer(Ps.toString()));
     var Pscrip = keys.publicKey.encrypt(Psbignum);
-    console.log(Pscrip);
     var mensajeToA ={
         a:a,
         b:b,
         Tr:Tr,
         L:L,
-        Ps:Pscrip
+        Ps:Pscrip.toString()
     };  //encriptado con la publica de A
     //cojo la publicKey de A
     
@@ -154,16 +157,18 @@ router.post('/allusers',function (require, result){
     console.log(mensajeToA);
     console.log('\n');
     console.log("3: TTP-->B: (A, L, Po)");
-    var mensajeToB={
+    var mensajeToBJSON={
         a:a,
         L:L,
         Po:Po
-    };  //encriptado con la publica de B
+    };
+    var mensajeToB=mensajeToBJSON.a+','+mensajeToBJSON.L+','+mensajeToBJSON.Po;//encriptado con la publica de B
     //cojo la publicKey de B
     var pubkServer = JSON.parse(localStorage.getItem("Serverpublica"));
     var keys2= {};
     keys2.publicKey = new rsa.publicKey(pubkServer.bits, bignum(pubkServer.n), bignum(pubkServer.e));
     //encripto el mensaje a B
+    //var msg = "MANEL";
     var mensajeToBbignum = bignum.fromBuffer(new Buffer(mensajeToB.toString()));
     var mensajeToBcrip = keys2.publicKey.encrypt(mensajeToBbignum);
     //
@@ -239,38 +244,9 @@ router.post('/allusers',function (require, result){
 });
 //POST - Reenviar nuevo usuario a server
 router.post('/adduser',function (require, result) {
-    console.log("1: A-->TTP: (TTP, B, M, Po) (Paso hecho en cliente)");
     console.log(require.body);
     console.log('\n');
-    console.log("2: TTP-->A: (A, B, Tr, L, Ps)");
-    var a="A";
-    var b=require.body.b;
-    var Tr= Date.now();
-    var L=require.body.M;
-    var Po=require.body.Po;
-    var Ps={
-        a:a,
-        b:b,
-        Tr:Tr,
-        L:L,
-        Po:Po
-    }; //debera ir encriptado por la privada del TTP
-    var mensajeToA ={
-        a:a,
-        b:b,
-        Tr:Tr,
-        L:L,
-        Ps:Ps
-    };
-    console.log(mensajeToA);
-    console.log('\n');
-    console.log("3: TTP-->B: (A, L, Po)");
-    var mensajeToB={
-        a:a,
-        L:L,
-        Po:Po
-    };
-    var data = JSON.stringify(mensajeToB);
+    var data = JSON.stringify(require.body);
     var options = {
         host: 'localhost',
         port: 8000,
@@ -285,51 +261,31 @@ router.post('/adduser',function (require, result) {
         res.on('data', function (chunk) {
             var respuesta = JSON.parse(chunk);
             console.log('\n');
-            console.log("5: TTP-->A: (A, B, Td, L, K, Pr, Pd)");
-            var Pd = {
-                a:a,
-                b:b,
-                Td:Date.now(),
-                L:respuesta.L,
-                Pr:respuesta.Pr
-            };
-            var mensajeFinalA = {
-                a:a,
-                b:b,
-                Td:Date.now(),
-                L:respuesta.L,
-                K:"K",
-                Pr:respuesta.Pr,
-                Pd:Pd
-            };
-            console.log(mensajeFinalA);
-            console.log('\n');
-            result.status(200).send({data:mensajeToA, data2:mensajeFinalA});
-            console.log("6: TTP-->B: (L, M)");
-            var mensajeFinalB = {
-                L:respuesta.L,
-                M:require.body.M
-            };
-            var data2 = JSON.stringify(mensajeFinalB);
-            var options = {
-                host: 'localhost',
-                port: 8000,
-                path: '/server/final',
-                method: 'POST',
-                json:true,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            };
-            var req2 = http.request(options, function(res2) {
-                res2.on('data', function (chunk) {
-                    console.log("Transmisión finalizada");
-                    console.log('\n');
-                })
+            result.status(200).send(respuesta);
             });
-            req2.write(data2);
-            req2.end();
-            
+        });
+    req.write(data);
+    req.end();
+});
+//POST - Reenviar login user a server
+router.post('/login',function (require, result) {
+    console.log(require.body);
+    console.log('\n');
+    var data = JSON.stringify(require.body);
+    var options = {
+        host: 'localhost',
+        port: 8000,
+        path: '/server/login',
+        method: 'POST',
+        json:true,
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+    var req = http.request(options, function(res) {
+        res.on('data', function (chunk) {
+            console.log('\n');
+            result.status(200).send(chunk);
         });
     });
     req.write(data);

@@ -6,13 +6,26 @@ var cities2 = angular.module('cities2',[
     'angular-md5'
 ]);
 
-cities2.config(function ($routeProvider, $stateProvider) {
-    // Set up the states
+cities2.config(function ($urlRouterProvider, $routeProvider, $stateProvider, $locationProvider) {
+/*
+    // Remove # from url
+    $locationProvider.html5Mode(true);
+*/
 
+    // Set up the states
+    /*
 $routeProvider
     .when('/', {
         templateUrl: '/assets/views/indice.html',
         controller:'mainCtrl'
+    })
+    .when('/home', {
+        templateUrl: '/assets/views/registrar.html',
+        controller: 'userCtrl'
+    })
+    .when('/login', {
+        templateUrl: '/assets/views/login.html',
+        controller: 'userCtrl'
     })
     .when('/server', {
         templateUrl: '/assets/views/user.html',
@@ -28,18 +41,41 @@ $routeProvider
     .when('/contact', {
         templateUrl: '/assets/views/contact.html'
     })
-    .otherwise("/")
-});
-/*
+    .otherwise("/");
+*/
+    $urlRouterProvider.otherwise("/");
     $stateProvider
         .state('index', {
             url: "/",
-            templateUrl: "/public/index.html"
+            templateUrl: "assets/views/indice.html",
+            controller: "mainCtrl"
         })
-        .state('index.server', {
+        .state('registrar', {
+            url: "/home",
+            templateUrl: "assets/views/registrar.html",
+            controller: "userCtrl"
+        })
+        .state('server', {
             url: "/server",
-            templateUrl: "/public/assets/views/user.html",
-            controller: 'userCtrl'
+            templateUrl: "assets/views/user.html",
+            controller: "userCtrl"
+        })
+        .state('login', {
+            url: "/login",
+            templateUrl: "assets/views/login.html",
+            controller: "userCtrl"
+        })
+        .state('operaciones', {
+            url: "/operaciones",
+            templateUrl: "assets/views/operaciones.html",
+            controller: "operacionesCtrl"
+        })
+        .state('about', {
+            url: "/about",
+            templateUrl: "assets/views/about.html"
+        })
+        .state('contact', {
+            url: "/contact",
+            templateUrl: "assets/views/contact.html"
         })
 });
- */
