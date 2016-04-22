@@ -1156,6 +1156,7 @@
       return true;
     }
 
+    
     // protected
     BigInteger.prototype.chunkSize = bnpChunkSize;
     BigInteger.prototype.toRadix = bnpToRadix;
