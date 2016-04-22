@@ -73,16 +73,18 @@ router.post('/adduser',  function (req, res) {
 router.post('/login',  function (req, res) {
   console.log('LOGIN /user');
   console.log("Comprueba si la contraseña es correcta");
-  User.find({email:req.body.email},function(err, user) {
+  User.findOne({email:req.body.email},function(err, user) {
     if (user.length == 0) {
       return res.status(404).jsonp({"loginSuccessful": false, "email": req.body.email});
     }
     else{
+      console.log(user);
       var usuario = JSON.stringify(user);
       var trozos = usuario.split(",");
       var password = trozos[4].split(":");
       var pwd2 = password[1];
       var pwd1 = JSON.stringify(req.body.password);
+      console.log("Password del login: "+pwd2);
       if (pwd1 == pwd2) {
         console.log ("Login Correcto");
         return res.status(200).jsonp({"loginSuccessful": true, "user": user});

@@ -6,6 +6,7 @@ cities2.controller
     ['$scope', '$state','$http','$rootScope','$localStorage',
         function($scope, $state, $http, $rootScope, $localStorage)
         {
+            $rootScope.isLogged=false;
             $scope.init = function ()
             {
                 $http.get('http://localhost:8000/key/server').success(function (data)
@@ -18,6 +19,12 @@ cities2.controller
                     //window.localStorage.setItem('TTP', JSON.stringify(data));
                 }).error(function (data) {});
             };
+            $scope.clicked = function () 
+            {
+                $rootScope.isLogged=true;
+                console.log($scope.isLogged);
+                $state.go("registrar");
+            }
         }
     ]
 );

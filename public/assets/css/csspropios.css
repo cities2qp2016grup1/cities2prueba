@@ -6,7 +6,6 @@
 }
 /* Fondo de indice.html , about y contact */
 .div1 {
-    margin-top: 100px;
     background:url(../images/wallpaper.jpg);
     width: 100%;
     height:100%;
@@ -27,6 +26,13 @@
     width: 100%;
     height:100%;
     position:relative;
+}
+.div4 {
+    margin-top: 100px;
+    background:url(../images/wallpaper2.jpg);
+    width: 100%;
+    height:100%;
+    position:fixed;
 }
 /* boton redondo*/
 .btn2 {

@@ -78,4 +78,14 @@ $routeProvider
             url: "/contact",
             templateUrl: "assets/views/contact.html"
         })
+        .state('Shome', {
+            url: "/shome",
+            templateUrl: "assets/views/studentHome.html",
+            controller: "userCtrl"
+        })
+        .state('Phome', {
+            url: "/phome",
+            templateUrl: "assets/views/professorHome.html",
+            controller: "userCtrl"
+        })
 });

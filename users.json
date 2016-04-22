@@ -2,5 +2,12 @@
   "nombre" : "admin",
   "email" : "admin@admin",
   "rol" : "profesor",
-  "password" : "6a4deaae9e6ac5e15cfc1a07374d311b"
+  "password" : "6a4deaae9e6ac5e15cfc1a07374d311b",
+  "asignaturas" : [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+  ]
 }
