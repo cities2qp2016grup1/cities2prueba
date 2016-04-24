@@ -3,8 +3,8 @@
  */
 cities2.controller
 ('mainCtrl',
-    ['$scope', '$state','$http','$rootScope','$localStorage',
-        function($scope, $state, $http, $rootScope, $localStorage)
+    ['$rootScope', '$scope', '$state','$http','$localStorage',
+        function($rootScope, $scope, $state, $http, $localStorage)
         {
             $rootScope.isLogged=false;
             $scope.init = function ()
@@ -46,7 +46,6 @@ cities2.controller
             };
             $scope.clicked = function () 
             {
-                $rootScope.isLogged=true;
                 console.log($scope.isLogged);
                 $state.go("registrar");
             }

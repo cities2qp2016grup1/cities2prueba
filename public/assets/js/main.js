@@ -88,4 +88,7 @@ $routeProvider
             templateUrl: "assets/views/professorHome.html",
             controller: "userCtrl"
         })
-});
+})
+    .run(function ($rootScope) {
+        $rootScope.isLogged = false;
+    });

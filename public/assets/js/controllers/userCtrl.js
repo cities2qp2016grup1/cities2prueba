@@ -1,5 +1,5 @@
-cities2.controller('userCtrl',['$scope', '$state','$http','md5', '$rootScope', function($scope, $state, $http, md5, $rootScope) {
-    $scope.isLogged=true;
+cities2.controller('userCtrl',['$rootScope', '$scope', '$state','$http','md5',  function($rootScope, $scope, $state, $http, md5) {
+    $rootScope.isLogged=true;
     $scope.newUser = {};
     // Funcion para crear un usuario
     $scope.addUser = function (newUser) {
@@ -57,15 +57,31 @@ cities2.controller('userCtrl',['$scope', '$state','$http','md5', '$rootScope', f
             };
             $http.post('/ttp/login', mensaje)
                 .success(function (data) {
+                    $scope.MyRol=data.user.rol.toString();
+                    console.log($scope.MyRol);
                     if (data.loginSuccessful==true){
-                        if(!$scope.$$phase) {
-                            $scope.$apply(function () {
-                                $scope.asignaturas=[
-                                    data.user.asignaturas
-                                ];
-                            });
+                        if ($scope.MyRol=="estudiante")
+                        {
+                            if(!$scope.$$phase) {
+                                $scope.$apply(function () {
+                                    $scope.asignaturas=[
+                                        data.user.asignaturas
+                                    ];
+                                });
+                            }
+                            $state.go("Shome");
                         }
-                        $state.go("Shome");
+                        else
+                        {
+                            if(!$scope.$$phase) {
+                                $scope.$apply(function () {
+                                    $scope.asignaturas=[
+                                        data.user.asignaturas
+                                    ];
+                                });
+                            }
+                            $state.go("Phome");
+                        }
                     }
                     else {
                         $state.go("contact");

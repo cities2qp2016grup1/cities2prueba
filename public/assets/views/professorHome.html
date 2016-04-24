@@ -3,13 +3,13 @@
         <div class="page-header">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 id="asignaturas">Asignaturas Matriculadas</h1>
+                    <h1 id="asignaturas">Asignaturas Impartidas</h1>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-lg-6">
-                <h2 ng-repeat="asignatura in asignaturas" >{{asignatura}}</h2>
+                <h2 ng-repeat="asignatura in asignaturas" ><a ui-sref="contact">{{asignatura}}</a></h2>
             </div>
 
         </div>
