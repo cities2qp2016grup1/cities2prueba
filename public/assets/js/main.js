@@ -90,5 +90,8 @@ $routeProvider
         })
 })
     .run(function ($rootScope) {
+        //iniciando el ng-show del navbar
         $rootScope.isLogged = false;
+        //iniciando el listado de asignaturas
+        $rootScope.asignaturas=["No","Actualiza","Bien","Las","Asignaturas"];
     });

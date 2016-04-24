@@ -40,7 +40,6 @@ cities2.controller('userCtrl',['$rootScope', '$scope', '$state','$http','md5',  
         }
     };
     $scope.logUser={};
-    $scope.asignaturas=["No","Actualiza","Bien","Las","Asignaturas"];
     $scope.login = function (logUser) {
         if ((!logUser.email) && (!logUser.password)){
         }
@@ -62,24 +61,12 @@ cities2.controller('userCtrl',['$rootScope', '$scope', '$state','$http','md5',  
                     if (data.loginSuccessful==true){
                         if ($scope.MyRol=="estudiante")
                         {
-                            if(!$scope.$$phase) {
-                                $scope.$apply(function () {
-                                    $scope.asignaturas=[
-                                        data.user.asignaturas
-                                    ];
-                                });
-                            }
+                            $rootScope.asignaturas=data.user.asignaturas;
                             $state.go("Shome");
                         }
                         else
                         {
-                            if(!$scope.$$phase) {
-                                $scope.$apply(function () {
-                                    $scope.asignaturas=[
-                                        data.user.asignaturas
-                                    ];
-                                });
-                            }
+                            $rootScope.asignaturas=data.user.asignaturas;
                             $state.go("Phome");
                         }
                     }
