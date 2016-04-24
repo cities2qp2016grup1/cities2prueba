@@ -15,11 +15,11 @@ cities2.controller
                 var n = keys.publicKey.n.toString();
                 var e = keys.publicKey.e.toString();
                 var pubKeyJSON={
-                    bits:bits,
+                    e:e,
                     n:n,
-                    e:e
+                    bits:bits
                 };
-                console.log(pubKeyJSON);
+                console.log(pubKeyJSON); 
 
                 var p =keys.privateKey.p.toString();
                 var q = keys.privateKey.q.toString();
@@ -29,10 +29,10 @@ cities2.controller
                     q:q,
                     d:d
                 };
-                console.log(privKeyJSON);
-
-                $localStorage.privateKey = pubKeyJSON;
-                $localStorage.publicKey = privKeyJSON;
+                //console.log(privKeyJSON);No need to show it
+                
+                $localStorage.privateKey = privKeyJSON;
+                $localStorage.publicKey = pubKeyJSON;
 
                 $http.get('http://localhost:8000/key/server').success(function (data)
                 {
