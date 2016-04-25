@@ -1,4 +1,4 @@
-cities2.controller('userCtrl',['$rootScope', '$scope', '$state','$http','md5',  function($rootScope, $scope, $state, $http, md5) {
+cities2.controller('userCtrl',['$rootScope', '$scope', '$state','$http','md5','$sessionStorage',  function($rootScope, $scope, $state, $http, md5, $sessionStorage) {
     $rootScope.isLogged=true;
     $scope.newUser = {};
     // Funcion para crear un usuario
@@ -28,7 +28,8 @@ cities2.controller('userCtrl',['$rootScope', '$scope', '$state','$http','md5',  
                 nombre: newUser.nombre,
                 email: newUser.email,
                 rol: newUser.rol,
-                password: PwdHash
+                password: PwdHash,
+                asignaturas: ["IOT","XLAM","PX","XT","CITIES 1", "CITIES 2"]
             };
             $http.post('/ttp/adduser', mensaje)
                 .success(function (data) {
@@ -61,13 +62,15 @@ cities2.controller('userCtrl',['$rootScope', '$scope', '$state','$http','md5',  
                     if (data.loginSuccessful==true){
                         if ($scope.MyRol=="estudiante")
                         {
-                            $rootScope.asignaturas=data.user.asignaturas;
-                            $state.go("Shome");
+                            //$rootScope.asignaturas=data.user.asignaturas;
+                            $sessionStorage.asignaturas=data.user.asignaturas;
+                            $state.go("Shome",{data:[data.user.asignaturas]});
                         }
                         else
                         {
-                            $rootScope.asignaturas=data.user.asignaturas;
-                            $state.go("Phome");
+                            //$rootScope.asignaturas=data.user.asignaturas;
+                            $sessionStorage.asignaturas=data.user.asignaturas;
+                            $state.go("Phome",{data:[data.user.asignaturas]});
                         }
                     }
                     else {

@@ -72,21 +72,37 @@ $routeProvider
         })
         .state('about', {
             url: "/about",
-            templateUrl: "assets/views/about.html"
+            templateUrl: "assets/views/about.html",
+            controller: "userCtrl"
         })
         .state('contact', {
             url: "/contact",
-            templateUrl: "assets/views/contact.html"
+            templateUrl: "assets/views/contact.html",
+            controller: "userCtrl"
         })
         .state('Shome', {
             url: "/shome",
             templateUrl: "assets/views/studentHome.html",
-            controller: "userCtrl"
+            controller: "studentCtrl"
+            //params: {'data':null}
+        })
+        .state('Shome.asignatura', {
+            url: "/:id",
+            templateUrl: "assets/views/studentAsignatura.html",
+            controller: "studentCtrl",
+            params: {'id':null}
         })
         .state('Phome', {
             url: "/phome",
             templateUrl: "assets/views/professorHome.html",
-            controller: "userCtrl"
+            controller: "professorCtrl"
+            //params: {'data':null}
+        })
+        .state('Phome.asignatura', {
+            url: "/:id",
+            templateUrl: "assets/views/professorAsignatura.html",
+            controller: "professorCtrl",
+            params: {'id':null}
         })
 })
     .run(function ($rootScope) {

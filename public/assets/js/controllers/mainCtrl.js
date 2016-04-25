@@ -19,7 +19,7 @@ cities2.controller
                     n:n,
                     bits:bits
                 };
-                console.log(pubKeyJSON); 
+                //console.log(pubKeyJSON);
 
                 var p =keys.privateKey.p.toString();
                 var q = keys.privateKey.q.toString();
@@ -46,7 +46,6 @@ cities2.controller
             };
             $scope.clicked = function () 
             {
-                console.log($scope.isLogged);
                 $state.go("registrar");
             }
         }

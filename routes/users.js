@@ -58,7 +58,8 @@ router.post('/adduser',  function (req, res) {
     nombre:    req.body.nombre,
     email:     req.body.email,
     rol:    req.body.rol,
-    password: req.body.password
+    password: req.body.password,
+    asignaturas: req.body.asignaturas
   });
   console.log('\n');
   console.log("Devuelve el user registrado");
