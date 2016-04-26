@@ -4,22 +4,37 @@ cities2.controller('userCtrl',['$rootScope', '$scope', '$state','$http','md5','$
     // Funcion para crear un usuario
     $scope.addUser = function (newUser) {
         if ((!newUser.email) && (!newUser.nombre) && (!newUser.rol) && (!newUser.password) && (!newUser.password2)){
+            console.log("Falta rellenar campos");
+            //window.confirm("Faltan muchos campos por rellenar"); ejemplo de confirm (para tenerlo)
+            //prompt("Enter your name : ", "your name here"); ejemplo de prompt (para tenerlo)
+            alert("Faltan muchos campos por rellenar");
         }
         else if (!newUser.nombre){
+            console.log("Falta poner tu nombre");
+            alert("Falta poner tu nombre");
         }
         else if (!newUser.email){
+            console.log("Falta poner un email válido");
+            alert("Falta poner un email válido");
         }
         else if (!newUser.rol){
+            console.log("Falta escoger un rol");
+            alert("Falta escoger un rol");
         }
         else if (!newUser.password){
+            console.log("Falta tu contraseña");
+            alert("Falta tu contraseña");
         }
         else if (!newUser.password2){
+            console.log("Falta repetir tu contraseña");
+            alert("Falta repetir tu contraseña");
+        }
+        else if (newUser.asignaturas==null){
+            console.log("Falta escoger almenos una asignatura");
+            alert("Falta escoger almenos una asignatura");
         }
         else if (newUser.password!=newUser.password2){
-            $scope.alerts = [{
-                type: 'danger',
-                msg: 'Error los passwords no son iguales!'
-            }];
+            alert("ATENCIÓN! Las contraseñas no coinciden");
         }
         else{
             console.log("Enviando nuevo usuario para registrar");
@@ -29,14 +44,17 @@ cities2.controller('userCtrl',['$rootScope', '$scope', '$state','$http','md5','$
                 email: newUser.email,
                 rol: newUser.rol,
                 password: PwdHash,
-                asignaturas: ["IOT","XLAM","PX","XT","CITIES 1", "CITIES 2"]
+                asignaturas: newUser.asignaturas
             };
+            console.log(mensaje);
             $http.post('/ttp/adduser', mensaje)
                 .success(function (data) {
-                    $scope.resultado = 'correcto'
+                    $scope.resultado = 'correcto';
+                    alert("Te has registrado correctamente");
+                    $state.go("login");
                 })
                 .error(function (data) {
-                    $scope.resultado = 'incorrecto'
+                    $scope.resultado = 'incorrecto';
                 })
         }
     };

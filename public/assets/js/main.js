@@ -3,7 +3,8 @@ var cities2 = angular.module('cities2',[
     'ui.router',
     'ngRoute',
     'ngStorage',
-    'angular-md5'
+    'angular-md5',
+    'checklist-model'
 ]);
 
 cities2.config(function ($urlRouterProvider, $routeProvider, $stateProvider, $locationProvider) {

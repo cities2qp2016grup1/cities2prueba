@@ -53,3 +53,12 @@
     text-align: center;
     background: rgba(255, 255, 255, 0.35);
 }
+.checks-propios{
+    font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif;
+    font-size: 14px;
+    text-align: center;
+    align-content: center;
+    padding: 0%;
+    margin: 0%;
+    background: rgba(255, 255, 255, 0);
+}
