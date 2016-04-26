@@ -86,11 +86,11 @@ $routeProvider
             controller: "studentCtrl"
             //params: {'data':null}
         })
-        .state('Shome.asignatura', {
-            url: "/:id",
+        .state('Sasignatura', {
+            url: "/shome/asignatura/:id",
             templateUrl: "assets/views/studentAsignatura.html",
-            controller: "studentCtrl",
-            params: {'id':null}
+            controller: "studentCtrl"
+            //params: {'id':null}
         })
         .state('Phome', {
             url: "/phome",
@@ -98,11 +98,11 @@ $routeProvider
             controller: "professorCtrl"
             //params: {'data':null}
         })
-        .state('Phome.asignatura', {
-            url: "/:id",
+        .state('Pasignatura', {
+            url: "/phome/asignatura/:id",
             templateUrl: "assets/views/professorAsignatura.html",
-            controller: "professorCtrl",
-            params: {'id':null}
+            controller: "professorCtrl"
+            //params: {'id':null}
         })
 })
     .run(function ($rootScope) {

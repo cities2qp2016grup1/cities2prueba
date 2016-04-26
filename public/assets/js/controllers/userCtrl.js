@@ -64,7 +64,7 @@ cities2.controller('userCtrl',['$rootScope', '$scope', '$state','$http','md5','$
                         {
                             //$rootScope.asignaturas=data.user.asignaturas;
                             $sessionStorage.asignaturas=data.user.asignaturas;
-                            $state.go("Shome",{data:[data.user.asignaturas]});
+                            $state.go('Shome');
                         }
                         else
                         {

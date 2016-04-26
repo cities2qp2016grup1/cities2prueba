@@ -9,4 +9,5 @@ cities2.controller('professorCtrl',['$rootScope', '$scope', '$state','$statePara
         $rootScope.asignaturas=$sessionStorage.asignaturas;
     };
     refresh();
+    $scope.subject=$stateParams.id;
 }]);
