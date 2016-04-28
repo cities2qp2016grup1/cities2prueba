@@ -3,10 +3,27 @@
  */
 cities2.controller
 ('mainCtrl',
-    ['$rootScope', '$scope', '$state','$http','$localStorage',
-        function($rootScope, $scope, $state, $http, $localStorage)
+    ['$rootScope', '$scope', '$state','$http','$localStorage','$sessionStorage',
+        function($rootScope, $scope, $state, $http, $localStorage, $sessionStorage)
         {
             $rootScope.isLogged=false;
+            $rootScope.salir=false;
+            if ($sessionStorage.user==null)
+            {
+                console.log("Hola nuevo usuario, registrate o logueate");
+            }
+            else
+            {
+                console.log("Bienvenido de nuevo, "+$sessionStorage.user.nombre);
+                if ($sessionStorage.user.rol=="estudiante")
+                {
+                    $state.go("Shome");
+                }
+                else
+                {
+                    $state.go("Phome");
+                }
+            }
             $scope.init = function ()
             {
                 var keys= rsaMax.generateKeys(1024);
@@ -47,6 +64,12 @@ cities2.controller
             $scope.clicked = function () 
             {
                 $state.go("registrar");
+            };
+            $scope.logout = function ()
+            {
+                //$localStorage.$reset();
+                $sessionStorage.$reset();
+                $state.go("index");
             }
         }
     ]
