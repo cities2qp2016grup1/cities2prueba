@@ -5,10 +5,10 @@ cities2.controller('operacionesCtrl',['$scope', '$state','$http','$rootScope', '
     $scope.OperacionDivi = {};
     $scope.sumar = function(OperacionSuma){
         var keys = paillier.generateKeys(1024);
-        var encA = keys.pub.encrypt(nbv(OperacionSuma.num1));
-        var encB = keys.pub.encrypt(nbv(OperacionSuma.num2));
+        var encA = keys.pub.encrypt(nbv(OperacionSuma.num1).mod(keys.pub.n));
+        var encB = keys.pub.encrypt(nbv(OperacionSuma.num2).mod(keys.pub.n));
         var encAB = keys.pub.add(encA,encB);
-        var plaintext = keys.sec.decrypt(encAB).toString(10);
+        var plaintext = keys.sec.decrypt(encAB).mod(keys.pub.n).toString(10);
         console.log(plaintext);
         $http.post('/ttp/sumar',OperacionSuma)
             .success(function (data) {
