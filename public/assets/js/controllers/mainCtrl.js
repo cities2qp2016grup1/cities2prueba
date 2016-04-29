@@ -27,14 +27,15 @@ cities2.controller
             $scope.init = function ()
             {
                 var keys= rsaMax.generateKeys(1024);
+                console.log(keys.publicKey);
 
                 var bits = keys.publicKey.bits.toString();
                 var n = keys.publicKey.n.toString();
                 var e = keys.publicKey.e.toString();
                 var pubKeyJSON={
-                    e:e,
+                    e:bits,
                     n:n,
-                    bits:bits
+                    bits:e
                 };
                 //console.log(pubKeyJSON);
 

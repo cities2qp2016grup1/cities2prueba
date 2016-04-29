@@ -39,7 +39,7 @@ rsaMax = {
             }
         }
 
-        keys.publicKey = new rsaMax.publicKey(B, n, e);
+        keys.publicKey = new rsaMax.publicKey(B, n , e);
         keys.privateKey = new rsaMax.privateKey(p, q, d, keys.publicKey);
         return keys;
     }

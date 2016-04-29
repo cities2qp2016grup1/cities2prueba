@@ -1,6 +1,16 @@
 var express = require('express');
 var router = express.Router();
 var Operacion = require('../models/operacion.js');
+var rsa = require('../rsa/rsa-bignum.js');
+var bignum = require('bignum');
+var LocalStorage = require('node-localstorage').LocalStorage;
+localStorage = new LocalStorage('./scratch');
+
+var prikServer = JSON.parse(localStorage.getItem("Serverprivada"));
+var pubkServer = JSON.parse(localStorage.getItem("Serverpublica"));
+var keys ={};
+keys.publicKey= new rsa.publicKey(pubkServer.bits, bignum(pubkServer.n), bignum(pubkServer.e));
+keys.privateKey= new rsa.privateKey(bignum(prikServer.p), bignum(prikServer.q), bignum(prikServer.d), keys.publicKey);
 
 //Hacer suma y devolver resultado
 router.post('/sumar', function (req, res) {
@@ -14,14 +24,38 @@ router.post('/sumar', function (req, res) {
 });
 
 //Hacer resta y devolver resultado
-router.post('/restar', function (req, res) {
+router.post('/restar', function (req, res)
+{
+    var num1 = bignum(req.body.num1);
+    var num2 = bignum(req.body.num2);
+
+    var prikServer = JSON.parse(localStorage.getItem("Serverprivada"));
+    var pubkServer = JSON.parse(localStorage.getItem("Serverpublica"));
+    var keys ={};
+    keys.publicKey= new rsa.publicKey(pubkServer.bits, bignum(pubkServer.n), bignum(pubkServer.e));
+    keys.privateKey= new rsa.privateKey(bignum(prikServer.p), bignum(prikServer.q), bignum(prikServer.d), keys.publicKey);
+
+
+
+    var reqdecrip1 = keys.privateKey.decrypt(num1);
+    var claro1 = reqdecrip1.toBuffer().toString();
+    console.log(claro1);
+    var reqdecrip2 = keys.privateKey.decrypt(num2);
+    var claro2 = reqdecrip2.toBuffer().toString();
+    console.log(claro2);
+
+
+
     console.log('Resta');
     console.log(req.body);
-    var x = parseInt(req.body.num1);
-    var y = parseInt(req.body.num2);
-    resta = (x-y);
+    var num1 = parseInt(req.body.num1);
+    var num2 = parseInt(req.body.num2);
+    var resta = (num1 - num2);
     console.log("Resultado: "+ resta);
     res.status(200).jsonp(resta);
+
+
+
 });
 
 //Hacer multiplicacion y devolver resultado

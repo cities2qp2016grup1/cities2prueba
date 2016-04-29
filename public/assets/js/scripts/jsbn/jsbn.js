@@ -122,7 +122,7 @@ function bnpFromInt(x) {
   else this.t = 0;
 }
 
-// return bigint initialized to value
+// return
 function nbv(i) { var r = nbi(); r.fromInt(i); return r; }
 
 // (protected) set from string and radix
