@@ -75,6 +75,7 @@ cities2.controller('userCtrl',['$rootScope', '$scope', '$state','$http','md5','$
             };
             $http.post('/ttp/login', mensaje)
                 .success(function (data) {
+                    $scope.MyRol=data.user.rol.toString();
                     if (data.loginSuccessful==true){
                         if ($scope.MyRol=="estudiante")
                         {
@@ -86,7 +87,7 @@ cities2.controller('userCtrl',['$rootScope', '$scope', '$state','$http','md5','$
                         {
                             //$rootScope.asignaturas=data.user.asignaturas;
                             $localStorage.user=data.user;
-                            $state.go("Phome",{data:[data.user.asignaturas]});
+                            $state.go("Phome");
                         }
                     }
                     else {
