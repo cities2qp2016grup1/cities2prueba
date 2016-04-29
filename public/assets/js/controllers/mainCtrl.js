@@ -8,14 +8,14 @@ cities2.controller
         {
             $rootScope.isLogged=false;
             $rootScope.salir=false;
-            if ($sessionStorage.user==null)
+            if ($localStorage.user==null)
             {
                 console.log("Hola nuevo usuario, registrate o logueate");
             }
             else
             {
-                console.log("Bienvenido de nuevo, "+$sessionStorage.user.nombre);
-                if ($sessionStorage.user.rol=="estudiante")
+                console.log("Bienvenido de nuevo, "+$localStorage.user.nombre);
+                if ($localStorage.user.rol=="estudiante")
                 {
                     $state.go("Shome");
                 }
@@ -69,7 +69,7 @@ cities2.controller
             $scope.logout = function ()
             {
                 //$localStorage.$reset();
-                $sessionStorage.$reset();
+                delete $localStorage.user;
                 $state.go("index");
             }
         }
