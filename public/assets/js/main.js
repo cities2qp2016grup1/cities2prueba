@@ -113,4 +113,6 @@ $routeProvider
         $rootScope.asignaturas=["No","Actualiza","Bien","Las","Asignaturas"];
         //iniciando el ng-show del boton de logout
         $rootScope.salir = false;
+        //iniciando el listado de chats
+        $rootScope.chats=["Ningún chat aún"];
     });

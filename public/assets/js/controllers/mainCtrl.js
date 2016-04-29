@@ -26,32 +26,6 @@ cities2.controller
             }
             $scope.init = function ()
             {
-                var keys= rsaMax.generateKeys(1024);
-                console.log(keys.publicKey);
-
-                var bits = keys.publicKey.bits.toString();
-                var n = keys.publicKey.n.toString();
-                var e = keys.publicKey.e.toString();
-                var pubKeyJSON={
-                    e:bits,
-                    n:n,
-                    bits:e
-                };
-                //console.log(pubKeyJSON);
-
-                var p =keys.privateKey.p.toString();
-                var q = keys.privateKey.q.toString();
-                var d = keys.privateKey.d.toString();
-                var privKeyJSON={
-                    p:p,
-                    q:q,
-                    d:d
-                };
-                //console.log(privKeyJSON);No need to show it
-                
-                $localStorage.privateKey = privKeyJSON;
-                $localStorage.publicKey = pubKeyJSON;
-
                 $http.get('http://localhost:8000/key/server').success(function (data)
                 {
                     $localStorage.server = data;

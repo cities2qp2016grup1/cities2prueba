@@ -7,50 +7,125 @@ cities2.controller('userCtrl',['$rootScope', '$scope', '$state','$http','md5','$
             console.log("Falta rellenar campos");
             //window.confirm("Faltan muchos campos por rellenar"); ejemplo de confirm (para tenerlo)
             //prompt("Enter your name : ", "your name here"); ejemplo de prompt (para tenerlo)
-            alert("Faltan muchos campos por rellenar");
+            //alert("Faltan muchos campos por rellenar");
+            sweetAlert(
+                'Error',
+                'Faltan muchos campos por rellenar',
+                'error'
+            )
         }
         else if (!newUser.nombre){
             console.log("Falta poner tu nombre");
-            alert("Falta poner tu nombre");
+            //alert("Falta poner tu nombre");
+            sweetAlert(
+                'Error',
+                'Falta poner tu nombre',
+                'error'
+            )
         }
         else if (!newUser.email){
             console.log("Falta poner un email válido");
-            alert("Falta poner un email válido");
+            //alert("Falta poner un email válido");
+            sweetAlert(
+                'Error',
+                'Falta poner un email válido',
+                'error'
+            )
         }
         else if (!newUser.rol){
             console.log("Falta escoger un rol");
-            alert("Falta escoger un rol");
+            //alert("Falta escoger un rol");
+            sweetAlert(
+                'Error',
+                'Falta escoger un rol',
+                'error'
+            )
         }
         else if (!newUser.password){
             console.log("Falta tu contraseña");
-            alert("Falta tu contraseña");
+            //alert("Falta tu contraseña");
+            sweetAlert(
+                'Error',
+                'Falta tu contraseña',
+                'error'
+            )
         }
         else if (!newUser.password2){
             console.log("Falta repetir tu contraseña");
-            alert("Falta repetir tu contraseña");
+            //alert("Falta repetir tu contraseña");
+            sweetAlert(
+                'Error',
+                'Falta repetir tu contraseña',
+                'error'
+            )
         }
         else if (newUser.asignaturas==null){
             console.log("Falta escoger almenos una asignatura");
-            alert("Falta escoger almenos una asignatura");
+            //alert("Falta escoger almenos una asignatura");
+            sweetAlert(
+                'Error',
+                'Falta escoger almenos una asignatura',
+                'error'
+            )
         }
         else if (newUser.password!=newUser.password2){
-            alert("ATENCIÓN! Las contraseñas no coinciden");
+            //alert("ATENCIÓN! Las contraseñas no coinciden");
+            sweetAlert(
+                'Error',
+                'ATENCIÓN! Las contraseñas no coinciden',
+                'error'
+            )
         }
         else{
             console.log("Enviando nuevo usuario para registrar");
             var PwdHash=md5.createHash(JSON.stringify(newUser.password));
+            //cliente genera sus claves privada y publica:
+            var keys= rsaMax.generateKeys(1024);
+            console.log(keys.publicKey);
+
+            var bits = keys.publicKey.bits.toString();
+            var n = keys.publicKey.n.toString();
+            var e = keys.publicKey.e.toString();
+            var pubKeyJSON={
+                e:e,
+                n:n,
+                bits:bits
+            };
+            var p =keys.privateKey.p.toString();
+            var q = keys.privateKey.q.toString();
+            var d = keys.privateKey.d.toString();
+            var privKeyJSON={
+                p:p,
+                q:q,
+                d:d
+            };
+            var keysClient ={
+                privada: JSON.stringify(privKeyJSON),
+                publica: JSON.stringify(pubKeyJSON)
+            };
+            $localStorage.privateKey = privKeyJSON;
+            $localStorage.publicKey = pubKeyJSON;
+            //encriptar claves publicas y privadas del cliente
+            console.log(JSON.stringify(keysClient));
+            var clientkeys = sjcl.encrypt(newUser.password, JSON.stringify(keysClient));
             var mensaje={
                 nombre: newUser.nombre,
                 email: newUser.email,
                 rol: newUser.rol,
                 password: PwdHash,
+                keys: clientkeys,
                 asignaturas: newUser.asignaturas
             };
             console.log(mensaje);
             $http.post('/ttp/adduser', mensaje)
                 .success(function (data) {
                     $scope.resultado = 'correcto';
-                    alert("Te has registrado correctamente");
+                    //alert("Te has registrado correctamente");
+                    swal(
+                        'Felicidades!',
+                        'Te has registrado correctamente!',
+                        'success'
+                    );
                     $state.go("login");
                 })
                 .error(function (data) {
@@ -75,27 +150,57 @@ cities2.controller('userCtrl',['$rootScope', '$scope', '$state','$http','md5','$
             };
             $http.post('/ttp/login', mensaje)
                 .success(function (data) {
-                    $scope.MyRol=data.user.rol.toString();
                     if (data.loginSuccessful==true){
+                        $scope.MyRol=data.user.rol.toString();
+                        //desencripta sus keys
+                        var keysDecryp = sjcl.decrypt(logUser.password, data.user.keys);
+                        var JSONkeys=JSON.parse(keysDecryp);
+                        var priv=JSON.parse(JSONkeys.privada);
+                        var pub= JSON.parse(JSONkeys.publica);
+
+                        var bits = pub.bits.toString();
+                        var n = pub.n.toString();
+                        var e = pub.e.toString();
+                        var pubKeyJSON={
+                            e:e,
+                            n:n,
+                            bits:bits
+                        };
+                        var p =priv.p.toString();
+                        var q = priv.q.toString();
+                        var d = priv.d.toString();
+                        var privKeyJSON={
+                            p:p,
+                            q:q,
+                            d:d
+                        };
+                        $localStorage.privateKey = privKeyJSON;
+                        $localStorage.publicKey = pubKeyJSON;
                         if ($scope.MyRol=="estudiante")
                         {
-                            //$rootScope.asignaturas=data.user.asignaturas;
                             $localStorage.user=data.user;
                             $state.go('Shome');
                         }
                         else
                         {
-                            //$rootScope.asignaturas=data.user.asignaturas;
                             $localStorage.user=data.user;
                             $state.go("Phome");
                         }
                     }
                     else {
-                        $state.go("contact");
+                        sweetAlert(
+                            'Error',
+                            'La contraseña introducida es incorrecta',
+                            'error'
+                        )
                     }
                 })
                 .error(function (data) {
-                    
+                    sweetAlert(
+                        'Error',
+                        'El usuario no existe',
+                        'error'
+                    )
                 })
         }
     };

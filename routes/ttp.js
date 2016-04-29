@@ -7,6 +7,8 @@ var http = require("http");
 var crypto = require('crypto');
 var rsa = require('../rsa/rsa-bignum.js');
 var bignum = require('bignum');
+var Chat = require('../models/chat.js');
+
 var LocalStorage = require('node-localstorage').LocalStorage;
 localStorage = new LocalStorage('./scratch');
 //var hash = crypto.createHash('md5').update(data).digest('hex');
@@ -291,4 +293,16 @@ router.post('/login',function (require, result) {
     req.write(data);
     req.end();
 });
+//GET - Reenviar peticion de chats a servidor
+router.get('/chats/:asignatura',function (require, result) {
+    console.log('Obtener chats de '+require.params.asignatura+'\n');
+
+    http.get("http://localhost:8000/chats/"+require.params.asignatura, function(res) {
+        res.on("data", function (chunk) {
+            console.log('\n');
+            result.status(200).send(chunk);
+        });
+    });
+});
+
 module.exports = router;

@@ -9,6 +9,7 @@ var userSchema = new Schema({
     email: {type: String},
     rol: {type: String},
     password: {type: String},
+    keys: {type: String},
     asignaturas: [String]
 });
 

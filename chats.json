@@ -1,0 +1,23 @@
+{
+  "creador":"admin",
+  "estado":"finalizado",
+  "asignatura":"IOT",
+  "mensajes":[
+    {
+      "msg":"Empieza el chat de IOT",
+      "user":"admin"
+    },
+    {
+      "msg":"Hola",
+      "user":"manel"
+    },
+    {
+      "msg":"Bienvenido",
+      "user":"admin"
+    },
+    {
+      "msg":"Cierra ya el chat",
+      "user":"manel"
+    }
+  ]
+}

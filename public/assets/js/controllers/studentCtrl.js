@@ -11,4 +11,16 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
     };
     refresh();
     $scope.subject=$stateParams.id;
+    
+    $scope.getSubjectChat = function (id) {
+        console.log("Obtener Chats de: "+id);
+        $http.get('/ttp/chats/'+id)
+            .success(function (data) {
+                console.log(data);
+                $rootScope.chats=data.chats;
+            })
+            .error(function (data) {
+
+            })
+    };
 }]);

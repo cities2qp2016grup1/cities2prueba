@@ -8,9 +8,15 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-6">
-                <button class="btn2 btn-default btn-xl">Crear chat individual con profesor</button>
-            </div>
+                <div class="col-lg-6">
+                    <button class="btn2 btn-default btn-xl">Crear chat individual con profesor</button>
+                </div>
+                <div class="col-lg-6">
+                    <h3>Lista de chats pendientes por votar:</h3>
+                    <h4 ng-repeat="chat in chats" >- Chat creado por: {{chat.creador}}  <button class="btn2 btn-default btn" ng-click="votar()">Votar</button></h4>
+                    <br>
+                    <h3>Lista de chats votados:</h3>
+                </div>
         </div>
     </div>
 </div>

@@ -1,0 +1,30 @@
+{
+  "name": "Aula Virtual",
+  "homepage": "https://github.com/cities2qp2016grup1/cities2prueba",
+  "authors": [
+    "Manel Mendez, Maksym Pryschepa"
+  ],
+  "description": "Aula Virtual",
+  "main": "index.html",
+  "moduleType": [],
+  "license": "Apache",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "scratch"
+  ],
+  "dependencies": {
+    "angular": "",
+    "angular-md5": "",
+    "angular-route": "",
+    "angular-ui-router": "",
+    "bootstrap": "",
+    "jquery": "",
+    "animate.css": "^3.5.1",
+    "font-awesome": "~4.6.1",
+    "sweetalert2": ""
+  }
+}

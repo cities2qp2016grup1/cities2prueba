@@ -59,6 +59,7 @@ router.post('/adduser',  function (req, res) {
     email:     req.body.email,
     rol:    req.body.rol,
     password: req.body.password,
+    keys: req.body.keys,
     asignaturas: req.body.asignaturas
   });
   console.log('\n');
@@ -75,7 +76,10 @@ router.post('/login',  function (req, res) {
   console.log('LOGIN /user');
   console.log("Comprueba si la contraseña es correcta");
   User.findOne({email:req.body.email},function(err, user) {
-    if (user.length == 0) {
+    if (err) res.send(500, err.message);
+
+    else if (user==null){
+      console.log("No existe el usuario");
       return res.status(404).jsonp({"loginSuccessful": false, "email": req.body.email});
     }
     else{
