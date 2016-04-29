@@ -1,4 +1,4 @@
-cities2.controller('userCtrl',['$rootScope', '$scope', '$state','$http','md5','$sessionStorage',  function($rootScope, $scope, $state, $http, md5, $sessionStorage) {
+cities2.controller('userCtrl',['$rootScope', '$scope', '$state','$http','md5','$localStorage','$sessionStorage',  function($rootScope, $scope, $state, $http, md5, $localStorage, $sessionStorage) {
     $rootScope.isLogged=true;
     $scope.newUser = {};
     // Funcion para crear un usuario
@@ -79,13 +79,13 @@ cities2.controller('userCtrl',['$rootScope', '$scope', '$state','$http','md5','$
                         if ($scope.MyRol=="estudiante")
                         {
                             //$rootScope.asignaturas=data.user.asignaturas;
-                            $sessionStorage.user=data.user;
+                            $localStorage.user=data.user;
                             $state.go('Shome');
                         }
                         else
                         {
                             //$rootScope.asignaturas=data.user.asignaturas;
-                            $sessionStorage.user=data.user;
+                            $localStorage.user=data.user;
                             $state.go("Phome",{data:[data.user.asignaturas]});
                         }
                     }
