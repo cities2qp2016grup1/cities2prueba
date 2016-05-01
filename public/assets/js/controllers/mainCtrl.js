@@ -26,11 +26,11 @@ cities2.controller
             }
             $scope.init = function ()
             {
-                $http.get('http://localhost:8000/key/server').success(function (data)
+                $http.get('/key/server').success(function (data)
                 {
                     $localStorage.server = data;
                 }).error(function (data) {});
-                $http.get('http://localhost:8000/key/ttp').success(function (data)
+                $http.get('/key/ttp').success(function (data)
                 {
                     $localStorage.ttp = data;
                     //window.localStorage.setItem('TTP', JSON.stringify(data));

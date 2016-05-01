@@ -13,103 +13,6 @@ var LocalStorage = require('node-localstorage').LocalStorage;
 localStorage = new LocalStorage('./scratch');
 //var hash = crypto.createHash('md5').update(data).digest('hex');
 
-//POST - Reenviar suma a server
-router.post('/sumar', function (require, result) {
-    console.log('POST /reenvio suma');
-    console.log(require.body);
-    var data = JSON.stringify(require.body);
-    var options = {
-        host: 'localhost',
-        port: 8000,
-        path: '/operaciones/sumar',
-        method: 'POST',
-        json:true,
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    };
-    var req = http.request(options, function(res) {
-        res.on('data', function (chunk) {
-            console.log("Devuelto a TTP: " + chunk);
-            result.status(200).send(chunk);
-        });
-    });
-    req.write(data);
-    req.end();
-});
-//POST - Reenviar resta a server
-router.post ('/restar',function (require, result) {
-    console.log('POST /reenvio resta');
-    console.log(require.body);
-    var data = JSON.stringify(require.body);
-    var options = {
-        host: 'localhost',
-        port: 8000,
-        path: '/operaciones/restar',
-        method: 'POST',
-        json:true,
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    };
-    var req = http.request(options, function(res) {
-        res.on('data', function (chunk) {
-            console.log("Devuelto a TTP: " + chunk);
-            result.status(200).send(chunk);
-        });
-    });
-    req.write(data);
-    req.end();
-});
-    //POST - Reenviar multiplicación a server
-router.post('/multiplicar',function (require, result) {
-    console.log('POST /reenvio multiplicacion');
-    console.log(require.body);
-    var data = JSON.stringify(require.body);
-    var options = {
-        host: 'localhost',
-        port: 8000,
-        path: '/operaciones/multiplicar',
-        method: 'POST',
-        json:true,
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    };
-    var req = http.request(options, function(res) {
-        res.on('data', function (chunk) {
-            console.log("Devuelto a TTP: " + chunk);
-            result.status(200).send(chunk);
-        });
-    });
-    req.write(data);
-    req.end();
-});
-//POST - Reenviar división a server
-router.post('/dividir',function (require, result) {
-    console.log('POST /reenvio division');
-    console.log(require.body);
-    var data = JSON.stringify(require.body);
-    var options = {
-        host: 'localhost',
-        port: 8000,
-        path: '/operaciones/dividir',
-        method: 'POST',
-        json:true,
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    };
-    var req = http.request(options, function(res) {
-        res.on('data', function (chunk) {
-            console.log("Devuelto a TTP: " + chunk);
-            result.status(200).send(chunk);
-        });
-    });
-    req.write(data);
-    req.end();
-});
-
 //GET - Recibir todos los usuarios
 router.post('/allusers',function (require, result){
     console.log("Cliente pide recibir users a TTP");
@@ -244,55 +147,7 @@ router.post('/allusers',function (require, result){
     req.write(JSON.stringify(data));
     req.end();
 });
-//POST - Reenviar nuevo usuario a server
-router.post('/adduser',function (require, result) {
-    console.log(require.body);
-    console.log('\n');
-    var data = JSON.stringify(require.body);
-    var options = {
-        host: 'localhost',
-        port: 8000,
-        path: '/server/adduser',
-        method: 'POST',
-        json:true,
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    };
-    var req = http.request(options, function(res) {
-        res.on('data', function (chunk) {
-            var respuesta = JSON.parse(chunk);
-            console.log('\n');
-            result.status(200).send(respuesta);
-            });
-        });
-    req.write(data);
-    req.end();
-});
-//POST - Reenviar login user a server
-router.post('/login',function (require, result) {
-    console.log(require.body);
-    console.log('\n');
-    var data = JSON.stringify(require.body);
-    var options = {
-        host: 'localhost',
-        port: 8000,
-        path: '/server/login',
-        method: 'POST',
-        json:true,
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    };
-    var req = http.request(options, function(res) {
-        res.on('data', function (chunk) {
-            console.log('\n');
-            result.status(200).send(chunk);
-        });
-    });
-    req.write(data);
-    req.end();
-});
+/*
 //GET - Reenviar peticion de chats a servidor
 router.get('/chats/:asignatura',function (require, result) {
     console.log('Obtener chats de '+require.params.asignatura+'\n');
@@ -304,5 +159,5 @@ router.get('/chats/:asignatura',function (require, result) {
         });
     });
 });
-
+*/
 module.exports = router;

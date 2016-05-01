@@ -117,7 +117,7 @@ cities2.controller('userCtrl',['$rootScope', '$scope', '$state','$http','md5','$
                 asignaturas: newUser.asignaturas
             };
             console.log(mensaje);
-            $http.post('/ttp/adduser', mensaje)
+            $http.post('/server/adduser', mensaje)
                 .success(function (data) {
                     $scope.resultado = 'correcto';
                     //alert("Te has registrado correctamente");
@@ -148,7 +148,7 @@ cities2.controller('userCtrl',['$rootScope', '$scope', '$state','$http','md5','$
                 email: logUser.email,
                 password: PwdHash
             };
-            $http.post('/ttp/login', mensaje)
+            $http.post('/server/login', mensaje)
                 .success(function (data) {
                     if (data.loginSuccessful==true){
                         $scope.MyRol=data.user.rol.toString();
@@ -223,7 +223,7 @@ cities2.controller('userCtrl',['$rootScope', '$scope', '$state','$http','md5','$
             Po:Po
         };
         var mensaje= {mensaje:mensajeJSON.ttp+','+mensajeJSON.b+','+mensajeJSON.M+','+Po}; //encriptado con la publica de TTP
-        $http.post('/ttp/allusers', mensaje)
+        $http.post('http://localhost:3000/ttp/allusers', mensaje)
             .success(function (data) {
                 $scope.resultado2 = 'correcto';
                 document.getElementById("datosUsers").innerHTML = JSON.stringify(data.data2.L, undefined, 2)

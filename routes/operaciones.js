@@ -34,28 +34,19 @@ router.post('/restar', function (req, res)
     var keys ={};
     keys.publicKey= new rsa.publicKey(pubkServer.bits, bignum(pubkServer.n), bignum(pubkServer.e));
     keys.privateKey= new rsa.privateKey(bignum(prikServer.p), bignum(prikServer.q), bignum(prikServer.d), keys.publicKey);
-
-
-
+    
+    console.log("Números desencriptados:");
     var reqdecrip1 = keys.privateKey.decrypt(num1);
     var claro1 = reqdecrip1.toString();
     console.log(claro1);
     var reqdecrip2 = keys.privateKey.decrypt(num2);
     var claro2 = reqdecrip2.toString();
     console.log(claro2);
-
-
-
+    
     console.log('Resta');
-    console.log(req.body);
-    var num1 = parseInt(req.body.num1);
-    var num2 = parseInt(req.body.num2);
     var resta = claro1 - claro2;
     console.log("Resultado: "+ resta);
     res.status(200).jsonp(resta);
-
-
-
 });
 
 //Hacer multiplicacion y devolver resultado

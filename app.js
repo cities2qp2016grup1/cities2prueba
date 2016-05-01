@@ -50,6 +50,7 @@ mongoose.connect('mongodb://localhost/cities2', function(err, res) {
 
 // Start server
 server.listen(8000, function() {
+  console.log("Servidor en http://localhost:8000/");
 });
 
 //
@@ -82,7 +83,7 @@ app2.engine('html', require('ejs').renderFile);
 app2.use('/ttp', ttp);
 var server2 = require('http').Server(app2);
 server2.listen(3000, function() {
-  console.log("Servidor TTP en http://localhost:3000/");
+  //console.log("Servidor TTP en http://localhost:3000/");
 });
 //
 //
