@@ -1,5 +1,6 @@
 cities2.controller('userCtrl',['$rootScope', '$scope', '$state','$http','md5','$localStorage','$sessionStorage',  function($rootScope, $scope, $state, $http, md5, $localStorage, $sessionStorage) {
     $rootScope.isLogged=true;
+    $rootScope.isLogged2=true;
     $scope.newUser = {};
     // Funcion para crear un usuario
     $scope.addUser = function (newUser) {
@@ -136,10 +137,17 @@ cities2.controller('userCtrl',['$rootScope', '$scope', '$state','$http','md5','$
     $scope.logUser={};
     $scope.login = function (logUser) {
         if ((!logUser.email) && (!logUser.password)){
+            sweetAlert(
+                'Error',
+                'Faltan campos por rellenar',
+                'error'
+            )
         }
         else if (!logUser.email){
+            $scope.validaMail="incorrecto"
         }
         else if (!logUser.password){
+            $scope.validaPassword="incorrecto"
         }
         else{
             console.log("Login Usuario");

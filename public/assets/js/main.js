@@ -105,10 +105,18 @@ $routeProvider
             controller: "professorCtrl"
             //params: {'id':null}
         })
+        .state('chat', {
+            url: "/phome/asignatura/:id/chat",
+            templateUrl: "assets/views/chat.html",
+            controller: "chatCtrl"
+            //params: {'id':null}
+        })
 })
     .run(function ($rootScope) {
         //iniciando el ng-show del navbar
         $rootScope.isLogged = false;
+        //iniciando el ng-show del navbar2
+        $rootScope.isLogged2 = false;
         //iniciando el listado de asignaturas
         $rootScope.asignaturas=["No","Actualiza","Bien","Las","Asignaturas"];
         //iniciando el ng-show del boton de logout

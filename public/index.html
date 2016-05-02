@@ -28,7 +28,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="connect">
+            <div ng-show="isLogged2" class="connect">
                 <div class="container">
                     <p>
                         Aula Virtual para profesorado y alumnos de la universidad
@@ -58,6 +58,8 @@
     <script src="assets/js/scripts/jsbn/paillier.js"></script>
     <script src="assets/js/scripts/jsbn/rsaMax.js"></script>
     <script src="assets/js/scripts/sjcl.js"></script>
+    <!--Socket.io     <script src="/socket.io/socket.io.js"></script>-->
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
     <!--Bower-->
     <!--SweetAlert-->
     <script src="bower_components/sweetalert2/dist/sweetalert2.min.js"></script>
@@ -73,5 +75,6 @@
     <script src="assets/js/controllers/operacionesCtrl.js"></script>
     <script src="assets/js/controllers/studentCtrl.js"></script>
     <script src="assets/js/controllers/professorCtrl.js"></script>
+    <script src="assets/js/controllers/chatCtrl.js"></script>
 </body>
 </html>

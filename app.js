@@ -35,6 +35,8 @@ app.engine('html', require('ejs').renderFile);
 //servidor
 var router = express.Router();
 var server = require('http').Server(app);
+var io = require('socket.io')(server);
+
 app.use(router);
 app.use('/server', users);
 app.use('/operaciones', operaciones);
@@ -46,6 +48,16 @@ require('mongoose-middleware').initialize(mongoose);
 mongoose.connect('mongodb://localhost/cities2', function(err, res) {
   if (err) throw err;
   console.log('Conectado con éxito a la Base de Datos');
+});
+
+//chat
+io.on('connection', function(socket){
+  socket.on('chat message', function(msg){
+    io.emit('chat message', msg);
+  });
+  socket.on('disconnect', function(){
+    console.log('user disconnected');
+  });
 });
 
 // Start server

@@ -3,6 +3,7 @@
  */
 cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams','$http','md5','$sessionStorage','$localStorage', function($rootScope, $scope, $state, $stateParams, $http, md5, $sessionStorage, $localStorage) {
     $rootScope.isLogged=true;
+    $rootScope.isLogged2=false;
     $rootScope.salir=true;
     console.log($localStorage.user.asignaturas);
     //console.log($stateParams.data); no va, mirar en el futuro

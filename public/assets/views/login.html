@@ -1,15 +1,16 @@
-<div class="div4">
+<div class="div2">
     <div class="container">
         <br>
         <br>
         <div class="jumbotron registrar-jumbo">
             <h3>Iniciar Sesión</h3>
-            <div class="form-group">
+            <div class="form-group" ng-class="[{'has-error':validaMail=='incorrecto'}]">
                 <h5 class="control-label" for="ponerEmail">E-mail</h5>
-                <input type="text" style="text-align: center" class="form-control" id="ponerEmail" title="Debes poner un email" required ng-model="logUser.email">
-
+                <input type="email" style="text-align: center" class="form-control" id="ponerEmail" placeholder="Debes poner un email válido" required ng-model="logUser.email" >
+            </div>
+            <div class="form-group" ng-class="[{'has-error':validaPassword=='incorrecto'}]">
                 <h5 class="control-label" for="ponerPassword">Contraseña</h5>
-                <input type="password" style="text-align: center" class="form-control" id="ponerPassword" title="Debes poner una contraseña" required ng-model="logUser.password">
+                <input type="password" style="text-align: center" class="form-control" id="ponerPassword" placeholder="Escribe tu contraseña" required ng-model="logUser.password">
             </div>
             <div class="form-group">
                 <a type="button" class="btn2 btn-default btn" ng-click="login(logUser)">Iniciar Sesión</a>
