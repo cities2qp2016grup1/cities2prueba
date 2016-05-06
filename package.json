@@ -21,7 +21,6 @@
     "mongoose": "",
     "mongoose-middleware": "",
     "ngstorage": "^0.3.10",
-    "bignum": "",
     "socket.io": ""
   }
 }

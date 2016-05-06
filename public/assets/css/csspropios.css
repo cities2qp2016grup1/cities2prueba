@@ -11,7 +11,7 @@
     height:100%;
     position:fixed;
 }
-/* Fondo de user.html */
+/* Fondo de user.html, about y contact */
 .div2 {
     margin-top: 100px;
     background:url(../images/wallpaper2.jpg);
@@ -27,6 +27,7 @@
     height:100%;
     position:relative;
 }
+/* Fondo de students, professor y chat */
 .div4 {
     margin-top: 50px;
     background:url(../images/wallpaper2.jpg);
