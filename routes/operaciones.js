@@ -15,43 +15,16 @@ keys.privateKey= new rsa.privateKey(bignum(prikServer.p), bignum(prikServer.q), 
 //Hacer suma y devolver resultado
 router.post('/sumar', function (req, res)
 {
+
     var num1 = bignum(req.body.num1);
     var num2 = bignum(req.body.num2);
-
-    /*var prikServer = JSON.parse(localStorage.getItem("Serverprivada"));
-    var pubkServer = JSON.parse(localStorage.getItem("Serverpublica"));
-    var privUser = JSON.parse(localStorage.getItem())
-    var keys ={};
-    keys.publicKey= new rsa.publicKey(pubkServer.bits, bignum(pubkServer.n), bignum(pubkServer.e));
-    keys.privateKey= new rsa.privateKey(bignum(prikServer.p), bignum(prikServer.q), bignum(prikServer.d), keys.publicKey);*/
-
-    //console.log("Números desencriptados:");
-
-
-    /*var reqdecrip1 = keys.privateKey.decrypt(num1).mod(keys.publicKey.n);
-    var claro1 = reqdecrip1.toString(10);
-    var reqdecrip2 = keys.privateKey.decrypt(num2).mod(keys.publicKey.n);
-    var claro2 = reqdecrip2.toString(10);*/
-
-
-    /* var keys = paillier.generateKeys(1024);
-     var encA = keys.pub.encrypt(nbv(OperacionSuma.num1).mod(keys.pub.n));
-     var encB = keys.pub.encrypt(nbv(OperacionSuma.num2).mod(keys.pub.n));
-     var encAB = keys.pub.add(encA,encB);
-     var plaintext = keys.sec.decrypt(encAB).mod(keys.pub.n).toString(10);
-     console.log(plaintext);*/
-    //var decripsuma = keys.privateKey.decrypt(suma).mod(keys.publicKey.n)
-    //console.log("Aqui esta: " + decripsuma);
-
-    
+    var n2 = bignum(req.body.n2);
     
     console.log('Hacemos la suma');
     console.log('Los valores:\n num1 = ' + num1 + "\n num2 = " + num2);
-    var suma = bignum(num1).add(num2);
+    var suma = num1.mul(num2).mod(n2);
     console.log("Resultado de la suma estando los valores encriptados: "+ suma.toString(10));
-    var sendsuma = JSON.stringify(suma);
-    console.log("Suma encriptada en JSON: " + sendsuma);
-    res.status(200).jsonp(bignum(suma));
+    res.status(200).jsonp(suma.toString(10));
 });
 
 //Hacer resta y devolver resultado
