@@ -39,6 +39,9 @@ rsa.publicKey.prototype = {
 	encrypt: function(m) {
 		return m.powm(this.e, this.n);
 	},
+	add: function(a,b) {
+		return a.add(b);
+	},
 	decrypt: function(c) {
 		return c.powm(this.e, this.n);
 	}

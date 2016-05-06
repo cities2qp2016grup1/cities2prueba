@@ -4,16 +4,76 @@ cities2.controller('operacionesCtrl',['$scope', '$state','$http','$rootScope', '
     $scope.OperacionMulti = {};
     $scope.OperacionDivi = {};
     $scope.sumar = function(OperacionSuma){
-        var keys = paillier.generateKeys(1024);
+        var keys= rsaMax.generateKeys(1024);
+
+        var bits = keys.publicKey.bits.toString();
+        var n = keys.publicKey.n.toString();
+        var e = keys.publicKey.e.toString();
+        var pubKeyJSON={
+            e:e,
+            n:n,
+            bits:bits
+        };
+        var p =keys.privateKey.p.toString();
+        var q = keys.privateKey.q.toString();
+        var d = keys.privateKey.d.toString();
+        var privKeyJSON={
+            p:p,
+            q:q,
+            d:d
+        };
+        var keysClient ={
+            privada: JSON.stringify(privKeyJSON),
+            publica: JSON.stringify(pubKeyJSON)
+        };
+        console.log("Clave publica recien generada" + keysClient.publica);
+
+        var publicKey = new rsaMax.publicKey(pubKeyJSON.bits, new BigInteger(pubKeyJSON.n), new BigInteger(pubKeyJSON.e));
+        var privateKey = new rsaMax.privateKey(new BigInteger(privKeyJSON.p), new BigInteger(privKeyJSON.q), new BigInteger(privKeyJSON.d), publicKey);
+        console.log("Clace Publica con rsaMax: " + publicKey);
+        
+        var encA = publicKey.encrypt(nbv(OperacionSuma.num1.toString())).toString();
+        var encB = publicKey.encrypt(nbv(OperacionSuma.num2.toString())).toString();
+        console.log("Muestro los dos valores encriptados: "+ encA +"Hola"+ encB);
+
+        var OperacionJson=
+        {
+            num1:encA,
+            num2:encB
+        };
+        
+        /*var serverPub = $localStorage.server;
+        var publicKey = new rsaMax.publicKey(serverPub.bits, new BigInteger(serverPub.n), new BigInteger(serverPub.e));
+        console.log(publicKey);
+        var encA = publicKey.encrypt(nbv(OperacionSuma.num1.toString())).toString();
+        var encB = publicKey.encrypt(nbv(OperacionSuma.num2.toString())).toString();
+        
+        var OperacionJson=
+        {
+            num1:encA,
+            num2:encB
+        };
+
+        
+       /* var keys = paillier.generateKeys(1024);
         var encA = keys.pub.encrypt(nbv(OperacionSuma.num1).mod(keys.pub.n));
         var encB = keys.pub.encrypt(nbv(OperacionSuma.num2).mod(keys.pub.n));
         var encAB = keys.pub.add(encA,encB);
         var plaintext = keys.sec.decrypt(encAB).mod(keys.pub.n).toString(10);
-        console.log(plaintext);
-        $http.post('/operaciones/sumar',OperacionSuma)
-            .success(function (data) {
+
+         console.log(plaintext);*/
+         /*var reqdecrip2 = keys.privateKey.decrypt(num2).mod(keys.publicKey.n);
+         var claro2 = reqdecrip2.toString(10);*/
+
+
+        $http.post('/operaciones/sumar',OperacionJson)
+            .success(function (data)
+            {
+                console.log("Intento mostrar la suma encriptada: " +  data);
+                var decripsuma = privateKey.decrypt(nbv(data.toString())).toString();
+                console.log("Intento mostrar la suma desencriptada: " + decripsuma);
                 $scope.resultado3 = 'correcto';
-                document.getElementById("resultadoSuma").innerHTML = (plaintext);
+                document.getElementById("resultadoSuma").innerHTML = (data);
             })
             .error(function (data) {
                 $scope.resultado3 = 'incorrecto';
@@ -33,7 +93,7 @@ cities2.controller('operacionesCtrl',['$scope', '$state','$http','$rootScope', '
             num1:encA,
             num2:encB
         };
-        console.log("Only for you:  " + encA);
+        //console.log("Only for you:  " + encA);
 
         $http.post('/operaciones/restar',OperacionJson)
             .success(function (data) {
