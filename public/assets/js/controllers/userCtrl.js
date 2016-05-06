@@ -82,27 +82,39 @@ cities2.controller('userCtrl',['$rootScope', '$scope', '$state','$http','md5','$
             var PwdHash=md5.createHash(JSON.stringify(newUser.password));
             //cliente genera sus claves privada y publica:
             var keys= rsaMax.generateKeys(1024);
-            console.log(keys.publicKey);
+            console.log("RSA Keys: "+keys.publicKey);
 
-            var bits = keys.publicKey.bits.toString();
-            var n = keys.publicKey.n.toString();
-            var e = keys.publicKey.e.toString();
             var pubKeyJSON={
-                e:e,
-                n:n,
-                bits:bits
+                e:keys.publicKey.e.toString(),
+                n:keys.publicKey.n.toString(),
+                bits:keys.publicKey.bits.toString()
             };
-            var p =keys.privateKey.p.toString();
-            var q = keys.privateKey.q.toString();
-            var d = keys.privateKey.d.toString();
             var privKeyJSON={
-                p:p,
-                q:q,
-                d:d
+                p:keys.privateKey.p.toString(),
+                q:keys.privateKey.q.toString(),
+                d:keys.privateKey.d.toString()
             };
+            //profesor genera sus claves de paillier
+            var paillierkeys=paillier.generateKeys(1024);
+            console.log("Paillier Keys: "+paillierkeys);
+            var paillierPubJSON={
+                bits: paillierkeys.pub.bits.toString(),
+                n : paillierkeys.pub.n.toString(),
+                n2 : paillierkeys.pub.n2.toString(),
+                np1 : paillierkeys.pub.np1.toString(),
+                rncache :paillierkeys.pub.rncache.toString()
+            };
+            var paillierPrivJSON={
+                lambda : paillierkeys.sec.lambda.toString(),
+                pubkey : paillierPubJSON.toString(),
+                x : paillierkeys.sec.x.toString()
+            };
+
             var keysClient ={
                 privada: JSON.stringify(privKeyJSON),
-                publica: JSON.stringify(pubKeyJSON)
+                publica: JSON.stringify(pubKeyJSON),
+                paillierPrivada: JSON.stringify(paillierPrivJSON),
+                paillierPublica: JSON.stringify(paillierPubJSON)
             };
             $localStorage.privateKey = privKeyJSON;
             $localStorage.publicKey = pubKeyJSON;
@@ -165,6 +177,10 @@ cities2.controller('userCtrl',['$rootScope', '$scope', '$state','$http','md5','$
                         var JSONkeys=JSON.parse(keysDecryp);
                         var priv=JSON.parse(JSONkeys.privada);
                         var pub= JSON.parse(JSONkeys.publica);
+                        var paillierPriv =JSON.parse(JSONkeys.paillierPrivada);
+                        var paillierPub=JSON.parse(JSONkeys.paillierPublica);
+                        console.log(paillierPriv);
+                        console.log(paillierPub);
 
                         var bits = pub.bits.toString();
                         var n = pub.n.toString();
