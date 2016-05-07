@@ -6,14 +6,13 @@
             <legend>Chat</legend>
             <ul id="messages"></ul>
         </div>
-        <div style="overflow-y:scroll; height: 200px;width: 300px; margin: 15px" class="col-lg-10 well">
+        <div style="overflow-y:scroll; right: 0; height: 200px;width: 300px; margin: 15px" class="col-lg-10 well">
             <legend>Usuarios Conectados</legend>
             <p ng-repeat="user in users"></p>
         </div>
-        <form class="col-lg-10" action="" ng-submit=enviaChat(m)>
-            <input class="form-control" ng-model="m" autocomplete="off" placeholder="Escribe tu mensaje"/>
+        <form class="col-lg-10" ng-submit=enviaChat(m)>
+            <input class="form-control" ng-model="m" placeholder="Escribe tu mensaje"/>
             <button style="margin-top: 5px" class="btn2 btn-default btn">Enviar</button>
         </form>
-        <p align="center">&copy; 2016 Todos los derechos reservados</p>
     </div>
 </div>

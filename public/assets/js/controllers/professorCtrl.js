@@ -36,6 +36,7 @@ cities2.controller('professorCtrl',['$rootScope', '$scope', '$state','$statePara
                 .success(function (data) {
                     console.log(data);
                     $rootScope.chats=data.chats;
+                    $state.go("chat",{"id":$scope.subject});
                 })
                 .error(function (data) {
 

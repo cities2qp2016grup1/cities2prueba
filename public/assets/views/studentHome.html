@@ -1,4 +1,4 @@
-<div class="div4">
+<div class="div5">
     <div class="container">
         <div class="page-header">
             <div class="row">
@@ -9,7 +9,9 @@
         </div>
         <div class="row">
             <div class="col-lg-6">
-                <h2 ng-repeat="asignatura in asignaturas" ><a ng-click="getSubjectChat(asignatura)" ui-sref="Sasignatura({id:asignatura})">{{asignatura}}</a></h2>
+                <div class="jumbotron transparent-jumbo2" ng-repeat="asignatura in asignaturas" >
+                    <h2><a style="color: #2c87a8" ng-click="getSubjectChat(asignatura)" ui-sref="Sasignatura({id:asignatura})">{{asignatura}}</a></h2>
+                </div>
             </div>
         </div>
     </div>

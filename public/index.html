@@ -2,7 +2,7 @@
 <html ng-app='cities2'>
 <head>
     <title>Smart Cities II</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width">
     <meta charset="utf-8">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
     <link rel="stylesheet" href="assets/css/reset.css" />
@@ -38,19 +38,20 @@
         </div>
     <div ui-view></div>
     </div>
-    <!-- jQuery and...-->
-    <script src="assets/js/scripts/jquery.js"></script>
-    <script src="assets/js/scripts/jquery.min.js"></script>
-    <script src="assets/js/scripts/bootstrap.min.js"></script>
+    <!--Bower-->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular-route/angular-route.min.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/angular-md5/angular-md5.min.js"></script>
+    <script src="bower_components/angular-md5/angular-md5.js"></script>
+    <script src="bower_components/ngstorage/ngStorage.min.js"></script>
+    <script src="bower_components/ngstorage/ngStorage.js"></script>
+    <!-- Js locales-->
     <script src="assets/js/scripts/respond.min.js"></script>
     <script src="assets/js/scripts/holder.js"></script>
-    <script src="assets/js/scripts/angular.min.js"></script>
-    <script src="assets/js/scripts/angular-route.min.js"></script>
-    <script src="assets/js/scripts/angular-ui-router.min.js"></script>
-    <script src="assets/js/scripts/ngStorage.min.js"></script>
-    <script src="assets/js/scripts/ngStorage.js"></script>
-    <script src="assets/js/scripts/angular-md5.min.js"></script>
-    <script src="assets/js/scripts/angular-md5.js"></script>
     <script src="assets/js/scripts/jsbn/jsbn.js"></script>
     <script src="assets/js/scripts/jsbn/jsbn2.js"></script>
     <script src="assets/js/scripts/jsbn/prng4.js"></script>
@@ -60,7 +61,7 @@
     <script src="assets/js/scripts/sjcl.js"></script>
     <!--Socket.io     <script src="/socket.io/socket.io.js"></script>-->
     <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
-    <!--Bower-->
+
     <!--SweetAlert-->
     <script src="bower_components/sweetalert2/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" type="text/css" href="bower_components/sweetalert2/dist/sweetalert2.min.css">

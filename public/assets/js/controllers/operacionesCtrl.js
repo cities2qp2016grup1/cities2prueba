@@ -3,6 +3,8 @@ cities2.controller('operacionesCtrl',['$scope', '$state','$http','$rootScope', '
     $scope.OperacionResta = {};
     $scope.OperacionMulti = {};
     $scope.OperacionDivi = {};
+    $rootScope.isLogged=true;
+    $rootScope.isLogged2=true;
     $scope.sumar = function(OperacionSuma){
          var keys = paillier.generateKeys(1024);
          var encA = keys.pub.encrypt(new BigInteger(OperacionSuma.num1.toString()).mod(keys.pub.n));

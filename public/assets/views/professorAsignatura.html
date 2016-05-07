@@ -17,7 +17,7 @@
     </div>
 </div>
 <!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
+<div id="myModal" class="modal" role="dialog">
     <div class="modal-dialog" style="alignment: center; align-items: center; align-self: center; align-content: center; height: 200px; width: 300px">
         <!-- Modal content-->
         <div class="modal-content">
@@ -29,7 +29,7 @@
                 <input type="text" style="text-align: center" class="form-control" id="ponerIdChat" placeholder="Introduce aquí el nombre" required ng-model="idChat" >
             </div>
             <div style="alignment: center; align-content: center" class="modal-footer">
-                <a type="button" class="btn btn-primary" ng-click="crearChat(idChat)" data-dismiss="modal">Crear</a>
+                <a type="button" class="btn btn-primary" data-dismiss="modal" ng-click="crearChat(idChat)" >Crear</a>
                 <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
             </div>
         </div>
