@@ -10,7 +10,7 @@ var LocalStorage = require('node-localstorage').LocalStorage;
 localStorage = new LocalStorage('./scratch');
 
 //GET - Comprovar chats en DB
-router.get('/:asignatura', function (req, res) {
+router.get('/getChats/:asignatura', function (req, res) {
     console.log('Buscando en la BBDD: '+req.params.asignatura+'\n');
     Chat.find({asignatura: req.params.asignatura}, function (err, chats) {
         console.log(chats);
@@ -20,6 +20,26 @@ router.get('/:asignatura', function (req, res) {
         else {
             return res.status(200).jsonp({"chats":chats});
         }
+    });
+});
+//POST - Crear chat
+router.post('/addchat', function (req, res) {
+    var chat = new Chat({
+        nombre:    req.body.nombre,
+        creador:     req.body.creador,
+        estado:    req.body.estado,
+        asignatura: req.body.asignatura,
+        votacion: "No realizada",
+        key: req.body.key,
+        mensajes:[
+        ]
+    });
+    console.log("Crea chat en BD: \n"+chat);
+    console.log('\n');
+    chat.save(function(err, chat) {
+        if(err) return res.status(500).send(err.message);
+        console.log(chat);
+        res.status(200).jsonp(chat);
     });
 });
 module.exports = router;

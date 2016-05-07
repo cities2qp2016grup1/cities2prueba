@@ -179,8 +179,6 @@ cities2.controller('userCtrl',['$rootScope', '$scope', '$state','$http','md5','$
                         var pub= JSON.parse(JSONkeys.publica);
                         var paillierPriv =JSON.parse(JSONkeys.paillierPrivada);
                         var paillierPub=JSON.parse(JSONkeys.paillierPublica);
-                        console.log(paillierPriv);
-                        console.log(paillierPub);
 
                         var bits = pub.bits.toString();
                         var n = pub.n.toString();
@@ -198,6 +196,20 @@ cities2.controller('userCtrl',['$rootScope', '$scope', '$state','$http','md5','$
                             q:q,
                             d:d
                         };
+                        var pubPaillierJSON={
+                            bits: paillierPub.bits.toString(),
+                            n : paillierPub.n.toString(),
+                            n2 : paillierPub.n2.toString(),
+                            np1 : paillierPub.np1.toString(),
+                            rncache :paillierPub.rncache.toString()
+                        };
+                        var privPaillierJSON={
+                            lambda : paillierPriv.lambda.toString(),
+                            pubkey : pubPaillierJSON.toString(),
+                            x : paillierPriv.x.toString()
+                        };
+                        $localStorage.privPaillier = privPaillierJSON;
+                        $localStorage.pubPaillier = pubPaillierJSON;
                         $localStorage.privateKey = privKeyJSON;
                         $localStorage.publicKey = pubKeyJSON;
                         if ($scope.MyRol=="estudiante")

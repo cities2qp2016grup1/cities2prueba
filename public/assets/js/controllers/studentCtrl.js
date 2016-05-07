@@ -5,7 +5,6 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
     $rootScope.isLogged=true;
     $rootScope.isLogged2=false;
     $rootScope.salir=true;
-    console.log($localStorage.user.asignaturas);
     //console.log($stateParams.data); no va, mirar en el futuro
     var refresh = function () {
         $rootScope.asignaturas=$localStorage.user.asignaturas;
@@ -15,7 +14,7 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
     
     $scope.getSubjectChat = function (id) {
         console.log("Obtener Chats de: "+id);
-        $http.get('/chats/'+id)
+        $http.get('/chats/getChats/'+id)
             .success(function (data) {
                 console.log(data);
                 $rootScope.chats=data.chats;

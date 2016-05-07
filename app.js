@@ -2,8 +2,6 @@ var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose'); // Mongoose: Libreria para conectar con MongoDB
-var io = require('socket.io');
-
 
 // Iniciando express
 var app = express();
@@ -51,7 +49,24 @@ mongoose.connect('mongodb://localhost/cities2', function(err, res) {
 });
 
 //chat
+var nicknames = [];
 io.on('connection', function(socket){
+  //entra nuevo usuario
+  socket.on('newUser', function(data){
+    var user_exists = false;
+    for (var i=0; i<nicknames.length; i++) {
+      if (nicknames[i].user == data.user) {
+        user_exists = true;
+        break;
+      }
+    }
+    if (!user_exists){
+      console.log ("\nHa entrado al chat: "+data);
+      socket.user = data.user;
+      nicknames.push (data);
+      io.sockets.emit('usernames', nicknames);
+    }
+  });
   socket.on('chat message', function(msg){
     io.emit('chat message', msg);
   });
