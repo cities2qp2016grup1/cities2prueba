@@ -13,8 +13,9 @@
                 <input type="password" style="text-align: center" class="form-control" id="ponerPassword" placeholder="Escribe tu contraseña" required ng-model="logUser.password">
             </div>
             <div class="form-group">
-                <a type="button" class="btn2 btn-default btn" ng-click="login(logUser)">Iniciar Sesión</a>
+                <button class="dif-button" ng-click="login(logUser)">Iniciar Sesión</button>
             </div>
+            <p class="message">No está registrado? <a ui-sref="registrar">Crear una cuenta</a></p>
         </div>
         <p align="center">&copy; 2016 Todos los derechos reservados</p>
     </div>

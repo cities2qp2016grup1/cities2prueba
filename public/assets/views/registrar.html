@@ -89,9 +89,9 @@
                        id="ponerPassword2" title="Debes poner una contraseña" required ng-model="newUser.password2">
             </div>
             <div style="margin-top: -2%" class="form-group">
-                <a type="button" class="btn2 btn-default btn" ng-click="addUser(newUser)">Registrar</a>
-                <a type="button" class="btn2 btn-default btn" href="#/login">Iniciar Sesión</a>
+                <button class="dif-button" ng-click="addUser(newUser)">Registrar</button>
             </div>
+            <p class="message">Ya está registrado? <a ui-sref="login">Iniciar Sesión</a></p>
         </div>
         <p align="center">&copy; 2016 Todos los derechos reservados</p>
     </div>

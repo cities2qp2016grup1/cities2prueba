@@ -156,10 +156,20 @@ cities2.controller('userCtrl',['$rootScope', '$scope', '$state','$http','md5','$
             )
         }
         else if (!logUser.email){
-            $scope.validaMail="incorrecto"
+            $scope.validaMail="incorrecto";
+            sweetAlert(
+                'Error',
+                'Email incorrecto',
+                'error'
+            )
         }
         else if (!logUser.password){
-            $scope.validaPassword="incorrecto"
+            $scope.validaPassword="incorrecto";
+            sweetAlert(
+                'Error',
+                'Falta por poner la contraseña',
+                'error'
+            )
         }
         else{
             console.log("Login Usuario");

@@ -51,6 +51,16 @@
     font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif;
     font-weight: 700;
 }
+.btnTrans {
+    background-color: transparent;
+    border: solid;
+    border-color: rgba(255, 135, 0, 0.42);
+    border-radius: 300px;
+    text-transform: uppercase;
+    font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.5);
+}
 .btn-xl {
     padding: 15px 30px;
 }
@@ -76,4 +86,25 @@
     padding: 0%;
     margin: 0%;
     background: rgba(255, 255, 255, 0);
+}
+.dif-button {
+    outline: 0;
+    background: #0098ef;
+    width: 100%;
+    border: 0;
+    padding: 8px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    color: #FFFFFF;
+    font-size: 14px;
+    -webkit-transition: all 0.3 ease;
+    transition: all 0.3 ease;
+    cursor: pointer;
+}
+.message {
+    margin: 15px 0 0;
+    color: #777777;
+    font-size: 12px;
 }
