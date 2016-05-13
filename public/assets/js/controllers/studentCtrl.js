@@ -49,11 +49,9 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
 
         var blindMsg = pubKey.multiply(r.modPow(keys.publicKey.e, keys.publicKey.n)).mod(keys.publicKey.n);
         console.log("Public Key multiplied by r^eT mod nT " + blindMsg);
-
-        $http.post('/ttp/firma')
+        $http.post('http://localhost:3000/ttp/firma', blindMsg)
             .success(function (data) {
                 console.log(data);
-                $rootScope
             })
             .error(function (data) {
             })

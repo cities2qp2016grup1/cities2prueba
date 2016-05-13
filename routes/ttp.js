@@ -13,7 +13,7 @@ var LocalStorage = require('node-localstorage').LocalStorage;
 localStorage = new LocalStorage('./scratch');
 //var hash = crypto.createHash('md5').update(data).digest('hex');
 
-//GET - Recibir todos los usuarios
+//POST - Recibir todos los usuarios
 router.post('/allusers',function (require, result){
     console.log("Cliente pide recibir users a TTP");
     console.log("1: A-->TTP: (TTP, B, M, Po) (Paso hecho en cliente)");
@@ -145,6 +145,51 @@ router.post('/allusers',function (require, result){
          });
     });
     req.write(JSON.stringify(data));
+    req.end();
+});
+
+//POST - Recibir todos los usuarios
+router.post('/firma',function (require, result){
+    console.log(require.body);
+    var KpubCiega = require.body;
+    //crear claves pública y privada y enviar al cliente la pública
+    var keys = rsa.generateKeys(1024); // Change to at least 2048 bits in production state
+    console.log("--------------");
+    console.log(keys);
+    console.log("--------------");
+    var KpubFirmada = keys.publicKey.encrypt(KpubCiega);
+    var messageToClient = KpubFirmada.toString();
+    result.status(200).send(messageToClient);
+    var pubKey = {
+        bits: keys.publicKey.bits,
+        n: keys.publicKey.n.toString(),
+        e: keys.publicKey.e.toString()
+    };
+    console.log(pubKey);
+    var messageToServer= JSON.stringify(pubKey);
+    var options = {
+        host: 'localhost',
+        port: 8000,
+        path: '/server/firma',
+        method: 'POST',
+        json: true,
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+    var req= http.request(options, function(res){
+        res.on('data', function(chunk){
+            if (chunk=="OK")
+            {
+                console.log("Clave publica entregada correctamente");
+            }
+            else 
+            {
+                console.log("Error en el envio de la clave");
+            }
+        });
+    });
+    req.write(messageToServer);
     req.end();
 });
 /*
