@@ -39,14 +39,18 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
         };
 
         /*Generation of blinding factor*/
-        var r = BigInteger.randBetween(0, keys.publicKey.n);
-        console.log("Factor de cegado: " + r)
+     //   var r = Math.floor(Math.random()*65537)+1;
+     //   console.log("Factor de cegado: " + r);
 
+        var r = new BigInteger(keys.publicKey.bits,1,new SecureRandom());
+        console.log("Factor de cegado: " + r);
         /*Multiplication of blinding factor by Publi Key*/
-        var blindMsg = pubKeyJSON.multiply(r.modPow(keys.publicKey.e, keys.publicKey.n)).mod(keys.publicKey.n);
-        console.log("Public Key multiplied by r^eT mod nT " + blindMsg)
+        var pubKey = new BigInteger(JSON.stringify(pubKeyJSON));
 
-        $http.post('')
+        var blindMsg = pubKey.multiply(r.modPow(keys.publicKey.e, keys.publicKey.n)).mod(keys.publicKey.n);
+        console.log("Public Key multiplied by r^eT mod nT " + blindMsg);
+
+        $http.post('/ttp/firma')
             .success(function (data) {
                 console.log(data);
                 $rootScope
