@@ -49,9 +49,12 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
 
         var blindMsg = pubKey.multiply(r.modPow(keys.publicKey.e, keys.publicKey.n)).mod(keys.publicKey.n);
         console.log("Public Key multiplied by r^eT mod nT " + blindMsg);
-        $http.post('http://localhost:3000/ttp/firma', blindMsg)
+        var msg={
+            mensaje: blindMsg.toString()
+        };
+        $http.post('http://localhost:3000/ttp/firma', msg)
             .success(function (data) {
-                console.log(data);
+                console.log("Kpub ciega firmada por TTP: "+data);
             })
             .error(function (data) {
             })

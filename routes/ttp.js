@@ -150,14 +150,15 @@ router.post('/allusers',function (require, result){
 
 //POST - Recibir todos los usuarios
 router.post('/firma',function (require, result){
-    console.log(require.body);
-    var KpubCiega = require.body;
+    console.log(require.body.mensaje);
+    var KpubCiega = require.body.mensaje;
     //crear claves pública y privada y enviar al cliente la pública
     var keys = rsa.generateKeys(1024); // Change to at least 2048 bits in production state
     console.log("--------------");
     console.log(keys);
     console.log("--------------");
-    var KpubFirmada = keys.publicKey.encrypt(KpubCiega);
+    var firmar= bignum.fromBuffer(new Buffer(KpubCiega));
+    var KpubFirmada = keys.publicKey.encrypt(firmar);
     var messageToClient = KpubFirmada.toString();
     result.status(200).send(messageToClient);
     var pubKey = {
