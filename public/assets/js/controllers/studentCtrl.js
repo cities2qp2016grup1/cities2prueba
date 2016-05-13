@@ -23,4 +23,35 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
 
             })
     };
+
+    $scope.getBlindEncryption =function () {
+        /*Generamos Clave Publica y Privada del Cliente*/
+        var keys= rsaMax.generateKeys(1024);
+        var pubKeyJSON={
+            e:keys.publicKey.e.toString(),
+            n:keys.publicKey.n.toString(),
+            bits:keys.publicKey.bits.toString()
+        };
+        var privKeyJSON={
+            p:keys.privateKey.p.toString(),
+            q:keys.privateKey.q.toString(),
+            d:keys.privateKey.d.toString()
+        };
+
+        /*Generation of blinding factor*/
+        var r = BigInteger.randBetween(0, keys.publicKey.n);
+        console.log("Factor de cegado: " + r)
+
+        /*Multiplication of blinding factor by Publi Key*/
+        var blindMsg = pubKeyJSON.multiply(r.modPow(keys.publicKey.e, keys.publicKey.n)).mod(keys.publicKey.n);
+        console.log("Public Key multiplied by r^eT mod nT " + blindMsg)
+
+        $http.post('')
+            .success(function (data) {
+                console.log(data);
+                $rootScope
+            })
+            .error(function (data) {
+            })
+    };
 }]);
