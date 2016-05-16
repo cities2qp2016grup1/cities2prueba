@@ -9,6 +9,10 @@
         </div>
         <div class="row">
             <div class="col-lg-6">
+                <div class="jumbotron transparent-jumbo">
+                    <h3>Lista de usuarios de esta asignatura:</h3>
+                    <p ng-repeat="usuario in usuarios" ><a>{{usuario.nombre}}</a></p>
+                </div>
                 <!--button class="btn2 btn-default btn-xl"  ui-sref="chat({id:subject})">Crear chat grupal</--button> -->
                 <button class="btn2 btn-default btn-xl" data-toggle="modal" data-target="#myModal">Crear chat grupal</button>
             </div>

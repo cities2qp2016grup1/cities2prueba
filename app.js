@@ -10,6 +10,7 @@ var operaciones = require('./routes/operaciones');
 var ttp = require('./routes/ttp');
 var key = require('./routes/claves');
 var chats = require('./routes/chats');
+var mensajes = require('./routes/mensajes');
 
 //permitir CORS
 app.use(function(req, res, next) {
@@ -40,6 +41,7 @@ app.use('/server', users);
 app.use('/operaciones', operaciones);
 app.use('/key', key);
 app.use('/chats', chats);
+app.use('/mensajes', mensajes);
 
 // Conexión a la base de datos de MongoDB que tenemos en local
 require('mongoose-middleware').initialize(mongoose);

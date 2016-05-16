@@ -119,6 +119,8 @@ $routeProvider
         $rootScope.isLogged2 = false;
         //iniciando el listado de asignaturas
         $rootScope.asignaturas=["No","Actualiza","Bien","Las","Asignaturas"];
+        //iniciando el listado de usuarios de una asignatura
+        $rootScope.usuarios=["Ningún usuario en esta asignatura"];
         //iniciando el ng-show del boton de logout
         $rootScope.salir = false;
         //iniciando el listado de chats

@@ -21,6 +21,14 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
             })
             .error(function (data) {
 
+            });
+        $http.get('/server/getUsersByAsignatura/'+id)
+            .success(function (data) {
+                console.log(data);
+                $rootScope.usuarios=data.usuarios;
+            })
+            .error(function (data) {
+
             })
     };
 

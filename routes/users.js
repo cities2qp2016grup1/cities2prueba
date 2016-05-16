@@ -101,4 +101,26 @@ router.post('/login',  function (req, res) {
     }
   });
 });
+//GET - Obtener un usuario de DB
+router.get('/:name', function (req, res) {
+  console.log('GET user: '+req.params.name);
+  User.find({nombre: req.params.name}, function (err, user) {
+    if (err) res.send(500, err.message);
+    console.log(user);
+    res.status(200).jsonp(user);
+  });
+});
+//GET - Get Users de una asignatura
+router.get('/getUsersByAsignatura/:asignatura', function (req, res) {
+  console.log('Buscando en la BBDD usuarios de: '+req.params.asignatura+'\n');
+  User.find({asignaturas: req.params.asignatura}, function (err, users) {
+    console.log(users);
+    if (users.length == 0) {
+      return res.status(404).jsonp({"respuesta": "no hay usuarios en esta asignatura"});
+    }
+    else {
+      return res.status(200).jsonp({"usuarios":users});
+    }
+  });
+});
 module.exports = router;
