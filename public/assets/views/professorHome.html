@@ -10,7 +10,7 @@
         <div class="row">
             <div class="col-lg-6">
                 <div class="jumbotron transparent-jumbo2" ng-repeat="asignatura in asignaturas" >
-                    <h2><a style="color: #2c87a8" ui-sref="Pasignatura({id:asignatura})">{{asignatura}}</a></h2>
+                    <h2><a style="color: #2c87a8" ng-click="getSubjectChat(asignatura)" ui-sref="Pasignatura({id:asignatura})">{{asignatura}}</a></h2>
                 </div>
             </div>
         </div>

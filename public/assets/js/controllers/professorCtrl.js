@@ -12,6 +12,25 @@ cities2.controller('professorCtrl',['$rootScope', '$scope', '$state','$statePara
     };
     refresh();
     $scope.subject=$stateParams.id;
+    $scope.getSubjectChat = function (id) {
+        console.log("Obtener Chats de: "+id);
+        $http.get('/chats/getChats/'+id)
+            .success(function (data) {
+                console.log(data);
+                $rootScope.chats=data.chats;
+            })
+            .error(function (data) {
+
+            });
+        $http.get('/server/getUsersByAsignatura/'+id)
+            .success(function (data) {
+                console.log(data);
+                $rootScope.usuarios=data.usuarios;
+            })
+            .error(function (data) {
+
+            })
+    };
     $scope.crearChat = function (idChat) {
         if (idChat==null){
             console.log("Falta poner el nombre del chat");
