@@ -5,13 +5,17 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
     $rootScope.isLogged=true;
     $rootScope.isLogged2=false;
     $rootScope.salir=true;
-    //console.log($stateParams.data); no va, mirar en el futuro
-    var refresh = function () {
+    //recargar lista de asignaturas para el usuario que se conecta (en el Home)
+    $scope.cargaAsignaturas = function () {
         $rootScope.asignaturas=$localStorage.user.asignaturas;
     };
-    refresh();
+    //recargar contenido de una asignatura (en la pagina de la asignatura)
+    $scope.cargaAsignatura = function () {
+        $scope.getSubjectChat($scope.subject);
+    };
+    //metemos en subject el parametro ID que viene cuando pulsamos en una asignatura
     $scope.subject=$stateParams.id;
-    
+    //función para obtener los chats de una asignatura (y sus usuarios también)
     $scope.getSubjectChat = function (id) {
         console.log("Obtener Chats de: "+id);
         $http.get('/chats/getChats/'+id)
@@ -31,7 +35,7 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
 
             })
     };
-
+    
     $scope.getBlindEncryption =function () {
         /*Generamos Clave Publica y Privada del Cliente*/
         var keys= rsaMax.generateKeys(1024);

@@ -6,14 +6,18 @@ cities2.controller('professorCtrl',['$rootScope', '$scope', '$state','$statePara
     $rootScope.isLogged2=false;
     $rootScope.salir=true;
     $scope.idChat=null;
-    //console.log($stateParams.data); no va, mirar en el futuro
-    var refresh = function () {
+    //recargar asignaturas para el usuario que se conecta
+    $scope.cargaAsignaturas = function () {
         $rootScope.asignaturas=$localStorage.user.asignaturas;
     };
-    refresh();
+    //recargar contenido de una asignatura (en la pagina de la asignatura)
+    $scope.cargaAsignatura = function () {
+        $scope.getSubjectChat($scope.subject);
+    };
+    //metemos en subject el parametro ID que viene cuando pulsamos en una asignatura
     $scope.subject=$stateParams.id;
+    //función para obtener los chats de una asignatura (y sus usuarios también)
     $scope.getSubjectChat = function (id) {
-        console.log("Obtener Chats de: "+id);
         $http.get('/chats/getChats/'+id)
             .success(function (data) {
                 console.log(data);
@@ -31,6 +35,7 @@ cities2.controller('professorCtrl',['$rootScope', '$scope', '$state','$statePara
 
             })
     };
+    //funcion para crear un nuevo chat
     $scope.crearChat = function (idChat) {
         if (idChat==null){
             console.log("Falta poner el nombre del chat");

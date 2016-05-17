@@ -102,7 +102,7 @@ router.post('/login',  function (req, res) {
   });
 });
 //GET - Obtener un usuario de DB
-router.get('/:name', function (req, res) {
+router.get('/get/:name', function (req, res) {
   console.log('GET user: '+req.params.name);
   User.find({nombre: req.params.name}, function (err, user) {
     if (err) res.send(500, err.message);

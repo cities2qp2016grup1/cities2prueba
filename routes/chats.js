@@ -11,7 +11,7 @@ localStorage = new LocalStorage('./scratch');
 
 //GET - Comprovar chats en DB
 router.get('/getChats/:asignatura', function (req, res) {
-    console.log('Buscando en la BBDD: '+req.params.asignatura+'\n');
+    console.log('Buscando chats en la BBDD de: '+req.params.asignatura+'\n');
     Chat.find({asignatura: req.params.asignatura}, function (err, chats) {
         console.log(chats);
         if (chats.length == 0) {

@@ -1,7 +1,17 @@
-cities2.controller('userCtrl',['$rootScope', '$scope', '$state','$http','md5','$localStorage','$sessionStorage',  function($rootScope, $scope, $state, $http, md5, $localStorage, $sessionStorage) {
+cities2.controller('userCtrl',['$rootScope', '$scope', '$state','$stateParams','$http','md5','$localStorage','$sessionStorage',  function($rootScope, $scope, $state, $stateParams, $http, md5, $localStorage, $sessionStorage) {
     $rootScope.isLogged=true;
     $rootScope.isLogged2=true;
     $scope.newUser = {};
+    //cargar el perfil de una persona
+    $scope.cargaPerfil = function () {
+        $http.get('/server/get/'+$stateParams.name)
+            .success(function (data) {
+                $rootScope.userProfile=data[0];
+            })
+            .error(function (data) {
+
+            });
+    };
     // Funcion para crear un usuario
     $scope.addUser = function (newUser) {
         if ((!newUser.email) && (!newUser.nombre) && (!newUser.rol) && (!newUser.password) && (!newUser.password2)){
@@ -249,6 +259,24 @@ cities2.controller('userCtrl',['$rootScope', '$scope', '$state','$http','md5','$
                     )
                 })
         }
+    };
+    $scope.sendMessage = function (envioMensaje) {
+        console.log("1: A-->TTP: (TTP, B, M, Po)");
+        var ttp="localhost:3000/ttp/addmessage";
+        var b="localhost:8000/server/addmessage";
+        var M=envioMensaje; //encriptado con la publica de B
+        var Mhash=md5.createHash(M);
+        var Po=ttp+','+b+','+Mhash;    //encriptado con la privada de A (Firmado)
+        var mensaje= ttp+','+b+','+M+','+Po; //encriptado con la publica de TTP
+        $http.post('http://localhost:3000/ttp/addmessage', mensaje)
+            .success(function (data) {
+                $scope.resultado2 = 'correcto';
+                document.getElementById("datosUsers").innerHTML = JSON.stringify(data.data2.L, undefined, 2)
+            })
+            .error(function (data) {
+                $scope.resultado2 = 'incorrecto';
+                console.log('Error: ' + data)
+            });
     };
     $scope.AllUsers = function(){
         console.log("1: A-->TTP: (TTP, B, M, Po)");

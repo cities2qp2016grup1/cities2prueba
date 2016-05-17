@@ -1,4 +1,4 @@
-<div class="div4">
+<div class="div4" ng-init="cargaAsignatura()">
     <div class="container">
         <div class="page-header">
             <div class="row">
@@ -11,7 +11,7 @@
             <div class="col-lg-6">
                 <div class="jumbotron transparent-jumbo">
                     <h3>Lista de usuarios de esta asignatura:</h3>
-                    <p ng-repeat="usuario in usuarios" ><a>{{usuario.nombre}}</a></p>
+                    <p ng-repeat="usuario in usuarios" ><a ui-sref="profile({name:usuario.nombre,usuario:usuario})">{{usuario.nombre}}</a></p>
                 </div>
                 <button class="btn2 btn-default btn-xl" ui-sref="chat({id:subject})">Crear chat individual con profesor</button>
             </div>

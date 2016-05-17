@@ -193,6 +193,41 @@ router.post('/firma',function (require, result){
     req.write(messageToServer);
     req.end();
 });
+//GET - Reenviar peticion de enviar mensaje a servidor
+router.post('/addmessage',function (require, result) {
+    console.log("Cliente envia mensaje a B a traves de TTP");
+    console.log("1: A-->TTP: (TTP, B, M, Po) (Paso hecho en cliente)");
+    console.log(require.body);
+    console.log('\n');
+    console.log("2: TTP-->A: (A, B, Tr, L, Ps)");
+    // TTP desencripta el mensaje de A con la privada de TTP
+
+    // coje los datos necesarios para crear los mensajes:
+    var options = {
+        host: 'localhost',
+        port: 8000,
+        path: '/server/addmessage',
+        method: 'POST',
+        json: true,
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+    var req= http.request(options, function(res){
+        res.on('data', function(chunk){
+            if (chunk=="OK")
+            {
+                console.log("Mensaje entregado correctamente");
+            }
+            else
+            {
+                console.log("Error en el envio del mensaje");
+            }
+        });
+    });
+    req.write(mensaje);
+    req.end();
+});
 /*
 //GET - Reenviar peticion de chats a servidor
 router.get('/chats/:asignatura',function (require, result) {

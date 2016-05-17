@@ -111,6 +111,12 @@ $routeProvider
             controller: "chatCtrl"
             //params: {'id':null}
         })
+        .state('profile', {
+            url: "/profile/:name",
+            templateUrl: "assets/views/perfil.html",
+            controller: "userCtrl"
+            //params: {'id':null}
+        })
 })
     .run(function ($rootScope) {
         //iniciando el ng-show del navbar
@@ -125,4 +131,6 @@ $routeProvider
         $rootScope.salir = false;
         //iniciando el listado de chats
         $rootScope.chats=["Ningún chat aún"];
+        //iniciando el listado de chats
+        $rootScope.userProfile={};
     });
