@@ -16,11 +16,12 @@
     "http": "",
     "jade": "~1.11.0",
     "jquery": "",
-    "jsbn":"",
-    "node-localstorage": "",
+    "jsbn": "",
     "mongoose": "",
     "mongoose-middleware": "",
     "ngstorage": "^0.3.10",
+    "node-localstorage": "",
+    "secrets.js": "^0.1.8",
     "socket.io": ""
   }
 }
