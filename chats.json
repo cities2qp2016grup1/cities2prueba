@@ -3,7 +3,7 @@
   "creador": "admin",
   "estado": "finalizado",
   "asignatura": "IOT",
-  "votación": "No realizada",
+  "votacion": "No realizada",
   "key": {
     "pub": {
       "bits": 1024,

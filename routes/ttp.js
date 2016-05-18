@@ -7,8 +7,6 @@ var http = require("http");
 var crypto = require('crypto');
 var rsa = require('../rsa/rsa-bignum.js');
 var bignum = require('bignum');
-var Chat = require('../models/chat.js');
-
 var LocalStorage = require('node-localstorage').LocalStorage;
 localStorage = new LocalStorage('./scratch');
 //var hash = crypto.createHash('md5').update(data).digest('hex');
@@ -200,9 +198,43 @@ router.post('/addmessage',function (require, result) {
     console.log(require.body);
     console.log('\n');
     console.log("2: TTP-->A: (A, B, Tr, L, Ps)");
-    // TTP desencripta el mensaje de A con la privada de TTP
 
+    // TTP desencripta el mensaje de A con la privada de TTP
+    var privTTP = JSON.parse(localStorage.getItem("TTPprivada"));
+    var pubTTP = JSON.parse(localStorage.getItem("TTPpublica"));
+    var keys= {};
+    keys.publicKey = new rsa.publicKey(pubTTP.bits, bignum(pubTTP.n), bignum(pubTTP.e));
+    keys.privateKey = new rsa.privateKey(bignum(privTTP.p), bignum(privTTP.q), bignum(privTTP.d), keys.publicKey);
+    var recibidoBignum = bignum(require.body.mensaje);
+    console.log(recibidoBignum);
+    var reqdecrip = keys.privateKey.decrypt(recibidoBignum);
     // coje los datos necesarios para crear los mensajes:
+    var total =reqdecrip.toString();
+    console.log(total);
+    var trozos = total.split("***");
+    var a="A";
+    var b=trozos[1];
+    var Tr= Date.now();
+    var L="L";
+    var Po=trozos[2];
+    var Ps= a+'*-*'+b+'*-*'+Tr+'*-*'+L+'*-*'+Po;//debera ir encriptado por la privada del TTP (firmado)
+    //cojo la publicKey y private Key de TTP
+    var prikTTP = JSON.parse(localStorage.getItem("TTPprivada"));
+    var pubkTTP = JSON.parse(localStorage.getItem("TTPpublica"));
+    var keys2= {};
+    keys2.publicKey = new rsa.publicKey(pubkTTP.bits, bignum(pubkTTP.n), bignum(pubkTTP.e));
+    keys2.privateKey = new rsa.privateKey(bignum(prikTTP.p), bignum(prikTTP.q), bignum(prikTTP.d), keys2.publicKey);
+    //encripto Ps con la privada
+    var Psbignum = bignum.fromBuffer(new Buffer(Ps.toString()));
+    var Pscrip = keys.publicKey.encrypt(Psbignum);
+    console.log(Pscrip);
+    var mensajeToA ={
+        a:a,
+        b:b,
+        Tr:Tr,
+        L:L,
+        Ps:Pscrip.toString()
+    };  //encriptado con la publica de A
     var options = {
         host: 'localhost',
         port: 8000,

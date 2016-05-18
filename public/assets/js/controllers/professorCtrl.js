@@ -20,7 +20,6 @@ cities2.controller('professorCtrl',['$rootScope', '$scope', '$state','$statePara
     $scope.getSubjectChat = function (id) {
         $http.get('/chats/getChats/'+id)
             .success(function (data) {
-                console.log(data);
                 $rootScope.chats=data.chats;
             })
             .error(function (data) {
@@ -28,7 +27,6 @@ cities2.controller('professorCtrl',['$rootScope', '$scope', '$state','$statePara
             });
         $http.get('/server/getUsersByAsignatura/'+id)
             .success(function (data) {
-                console.log(data);
                 $rootScope.usuarios=data.usuarios;
             })
             .error(function (data) {

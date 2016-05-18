@@ -2,6 +2,7 @@ cities2.controller('userCtrl',['$rootScope', '$scope', '$state','$stateParams','
     $rootScope.isLogged=true;
     $rootScope.isLogged2=true;
     $scope.newUser = {};
+    $scope.envioMessage = "vacío";
     //cargar el perfil de una persona
     $scope.cargaPerfil = function () {
         $http.get('/server/get/'+$stateParams.name)
@@ -266,9 +267,20 @@ cities2.controller('userCtrl',['$rootScope', '$scope', '$state','$stateParams','
         var b="localhost:8000/server/addmessage";
         var M=envioMensaje; //encriptado con la publica de B
         var Mhash=md5.createHash(M);
-        var Po=ttp+','+b+','+Mhash;    //encriptado con la privada de A (Firmado)
-        var mensaje= ttp+','+b+','+M+','+Po; //encriptado con la publica de TTP
-        $http.post('http://localhost:3000/ttp/addmessage', mensaje)
+        var Po=ttp+'*-*'+b+'*-*'+Mhash;    //encriptado con la privada de A (Firmado)
+        //firmando Po con privada de A
+        var KeyPrivA = $localStorage.privateKey;
+        var KeyPubA = $localStorage.publicKey;
+        var pubKeyA = new rsaMax.publicKey(KeyPubA.bits, new BigInteger(KeyPubA.n), new BigInteger(KeyPubA.e));
+        var privKeyA = new rsaMax.privateKey(new BigInteger(KeyPrivA.p), new BigInteger(KeyPrivA.q), new BigInteger(KeyPrivA.d), pubKeyA);
+        var PoFirmado = {mensaje:privKeyA.encrypt(new BigInteger(Po.toString())).toString()};
+        var mensaje= ttp+'***'+b+'***'+M+'***'+PoFirmado; //encriptado con la publica de TTP
+        //encriptando mensaje para TTP
+        var TTPPub = $localStorage.ttp;
+        var publicKeyTTP = new rsaMax.publicKey(TTPPub.bits, new BigInteger(TTPPub.n), new BigInteger(TTPPub.e));
+        var mensajeTTP = {mensaje:publicKeyTTP.encrypt(new BigInteger(mensaje)).toString()};
+        console.log(mensajeTTP);
+        $http.post('http://localhost:3000/ttp/addmessage', mensajeTTP)
             .success(function (data) {
                 $scope.resultado2 = 'correcto';
                 document.getElementById("datosUsers").innerHTML = JSON.stringify(data.data2.L, undefined, 2)

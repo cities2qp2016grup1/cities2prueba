@@ -42,4 +42,24 @@ router.post('/addchat', function (req, res) {
         res.status(200).jsonp(chat);
     });
 });
+//POST - Crear chat
+router.post('/votar', function (req, res) {
+    var chat = new Chat({
+        nombre:    req.body.nombre,
+        creador:     req.body.creador,
+        estado:    req.body.estado,
+        asignatura: req.body.asignatura,
+        votacion: "No realizada",
+        key: req.body.key,
+        mensajes:[
+        ]
+    });
+    console.log("Meter votación en la BD: \n"+chat);
+    console.log('\n');
+    chat.save(function(err, chat) {
+        if(err) return res.status(500).send(err.message);
+        console.log(chat);
+        res.status(200).jsonp(chat);
+    });
+});
 module.exports = router;
