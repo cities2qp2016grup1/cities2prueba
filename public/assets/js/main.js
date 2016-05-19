@@ -57,11 +57,6 @@ $routeProvider
             templateUrl: "assets/views/registrar.html",
             controller: "userCtrl"
         })
-        .state('server', {
-            url: "/server",
-            templateUrl: "assets/views/user.html",
-            controller: "userCtrl"
-        })
         .state('login', {
             url: "/login",
             templateUrl: "assets/views/login.html",

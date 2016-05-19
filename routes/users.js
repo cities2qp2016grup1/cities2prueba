@@ -13,40 +13,7 @@ router.post('/allusers', function (req, res) {
   console.log(recibido);
   User.find(function (err, users) {
     if (err) res.send(500, err.message);
-    console.log(users);
-    console.log('\n');
-    console.log("4: B-->TTP: (L, Pr)");
-    // B desencripta el mensaje de TTP con la privada de B
-    //cojo la privateKey de B
-    var prikServer = JSON.parse(localStorage.getItem("Serverprivada"));
-    var pubkServer = JSON.parse(localStorage.getItem("Serverpublica"));
-    var keys ={};
-    keys.publicKey= new rsa.publicKey(pubkServer.bits, bignum(pubkServer.n), bignum(pubkServer.e));
-    keys.privateKey= new rsa.privateKey(bignum(prikServer.p), bignum(prikServer.q), bignum(prikServer.d), keys.publicKey);
-    //console.log(keys);
-    //encripto con la privada de B
-    var recibidoBignum = bignum(req.body.mensaje);
-    console.log(recibidoBignum);
-    var reqdecrip = keys.privateKey.decrypt(recibidoBignum);
-    var claro=reqdecrip.toBuffer().toString();
-    console.log(claro);
-    //  coje los datos necesarios para crear los mensajes
-    var a="A";
-    var ttp="localhost:3000/ttp/allusers";
-    var L=users;  //mensaje de respuesta a A (encriptado con publica de A?)
-    var Po=req.body.Po;
-    var Pr={
-      ttp:ttp,
-      a:a,
-      L:L,
-      Po:Po
-    }; //debera ir encriptado por la privada de B (firmar)
-    var mensajeToTTP ={
-      L:L,
-      Pr:Pr
-    }; //deberá ir encriptado con la publica de TTP
-    console.log(mensajeToTTP);
-    res.status(200).jsonp(mensajeToTTP);
+    res.status(200).jsonp(users);
   });
 
 });

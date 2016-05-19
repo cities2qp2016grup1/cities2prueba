@@ -27,6 +27,7 @@
     "jquery": "",
     "ngstorage":"",
     "font-awesome": "~4.6.1",
-    "sweetalert2": ""
+    "sweetalert2": "",
+    "text-encoding": ""
   }
 }

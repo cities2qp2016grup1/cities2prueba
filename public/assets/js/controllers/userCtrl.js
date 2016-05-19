@@ -267,56 +267,32 @@ cities2.controller('userCtrl',['$rootScope', '$scope', '$state','$stateParams','
         var b="localhost:8000/server/addmessage";
         var M=envioMensaje; //encriptado con la publica de B
         var Mhash=md5.createHash(M);
-        var Po=ttp+'*-*'+b+'*-*'+Mhash;    //encriptado con la privada de A (Firmado)
+        var Po=ttp+'*-*'+b+'*-*'+Mhash;
+        var intPo = new TextEncoder().encode(Po);
+        console.log(intPo);
         //firmando Po con privada de A
         var KeyPrivA = $localStorage.privateKey;
         var KeyPubA = $localStorage.publicKey;
         var pubKeyA = new rsaMax.publicKey(KeyPubA.bits, new BigInteger(KeyPubA.n), new BigInteger(KeyPubA.e));
         var privKeyA = new rsaMax.privateKey(new BigInteger(KeyPrivA.p), new BigInteger(KeyPrivA.q), new BigInteger(KeyPrivA.d), pubKeyA);
-        var PoFirmado = {mensaje:privKeyA.encrypt(new BigInteger(Po.toString())).toString()};
-        var mensaje= ttp+'***'+b+'***'+M+'***'+PoFirmado; //encriptado con la publica de TTP
+        var PoFirmado = {mensaje:privKeyA.encrypt(new BigInteger(intPo.toString())).toString()};
+        var PKA={
+            bits: pubKeyA.bits,
+            n: pubKeyA.n.toString(),
+            e: pubKeyA.e.toString()
+        };
+        var mensaje= {mensaje:ttp+'***'+b+'***'+M+'***'+PoFirmado.mensaje+"***"+JSON.stringify(PKA)}; //encriptado con la publica de TTP
         //encriptando mensaje para TTP
-        var TTPPub = $localStorage.ttp;
-        var publicKeyTTP = new rsaMax.publicKey(TTPPub.bits, new BigInteger(TTPPub.n), new BigInteger(TTPPub.e));
-        var mensajeTTP = {mensaje:publicKeyTTP.encrypt(new BigInteger(mensaje)).toString()};
-        console.log(mensajeTTP);
-        $http.post('http://localhost:3000/ttp/addmessage', mensajeTTP)
+        //var TTPPub = $localStorage.ttp;
+        //var publicKeyTTP = new rsaMax.publicKey(TTPPub.bits, new BigInteger(TTPPub.n), new BigInteger(TTPPub.e));
+        //var mensajeTTP = {mensaje:publicKeyTTP.encrypt(new BigInteger(mensaje)).toString()};
+
+        $http.post('http://localhost:3000/ttp/addmessage', mensaje)
             .success(function (data) {
-                $scope.resultado2 = 'correcto';
-                document.getElementById("datosUsers").innerHTML = JSON.stringify(data.data2.L, undefined, 2)
+
             })
             .error(function (data) {
-                $scope.resultado2 = 'incorrecto';
-                console.log('Error: ' + data)
-            });
-    };
-    $scope.AllUsers = function(){
-        console.log("1: A-->TTP: (TTP, B, M, Po)");
-        var ttp="localhost:3000/ttp/allusers";
-        var b="localhost:8000/server/allusers";
-        var M="GET ALL USERS"; //encriptado con la publica de B
-        var Mhash=md5.createHash(M);
-        var PoJSON={
-            ttp:ttp,
-            b:b,
-            Mhash:Mhash     //deberá ser el HASH de M
-        };
-        var Po=PoJSON.ttp+','+PoJSON.b+','+PoJSON.Mhash;    //encriptado con la privada de A (Firmado)
-        var mensajeJSON ={
-            ttp:ttp,
-            b:b,
-            M:M,
-            Po:Po
-        };
-        var mensaje= {mensaje:mensajeJSON.ttp+','+mensajeJSON.b+','+mensajeJSON.M+','+Po}; //encriptado con la publica de TTP
-        $http.post('http://localhost:3000/ttp/allusers', mensaje)
-            .success(function (data) {
-                $scope.resultado2 = 'correcto';
-                document.getElementById("datosUsers").innerHTML = JSON.stringify(data.data2.L, undefined, 2)
-            })
-            .error(function (data) {
-                $scope.resultado2 = 'incorrecto';
-                console.log('Error: ' + data)
+
             });
     };
 }]);

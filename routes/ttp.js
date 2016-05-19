@@ -41,137 +41,7 @@ console.log(comb === key); // => true */
 
 //POST - Recibir todos los usuarios
 router.post('/allusers',function (require, result){
-    console.log("Cliente pide recibir users a TTP");
-    console.log("1: A-->TTP: (TTP, B, M, Po) (Paso hecho en cliente)");
-    console.log(require.body);
-    console.log('\n');
-    console.log("2: TTP-->A: (A, B, Tr, L, Ps)");
-    // TTP desencripta el mensaje de A con la privada de TTP
-
-    // coje los datos necesarios para crear los mensajes:
-    var total =require.body.mensaje;
-    console.log(total);
-    var trozos = total.split(",");
-    var a="A";
-    var b=trozos[1];
-    var Tr= Date.now();
-    var L="L";
-    var Po=trozos[2];
-    var PsJSON={
-        a:a,
-        b:b,
-        Tr:Tr,
-        L:L,
-        Po:Po
-    };
-    var Ps= PsJSON.a+','+PsJSON.b+','+PsJSON.Tr+','+PsJSON.L+','+PsJSON.Po;//debera ir encriptado por la privada del TTP (firmado)
-    //cojo la publicKey y private Key de TTP
-    var prikTTP = JSON.parse(localStorage.getItem("TTPprivada"));
-    var pubkTTP = JSON.parse(localStorage.getItem("TTPpublica"));
-    var keys= {};
-    keys.publicKey = new rsa.publicKey(pubkTTP.bits, bignum(pubkTTP.n), bignum(pubkTTP.e));
-    keys.privateKey = new rsa.privateKey(bignum(prikTTP.p), bignum(prikTTP.q), bignum(prikTTP.d), keys.privateKey);
-    //encripto Ps con la privada
-    var Psbignum = bignum.fromBuffer(new Buffer(Ps.toString()));
-    var Pscrip = keys.publicKey.encrypt(Psbignum);
-    var mensajeToA ={
-        a:a,
-        b:b,
-        Tr:Tr,
-        L:L,
-        Ps:Pscrip.toString()
-    };  //encriptado con la publica de A
-    //cojo la publicKey de A
     
-    //encripto el mensaje a A
-    
-    console.log(mensajeToA);
-    console.log('\n');
-    console.log("3: TTP-->B: (A, L, Po)");
-    var mensajeToBJSON={
-        a:a,
-        L:L,
-        Po:Po
-    };
-    var mensajeToB=mensajeToBJSON.a+','+mensajeToBJSON.L+','+mensajeToBJSON.Po;//encriptado con la publica de B
-    //cojo la publicKey de B
-    var pubkServer = JSON.parse(localStorage.getItem("Serverpublica"));
-    var keys2= {};
-    keys2.publicKey = new rsa.publicKey(pubkServer.bits, bignum(pubkServer.n), bignum(pubkServer.e));
-    //encripto el mensaje a B
-    //var msg = "MANEL";
-    var mensajeToBbignum = bignum.fromBuffer(new Buffer(mensajeToB.toString()));
-    var mensajeToBcrip = keys2.publicKey.encrypt(mensajeToBbignum);
-    //
-    var data = {"mensaje":mensajeToBcrip.toString()};
-    console.log("Mensaje encriptado a B: ");
-    console.log(data);
-    var options = {
-        host: 'localhost',
-        port: 8000,
-        path: '/server/allusers',
-        method: 'POST',
-        json: true,
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    };
-    var req= http.request(options, function(res){
-         res.on('data', function(chunk){
-             var respuesta = JSON.parse(chunk);
-             console.log('\n');
-             console.log("5: TTP-->A: (A, B, Td, L, K, Pr, Pd)");
-             // TTP desencripta el mensaje de B con la privada de TTP
-
-             // coje los datos necesarios para crear el mensaje
-             var Pd = {
-                 a:a,
-                 b:b,
-                 Td:Date.now(),
-                 L:respuesta.L,
-                 Pr:respuesta.Pr
-             };  //deberá encriptar esto con la privada de TTP (firmar)
-             var mensajeFinalA = {
-                 a:a,
-                 b:b,
-                 Td:Date.now(),
-                 L:respuesta.L, //esto ya viene encriptado con la pública de A desde B
-                 K:"K",
-                 Pr:respuesta.Pr,
-                 Pd:Pd
-             };  // deberá ir encriptado con la pública de A
-             console.log(mensajeFinalA);
-             console.log('\n');
-             result.status(200).send({data:mensajeToA, data2:mensajeFinalA});
-             console.log("6: TTP-->B: (L, M)");
-             // los datos los hemos desencriptado arriba, solo los cojemos y enviamos
-             var mensajeFinalB = {
-                 L:respuesta.L,
-                 M:require.body.M
-             }; // encriptado con la pública de B
-             var data2 = JSON.stringify(mensajeFinalB);
-             var options = {
-                 host: 'localhost',
-                 port: 8000,
-                 path: '/server/final',
-                 method: 'POST',
-                 json:true,
-                 headers: {
-                     'Content-Type': 'application/json'
-                 }
-             };
-             var req2 = http.request(options, function(res2) {
-                 res2.on('data', function (chunk) {
-                     console.log("Transmisión finalizada");
-                     console.log('\n');
-                 })
-             });
-             req2.write(data2);
-             req2.end();
-         });
-    });
-    req.write(JSON.stringify(data));
-    req.end();
 });
 
 //POST - Recibir todos los usuarios
@@ -227,58 +97,47 @@ router.post('/addmessage',function (require, result) {
     console.log('\n');
     console.log("2: TTP-->A: (A, B, Tr, L, Ps)");
 
-    // TTP desencripta el mensaje de A con la privada de TTP
-    var privTTP = JSON.parse(localStorage.getItem("TTPprivada"));
-    var pubTTP = JSON.parse(localStorage.getItem("TTPpublica"));
-    var keys= {};
-    keys.publicKey = new rsa.publicKey(pubTTP.bits, bignum(pubTTP.n), bignum(pubTTP.e));
-    keys.privateKey = new rsa.privateKey(bignum(privTTP.p), bignum(privTTP.q), bignum(privTTP.d), keys.publicKey);
-    var recibidoBignum = bignum(require.body.mensaje);
-    console.log(recibidoBignum);
-    var reqdecrip = keys.privateKey.decrypt(recibidoBignum);
-
     // coje los datos necesarios para crear los mensajes:
-    var total =reqdecrip.toString();
+    var total =require.body.mensaje;
     console.log(total);
     var trozos = total.split("***");
     var a="A";
     var b=trozos[1];
     var Tr= Date.now();
     var L=Math.floor(Math.random() * 1000) + 1;
-    var Po=trozos[2];
+    var M=trozos[2];
+    var Po=trozos[3];
+    var pubkA= JSON.parse(trozos[4]);
+    var keyA = new rsa.publicKey(pubkA.bits, bignum(pubkA.n), bignum(pubkA.e));
+    console.log(keyA);
     var Ps= a+'*-*'+b+'*-*'+Tr+'*-*'+L+'*-*'+Po;
-
+    var recibidoBignum = bignum(Po);
+    console.log(recibidoBignum);
+    var reqdecrip = keyA.decrypt(recibidoBignum);
+    console.log(new Buffer(reqdecrip.toString()).toString());
     //cojo la publicKey y private Key de TTP
     var prikTTP = JSON.parse(localStorage.getItem("TTPprivada"));
     var pubkTTP = JSON.parse(localStorage.getItem("TTPpublica"));
     var keys2= {};
     keys2.publicKey = new rsa.publicKey(pubkTTP.bits, bignum(pubkTTP.n), bignum(pubkTTP.e));
     keys2.privateKey = new rsa.privateKey(bignum(prikTTP.p), bignum(prikTTP.q), bignum(prikTTP.d), keys2.publicKey);
-    //encripto Ps con la privada
+    //firmo Ps con la privada
     var Psbignum = bignum.fromBuffer(new Buffer(Ps.toString()));
-    var Pscrip = keys.publicKey.encrypt(Psbignum);
-    console.log(Pscrip);
+    var Pscrip = keys2.privateKey.encrypt(Psbignum);
     //creo el mensaje a A y lo encripto
     var mensajeToA = a+"***"+b+"***"+Tr+"***"+L+"***"+Pscrip;
-    var mensajeToAbignum = bignum.fromBuffer(new Buffer(mensajeToA.toString()));
-    var mensajeToAcrip = keys.publicKey.encrypt(mensajeToAbignum);
-    result.status(200).send(mensajeToAcrip);
+    result.status(200).send(mensajeToA);
 
     console.log('\n');
     console.log("3: TTP-->B: (A, L, Po)");
-    //cojo la publicKey de B
-    var pubkServer = JSON.parse(localStorage.getItem("Serverpublica"));
-    var keys3= {};
-    keys3.publicKey = new rsa.publicKey(pubkServer.bits, bignum(pubkServer.n), bignum(pubkServer.e));
+
     //encripto el mensaje a B
-    var mensajeToB = a+"***"+L+"***"+Po;
-    var mensajeToBbignum = bignum.fromBuffer(new Buffer(mensajeToB.toString()));
-    var mensajeToBcrip = keys3.publicKey.encrypt(mensajeToBbignum);
-    var dataToB = {"mensaje":mensajeToBcrip.toString()};
+    var mensajeToB = JSON.stringify({mensaje3:a+"***"+L+"***"+Po,mensaje5:a+"***"+L+"***"+M});
+
     var options = {
         host: 'localhost',
         port: 8000,
-        path: '/server/addmessage',
+        path: '/mensajes/addmessage',
         method: 'POST',
         json: true,
         headers: {
@@ -287,17 +146,20 @@ router.post('/addmessage',function (require, result) {
     };
     var req= http.request(options, function(res){
         res.on('data', function(chunk){
-            if (chunk=="OK")
-            {
-                console.log("Mensaje 3 entregado correctamente");
-            }
-            else
-            {
-                console.log("Error en el envio del mensaje");
-            }
+            var Prcrip=JSON.parse(chunk);
+            console.log("Recibiendo 4 (confirmación Server)");
+            console.log(Prcrip);
+            //cojo la public Key de server
+            var pubkServer = JSON.parse(localStorage.getItem("Serverpublica"));
+            var publicKeyServer = new rsa.publicKey(pubkServer.bits, bignum(pubkServer.n), bignum(pubkServer.e));
+            var recibidoBignum = bignum(Prcrip.Pr);
+            console.log(recibidoBignum);
+            var reqdecrip = publicKeyServer.decrypt(recibidoBignum);
+            var claro=reqdecrip.toBuffer().toString();
+            console.log (claro);
         });
     });
-    req.write(dataToB);
+    req.write(mensajeToB);
     req.end();
 });
 /*
