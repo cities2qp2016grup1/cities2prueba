@@ -114,7 +114,7 @@ router.get('/get/:name', function (req, res) {
 router.get('/getUsersByAsignatura/:asignatura', function (req, res) {
   console.log('Buscando en la BBDD usuarios de: '+req.params.asignatura+'\n');
   User.find({asignaturas: req.params.asignatura}, function (err, users) {
-    console.log(users);
+    console.log(users.length + " usuarios\n");
     if (users.length == 0) {
       return res.status(404).jsonp({"respuesta": "no hay usuarios en esta asignatura"});
     }

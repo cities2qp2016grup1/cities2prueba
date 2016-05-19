@@ -13,7 +13,7 @@ localStorage = new LocalStorage('./scratch');
 router.get('/getChats/:asignatura', function (req, res) {
     console.log('Buscando chats en la BBDD de: '+req.params.asignatura+'\n');
     Chat.find({asignatura: req.params.asignatura}, function (err, chats) {
-        console.log(chats);
+        console.log(chats.length+" chats");
         if (chats.length == 0) {
             return res.status(404).jsonp({"respuesta": "no hay chats"});
         }

@@ -236,6 +236,7 @@ router.post('/addmessage',function (require, result) {
     var recibidoBignum = bignum(require.body.mensaje);
     console.log(recibidoBignum);
     var reqdecrip = keys.privateKey.decrypt(recibidoBignum);
+
     // coje los datos necesarios para crear los mensajes:
     var total =reqdecrip.toString();
     console.log(total);
@@ -243,9 +244,10 @@ router.post('/addmessage',function (require, result) {
     var a="A";
     var b=trozos[1];
     var Tr= Date.now();
-    var L="L";
+    var L=Math.floor(Math.random() * 1000) + 1;
     var Po=trozos[2];
-    var Ps= a+'*-*'+b+'*-*'+Tr+'*-*'+L+'*-*'+Po;//debera ir encriptado por la privada del TTP (firmado)
+    var Ps= a+'*-*'+b+'*-*'+Tr+'*-*'+L+'*-*'+Po;
+
     //cojo la publicKey y private Key de TTP
     var prikTTP = JSON.parse(localStorage.getItem("TTPprivada"));
     var pubkTTP = JSON.parse(localStorage.getItem("TTPpublica"));
@@ -256,13 +258,23 @@ router.post('/addmessage',function (require, result) {
     var Psbignum = bignum.fromBuffer(new Buffer(Ps.toString()));
     var Pscrip = keys.publicKey.encrypt(Psbignum);
     console.log(Pscrip);
-    var mensajeToA ={
-        a:a,
-        b:b,
-        Tr:Tr,
-        L:L,
-        Ps:Pscrip.toString()
-    };  //encriptado con la publica de A
+    //creo el mensaje a A y lo encripto
+    var mensajeToA = a+"***"+b+"***"+Tr+"***"+L+"***"+Pscrip;
+    var mensajeToAbignum = bignum.fromBuffer(new Buffer(mensajeToA.toString()));
+    var mensajeToAcrip = keys.publicKey.encrypt(mensajeToAbignum);
+    result.status(200).send(mensajeToAcrip);
+
+    console.log('\n');
+    console.log("3: TTP-->B: (A, L, Po)");
+    //cojo la publicKey de B
+    var pubkServer = JSON.parse(localStorage.getItem("Serverpublica"));
+    var keys3= {};
+    keys3.publicKey = new rsa.publicKey(pubkServer.bits, bignum(pubkServer.n), bignum(pubkServer.e));
+    //encripto el mensaje a B
+    var mensajeToB = a+"***"+L+"***"+Po;
+    var mensajeToBbignum = bignum.fromBuffer(new Buffer(mensajeToB.toString()));
+    var mensajeToBcrip = keys3.publicKey.encrypt(mensajeToBbignum);
+    var dataToB = {"mensaje":mensajeToBcrip.toString()};
     var options = {
         host: 'localhost',
         port: 8000,
@@ -277,7 +289,7 @@ router.post('/addmessage',function (require, result) {
         res.on('data', function(chunk){
             if (chunk=="OK")
             {
-                console.log("Mensaje entregado correctamente");
+                console.log("Mensaje 3 entregado correctamente");
             }
             else
             {
@@ -285,7 +297,7 @@ router.post('/addmessage',function (require, result) {
             }
         });
     });
-    req.write(mensaje);
+    req.write(dataToB);
     req.end();
 });
 /*
