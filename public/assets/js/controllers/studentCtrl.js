@@ -80,32 +80,20 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
             console.log('Share', i, ':', $scope.shares[i]);
             i++;
         }
-
-        //Script para copiar share en portapapeles
-        $scope.supported = false;
-        $scope.textToCopy = 'I can copy by clicking!';
-        $scope.success = function ()
-        {
-            console.log('Copiado en portapapeles!');
-        };
-        $scope.fail = function (err)
-        {
-            console.error('Error al copiar en portapapeles!', err);
-        };
     };
 
 
-        $scope.addShare = function () {
+    $scope.addShare = function () {
             console.log($scope.share);
             $scope.shares.push($scope.share);
             console.log($scope.shares);
             $scope.share = "";
-        };
+    };
 
 
-        $scope.combine = function () {
+    $scope.combine = function () {
 
-            console.log('\n Recuperar Secreto Compartido - Shamir\n');
+            console.log('\n Recuperar Secreto Compartido \n');
 
             // Combina los shares (mínimo de "t" para conseguir descifrar el secreto)
             //$scope.comb = secrets.combine( [ $scope.s0, $scope.s1, $scope.s2 ] );
@@ -119,26 +107,9 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
 
             console.log('\nCombinación de los shares:', $scope.comb);
             console.log('Descifrado correctamente:', $scope.comb === $scope.secreto); // => true / false
-
-
+            
             $scope.supported = false;
-
-            $scope.textToCopy = 'I can copy by clicking!';
-
-            $scope.success = function () {
-                console.log('Copiado en portapapeles!');
-            };
-
-            $scope.fail = function (err) {
-                console.error('Error al copiar en portapapeles!', err);
-            };
-
-        };
-
-
-
-
-
+    };
     
     $scope.getBlindEncryption =function (votaChat) {
         $scope.chatAVotar=votaChat;
