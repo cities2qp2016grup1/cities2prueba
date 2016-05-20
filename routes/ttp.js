@@ -9,6 +9,7 @@ var rsa = require('../rsa/rsa-bignum.js');
 var bignum = require('bignum');
 var LocalStorage = require('node-localstorage').LocalStorage;
 localStorage = new LocalStorage('./scratch');
+
 //var hash = crypto.createHash('md5').update(data).digest('hex');
 
 
@@ -41,7 +42,7 @@ console.log(comb === key); // => true */
 
 //POST - Recibir todos los usuarios
 router.post('/allusers',function (require, result){
-    
+
 });
 
 //POST - Recibir todos los usuarios
@@ -91,6 +92,7 @@ router.post('/firma',function (require, result){
 });
 //GET - Reenviar peticion de enviar mensaje a servidor
 router.post('/addmessage',function (require, result) {
+    console.log('\n');
     console.log("Cliente envia mensaje a B a traves de TTP");
     console.log("1: A-->TTP: (TTP, B, M, Po) (Paso hecho en cliente)");
     console.log(require.body);
@@ -99,7 +101,7 @@ router.post('/addmessage',function (require, result) {
 
     // coje los datos necesarios para crear los mensajes:
     var total =require.body.mensaje;
-    console.log(total);
+    console.log("Recibido: "+total);
     var trozos = total.split("***");
     var a="A";
     var b=trozos[1];
@@ -109,12 +111,13 @@ router.post('/addmessage',function (require, result) {
     var Po=trozos[3];
     var pubkA= JSON.parse(trozos[4]);
     var keyA = new rsa.publicKey(pubkA.bits, bignum(pubkA.n), bignum(pubkA.e));
-    console.log(keyA);
-    var Ps= a+'*-*'+b+'*-*'+Tr+'*-*'+L+'*-*'+Po;
+
+    //desencriptar -Po- para ver si los datos son correctos
     var recibidoBignum = bignum(Po);
-    console.log(recibidoBignum);
     var reqdecrip = keyA.decrypt(recibidoBignum);
-    console.log(new Buffer(reqdecrip.toString()).toString());
+    var PoClaro = reqdecrip.toBuffer().toString();
+    console.log("Po en claro: "+PoClaro);
+    var Ps= a+'*=*'+b+'*=*'+Tr+'*=*'+L+'*=*'+PoClaro;
     //cojo la publicKey y private Key de TTP
     var prikTTP = JSON.parse(localStorage.getItem("TTPprivada"));
     var pubkTTP = JSON.parse(localStorage.getItem("TTPpublica"));
@@ -124,15 +127,15 @@ router.post('/addmessage',function (require, result) {
     //firmo Ps con la privada
     var Psbignum = bignum.fromBuffer(new Buffer(Ps.toString()));
     var Pscrip = keys2.privateKey.encrypt(Psbignum);
-    //creo el mensaje a A y lo encripto
+    //creo el mensaje a A y lo envio
     var mensajeToA = a+"***"+b+"***"+Tr+"***"+L+"***"+Pscrip;
-    result.status(200).send(mensajeToA);
+    console.log("Enviando: "+ mensajeToA);
 
     console.log('\n');
-    console.log("3: TTP-->B: (A, L, Po)");
+    console.log("3: TTP-->B: (A, L, Po) ---- y ---- 5: TTP-->B: (L, M)");
 
-    //encripto el mensaje a B
-    var mensajeToB = JSON.stringify({mensaje3:a+"***"+L+"***"+Po,mensaje5:a+"***"+L+"***"+M});
+    // mensaje a B
+    var mensajeToB = JSON.stringify({mensaje3:a+"***"+L+"***"+Po+"***"+trozos[4],mensaje5:a+"***"+L+"***"+M});
 
     var options = {
         host: 'localhost',
@@ -153,10 +156,20 @@ router.post('/addmessage',function (require, result) {
             var pubkServer = JSON.parse(localStorage.getItem("Serverpublica"));
             var publicKeyServer = new rsa.publicKey(pubkServer.bits, bignum(pubkServer.n), bignum(pubkServer.e));
             var recibidoBignum = bignum(Prcrip.Pr);
-            console.log(recibidoBignum);
             var reqdecrip = publicKeyServer.decrypt(recibidoBignum);
-            var claro=reqdecrip.toBuffer().toString();
-            console.log (claro);
+            var Prclaro=reqdecrip.toBuffer().toString();
+            console.log ("Pr en claro: "+Prclaro);
+            console.log("\n6: TTP-->A: (A, B, Td, L, Pr, Pd)\n");
+            // coje los datos necesarios para crear mensaje 6:
+            var Td= Date.now();
+            var Pd= a+"*<*"+b+"*<*"+Td+"*<*"+L+"*<*"+Prclaro;
+            //firmo Pd con la privada
+            var Pdbignum = bignum.fromBuffer(new Buffer(Pd.toString()));
+            var Pdcrip = keys2.privateKey.encrypt(Pdbignum);
+            console.log("Pd en cripto: "+Pdcrip);
+            var mensaje6toA= a+"***"+b+"***"+Td+"***"+L+"***"+Prclaro+"***"+Pdcrip;
+            console.log("Mensaje 6 enviado: "+mensaje6toA);
+            result.status(200).send({mensaje2:mensajeToA,mensaje6:mensaje6toA});
         });
     });
     req.write(mensajeToB);
@@ -175,4 +188,5 @@ router.get('/chats/:asignatura',function (require, result) {
     });
 });
 */
+
 module.exports = router;
