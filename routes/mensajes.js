@@ -13,18 +13,27 @@ localStorage = new LocalStorage('./scratch');
 router.post('/addmessage', function (req, res) {
     //recibo la notificación de TTP (3) de que tengo un mensaje y el mensaje (5)
     var mensaje3 = req.body.mensaje3;
-    console.log(mensaje3);
+    console.log("Recibido en Server (mensaje 3): "+mensaje3);
     var trozos = mensaje3.split("***");
     var A=trozos[0];
     var L=trozos[1];
     var Po=trozos[2];
+    var pubkeyA=JSON.parse(trozos[3]);
+    var keyA = new rsa.publicKey(pubkeyA.bits, bignum(pubkeyA.n), bignum(pubkeyA.e));
+    //desencriptar -Po- para ver si los datos son correctos
+    var recibidoBignum = bignum(Po);
+    var reqdecrip = keyA.decrypt(recibidoBignum);
+    var PoClaro = reqdecrip.toBuffer().toString();
+    console.log("Po en claro: "+PoClaro);
     var mensaje5 = req.body.mensaje5;
-    console.log(mensaje5);
+    console.log("Recibido en Server: (mensaje 5): "+mensaje5);
     console.log('\n');
     console.log("4: B-->TTP: (L, Pr)");
-    var ttp="http://localhost:3000/ttp/addmessage";
+    console.log("Recibido: "+ req.body.mensaje3);
+    var ttp="localhost:3000/ttp/addmessage";
     //creo Pr = [TTP, A, L, PO]
-    var Pr = ttp+"*-*"+A+"*-*"+L+"*-*"+Po;
+    var Pr = ttp+"*_*"+A+"*_*"+L+"*_*"+"Po";
+    //para pasar a base 64 (aun NO) var a=  new Buffer(Pr).toString('base64');
     //cojo la privada de Server para firmar Pr
     var prikServer = JSON.parse(localStorage.getItem("Serverprivada"));
     var pubkServer = JSON.parse(localStorage.getItem("Serverpublica"));
@@ -39,7 +48,8 @@ router.post('/addmessage', function (req, res) {
         L:L,
         Pr:Prcrip.toString()
     };
-    console.log(mensajeToTTP);
+    console.log("Mensaje 4 a TTP: "+ JSON.stringify(mensajeToTTP));
+    console.log("\n5: TTP-->B: (L, M) ya enviado\n");
     /*var mensaje = new Mensaje({
         sendName:    req.body.nombre,
         recName:     req.body.creador,
