@@ -17,7 +17,7 @@
         <div ng-show="isLogged" class="navbar navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span><</button>
                     <a class="navbar-brand" ui-sref="index">Aula Virtual</a> </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav" style="text-align: right">
@@ -25,6 +25,8 @@
                         <li><a ui-sref="operaciones">Operaciones</a></li>
                         <li><a ui-sref="about">About</a></li>
                         <li><a ui-sref="contact">Contact</a></li>
+                        <li><a ui-sref="sharedsecret">Secreto Compartido</a></li>
+                        <li><a ui-sref="recoversecret">Recuperar Secreto</a></li>
                         <li><a ng-show="salir" ng-click="logout()">Logout</a></li>
                     </ul>
                 </div>
@@ -64,6 +66,8 @@
     <script src="assets/js/scripts/jsbn/rng.js"></script>
     <script src="assets/js/scripts/jsbn/paillier.js"></script>
     <script src="assets/js/scripts/jsbn/rsaMax.js"></script>
+    <script src="assets/js/scripts/jsbn/rsaMax.js"></script>
+    <script src="assets/js/scripts/secrets.js"></script>
     <script src="assets/js/scripts/sjcl.js"></script>
     <!--Socket.io     <script src="/socket.io/socket.io.js"></script>-->
     <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
@@ -72,7 +76,7 @@
     <script src="bower_components/sweetalert2/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" type="text/css" href="bower_components/sweetalert2/dist/sweetalert2.min.css">
         <!-- for IE support -->
-        <script src="bower_components/es6-promise-polyfill/promise.min.js"></script>
+    <script src="bower_components/es6-promise-polyfill/promise.min.js"></script>
     <!--Scripts -->
     <script src="assets/js/main.js"></script>
     <script src="assets/js/scripts/checklist-model.js"></script>

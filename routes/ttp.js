@@ -7,6 +7,9 @@ var http = require("http");
 var crypto = require('crypto');
 var rsa = require('../rsa/rsa-bignum.js');
 var bignum = require('bignum');
+var Chat = require('../models/chat.js');
+var secret = require('secrets.js');
+
 var LocalStorage = require('node-localstorage').LocalStorage;
 localStorage = new LocalStorage('./scratch');
 //var hash = crypto.createHash('md5').update(data).digest('hex');

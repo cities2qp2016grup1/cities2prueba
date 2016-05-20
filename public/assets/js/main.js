@@ -67,6 +67,16 @@ $routeProvider
             templateUrl: "assets/views/operaciones.html",
             controller: "operacionesCtrl"
         })
+        .state('sharedsecret', {
+            url: "/sharedsecret",
+            templateUrl: "assets/views/sharedsecret.html",
+            controller: "studentCtrl"
+        })
+        .state('recoversecret', {
+            url: "/recoversecret",
+            templateUrl: "assets/views/recoversecret.html",
+            controller: "studentCtrl"
+        })
         .state('about', {
             url: "/about",
             templateUrl: "assets/views/about.html",
