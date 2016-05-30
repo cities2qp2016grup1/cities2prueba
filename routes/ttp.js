@@ -50,48 +50,22 @@ router.post('/allusers',function (require, result){
 
 //POST - Recibir todos los usuarios
 router.post('/firma',function (require, result){
+    console.log("Kpub Ciega recibida en TTP");
     console.log(require.body.mensaje);
     var KpubCiega = require.body.mensaje;
-    //crear claves pública y privada y enviar al cliente la pública
-    var keys = rsa.generateKeys(1024); // Change to at least 2048 bits in production state
-    console.log("--------------");
-    console.log(keys);
-    console.log("--------------");
-    var firmar= bignum.fromBuffer(new Buffer(KpubCiega));
-    var KpubFirmada = keys.publicKey.encrypt(firmar);
-    var messageToClient = KpubFirmada.toString();
-    result.status(200).send(messageToClient);
-    var pubKey = {
-        bits: keys.publicKey.bits,
-        n: keys.publicKey.n.toString(),
-        e: keys.publicKey.e.toString()
-    };
-    console.log(pubKey);
-    var messageToServer= JSON.stringify(pubKey);
-    var options = {
-        host: 'localhost',
-        port: 8000,
-        path: '/server/firma',
-        method: 'POST',
-        json: true,
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    };
-    var req= http.request(options, function(res){
-        res.on('data', function(chunk){
-            if (chunk=="OK")
-            {
-                console.log("Clave publica entregada correctamente");
-            }
-            else 
-            {
-                console.log("Error en el envio de la clave");
-            }
-        });
-    });
-    req.write(messageToServer);
-    req.end();
+    //coger la Kpriv de TTP para firmar el mensaje cegado
+    var prikTTP = JSON.parse(localStorage.getItem("TTPprivada"));
+    var pubkTTP = JSON.parse(localStorage.getItem("TTPpublica"));
+    var keys= {};
+    keys.publicKey = new rsa.publicKey(pubkTTP.bits, bignum(pubkTTP.n), bignum(pubkTTP.e));
+    keys.privateKey = new rsa.privateKey(bignum(prikTTP.p), bignum(prikTTP.q), bignum(prikTTP.d), keys.publicKey);
+    //firmo KpubCiega con la privada de TTP
+    var KpubCiegaBignum = bignum.fromBuffer(new Buffer(KpubCiega.toString()));
+    var CiegaTTP = keys.privateKey.encrypt(KpubCiegaBignum);
+    console.log("Kpub Ciega firmada por TTP");
+    console.log(CiegaTTP.toString());
+    var messageToClient= CiegaTTP.toString();
+    result.status(200).send({mensaje:messageToClient});
 });
 //GET - Reenviar peticion de enviar mensaje a servidor
 router.post('/addmessage',function (require, result) {

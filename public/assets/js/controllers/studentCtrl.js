@@ -8,6 +8,10 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
     $scope.voto="";
     $scope.chatAVotar="";
     $scope.message = 'Formulario para añadir clave compartida';
+    $scope.CiegaFirmada="";
+    $scope.r=0;
+    $scope.blindPriv={};
+    $scope.blindPub={};
     //////////Parte SSS
     $scope.secreto = '';
     $scope.secretoHex = '';
@@ -125,12 +129,13 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
             q:keys.privateKey.q.toString(),
             d:keys.privateKey.d.toString()
         };
-
+        $scope.blindPriv=privKeyJSON;
+        $scope.blindPub=pubKeyJSON;
         /*Generation of blinding factor*/
      //   var r = Math.floor(Math.random()*65537)+1;
      //   console.log("Factor de cegado: " + r);
-
         var r = new BigInteger(keys.publicKey.bits,1,new SecureRandom());
+        $scope.r=r;
         console.log("Factor de cegado: " + r);
         /*Multiplication of blinding factor by Publi Key*/
         var pubKey = new BigInteger(JSON.stringify(pubKeyJSON));
@@ -142,14 +147,18 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
         };
         $http.post('http://localhost:3000/ttp/firma', msg)
             .success(function (data) {
-                console.log("Kpub ciega firmada por TTP: "+data);
+                console.log("Kpub ciega firmada por TTP: "+data.mensaje);
+                $scope.CiegaFirmada=data.mensaje;
             })
             .error(function (data) {
             })
     };
     $scope.votar = function (voto) {
-        console.log(voto);
         console.log($scope.chatAVotar);
         console.log($scope.voto);
+        console.log($scope.r);
+        var c = $scope.CiegaFirmada.multiply(r.modInverse(r, $scope.blindPub.n));
+        console.log('(unblinded) valid encryption    *1/r mod n:', '\n', c.toString(10), '\n');
+
     }
 }]);
