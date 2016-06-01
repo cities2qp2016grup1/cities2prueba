@@ -59,8 +59,8 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
 
             })
     };
-    
-    
+
+
     $scope.registrar = function() {
 
         console.log('\nSecreto Compartido - Shamir\n');
@@ -111,10 +111,10 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
 
             console.log('\nCombinación de los shares:', $scope.comb);
             console.log('Descifrado correctamente:', $scope.comb === $scope.secreto); // => true / false
-            
+
             $scope.supported = false;
     };
-    
+
     $scope.getBlindEncryption =function (votaChat) {
         $scope.chatAVotar=votaChat;
         /*Generamos Clave Publica y Privada del Cliente*/
@@ -157,8 +157,11 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
         console.log($scope.chatAVotar);
         console.log($scope.voto);
         console.log($scope.r);
-        var c = $scope.CiegaFirmada.multiply(r.modInverse(r, $scope.blindPub.n));
-        console.log('(unblinded) valid encryption    *1/r mod n:', '\n', c.toString(10), '\n');
+        //var c = $scope.CiegaFirmada.multiply($scope.r.modInverse.mod($scope.blindPub.n);/****NO funciona***/
+
+        var s = new BigInteger($scope.r.modInverse($scope.blindPub.n).multiply($scope.CiegaFirmada).mod($scope.blindPub.n));/**Esta es la que mejor pinta tiene creo que tengo que seguir probando**/
+        //var c = $scope.CiegaFirmada.multiply($scope.r.modInverse.mod($scope.blindPub.n);
+        console.log('(unblinded) valid encryption    *1/r mod n:', '\n', s.toString(10), '\n');
 
     }
 }]);
