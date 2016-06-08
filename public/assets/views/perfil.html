@@ -19,6 +19,7 @@
                 </div>
                 <div class="form-group">
                     <button class="dif-button" data-toggle="modal" data-target="#myModal">Enviar mensaje privado</button>
+                    <p class="message">Ver tus mensajes recibidos. <a ui-sref="login">Aquí</a></p>
                 </div>
             </div>
             <p align="center">&copy; 2016 Todos los derechos reservados</p>
@@ -37,7 +38,7 @@
                     <textarea style="height: 200px; width: 435px; resize: none;" class="form-control" id="ponerMensaje" placeholder="Introduce aquí el mensaje" required ng-model="envioMensaje"></textarea>
                 </div>
                 <div class="modal-footer">
-                    <a type="button" class="btn btn-primary" data-dismiss="modal" ng-click="sendMessage(envioMensaje)">Enviar</a>
+                    <a type="button" class="btn btn-primary" data-dismiss="modal" ng-click="sendMessage(envioMensaje, userProfile.nombre)">Enviar</a>
                     <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
                 </div>
             </div>

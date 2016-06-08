@@ -34,6 +34,18 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
     //recargar lista de asignaturas para el usuario que se conecta (en el Home)
     $scope.cargaAsignaturas = function () {
         $rootScope.asignaturas=$localStorage.user.asignaturas;
+        $http.get('/mensajes/getMensajes/'+$localStorage.user.nombre)
+            .success(function (data) {
+                console.log(data);
+                
+                    var msjRec = JSON.parse(data.respuesta);
+                    $rootScope.mensajesList=msjRec;
+                    $rootScope.mensajes="Tienes "+msjRec.length+" mensajes sin leer";
+                
+            })
+            .error(function (data) {
+                $rootScope.mensajes="Tienes 0 mensajes sin leer";
+            })
     };
     //recargar contenido de una asignatura (en la pagina de la asignatura)
     $scope.cargaAsignatura = function () {
@@ -57,7 +69,7 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
             })
             .error(function (data) {
 
-            })
+            });
     };
 
 

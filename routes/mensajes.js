@@ -10,6 +10,19 @@ var bignum = require('bignum');
 var LocalStorage = require('node-localstorage').LocalStorage;
 localStorage = new LocalStorage('./scratch');
 
+//GET - Recibir mensajes de usuario
+router.get('/getMensajes/:nombre', function (req, res) {
+    console.log('Buscando mensajes de: '+req.params.nombre+'\n');
+    Mensaje.find({recName: req.params.nombre}, function (err, msj) {
+        console.log(msj.length+" mensajes");
+        if (msj.length == 0) {
+            return res.status(500).send(err);
+        }
+        else {
+            return res.status(200).jsonp({"respuesta":msj});
+        }
+    });
+});
 //POST - enviar mensaje personal
 router.post('/addmessage', function (req, res) {
     console.log('\n');
@@ -48,6 +61,20 @@ router.post('/addmessage', function (req, res) {
         var Ps= ttp+'*=*'+a+'*=*'+b+'*=*'+Tr+'*=*'+Po;
         var Pshash = crypto.createHash('md5').update(Ps).digest('hex');
         var mensaje2 = ttp+"***"+a+"***"+b+"***"+Tr+"***"+Pshash;
+        //guardarlo en la bbdd
+        var mensaje = new Mensaje({
+            sendName: a,
+            recName: b,
+            mensaje: M,
+            fecha: Tr,
+            estado: "enviado",
+            Po: PoClaro
+        });
+        console.log('\n');
+        mensaje.save(function(err, msj) {
+            if(err) return res.status(500).send(err.message);
+            console.log(msj);
+        });
         res.status(200).jsonp(mensaje2);
     }
     else {

@@ -139,4 +139,8 @@ $routeProvider
         $rootScope.chats=["Ningún chat aún"];
         //iniciando el listado de chats
         $rootScope.userProfile={};
+        //iniciando el listado de mensajes
+        $rootScope.mensajes="Vacio";
+        //iniciando el contenedor de mensajes
+        $rootScope.mensajesList=["Tienes 0 mensajes recibidos"];
     });

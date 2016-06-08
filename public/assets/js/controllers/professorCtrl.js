@@ -9,6 +9,19 @@ cities2.controller('professorCtrl',['$rootScope', '$scope', '$state','$statePara
     //recargar asignaturas para el usuario que se conecta
     $scope.cargaAsignaturas = function () {
         $rootScope.asignaturas=$localStorage.user.asignaturas;
+        $http.get('/mensajes/getMensajes/'+$localStorage.user.nombre)
+            .success(function (data) {
+                console.log(data);
+
+                    var msjRec = data.respuesta;
+                    console.log(data.respuesta);
+                    $rootScope.mensajesList=msjRec;
+                    $rootScope.mensajes="Tienes "+msjRec.length+" mensajes sin leer";
+                
+            })
+            .error(function (data) {
+                $rootScope.mensajes="Tienes 0 mensajes sin leer";
+            })
     };
     //recargar contenido de una asignatura (en la pagina de la asignatura)
     $scope.cargaAsignatura = function () {
