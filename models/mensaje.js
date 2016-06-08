@@ -8,7 +8,8 @@ var mensajeSchema = new Schema({
     sendName: {type: String},
     recName: {type: String},
     mensaje: {type: String},
-    fecha: {type: Date}
+    fecha: {type: Date},
+    estado: {type: String}
 });
 
 module.exports = mongoose.model('Mensaje', mensajeSchema);

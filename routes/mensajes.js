@@ -5,13 +5,57 @@ var express = require('express');
 var router = express.Router();
 var Mensaje = require('../models/mensaje.js');
 var rsa = require('../rsa/rsa-bignum.js');
+var crypto = require('crypto');
 var bignum = require('bignum');
 var LocalStorage = require('node-localstorage').LocalStorage;
 localStorage = new LocalStorage('./scratch');
 
-//POST - Crear chat
+//POST - enviar mensaje personal
 router.post('/addmessage', function (req, res) {
-    //recibo la notificación de TTP (3) de que tengo un mensaje y el mensaje (5)
+    console.log('\n');
+    console.log("Cliente envia mensaje a B a traves de TTP");
+    console.log("1: A-->TTP: (A,TTP, B, M, Po) (Paso hecho en cliente)");
+    console.log(req.body);
+    console.log('\n');
+    console.log("2: TTP-->A: (TTP, A, B, Tr, Ps)");
+
+    // coje los datos necesarios para crear los mensajes:
+    var total =req.body.mensaje;
+    console.log("Recibido: "+total);
+    var trozos = total.split("***");
+    var a=trozos[0];
+    var ttp=trozos[1];
+    var b=trozos[2];
+    var Tr= Date.now();
+    var M=trozos[3];
+    var Po=trozos[4];
+    var pubkA= JSON.parse(trozos[5]);
+    var keyA = new rsa.publicKey(pubkA.bits, bignum(pubkA.n), bignum(pubkA.e));
+
+    //desencriptar -Po- para ver si los datos son correctos
+    var recibidoBignum = bignum(Po);
+    var reqdecrip = keyA.decrypt(recibidoBignum);
+    var PoClaro = reqdecrip.toBuffer().toString();
+    console.log("Po en claro: "+PoClaro);
+
+    //comprobar hash del M en Po con hash del M del mensaje
+    var Mhash = crypto.createHash('md5').update(M).digest('hex');
+    var trozosPo = PoClaro.split("*-*");
+    var MhashPo = trozosPo[3];
+    if (Mhash==MhashPo)
+    {
+        console.log("Prueba de origen correcta!");
+        var Ps= ttp+'*=*'+a+'*=*'+b+'*=*'+Tr+'*=*'+Po;
+        var Pshash = crypto.createHash('md5').update(Ps).digest('hex');
+        var mensaje2 = ttp+"***"+a+"***"+b+"***"+Tr+"***"+Pshash;
+        res.status(200).jsonp(mensaje2);
+    }
+    else {
+        console.log("ERROR, prueba de origen no coincide.")
+    }
+
+    ////////////////
+    /* //recibo la notificación de TTP (3) de que tengo un mensaje y el mensaje (5)
     var mensaje3 = req.body.mensaje3;
     console.log("Recibido en Server (mensaje 3): "+mensaje3);
     var trozos = mensaje3.split("***");
@@ -50,7 +94,7 @@ router.post('/addmessage', function (req, res) {
     };
     console.log("Mensaje 4 a TTP: "+ JSON.stringify(mensajeToTTP));
     console.log("\n5: TTP-->B: (L, M) ya enviado\n");
-    /*var mensaje = new Mensaje({
+    var mensaje = new Mensaje({
         sendName:    req.body.nombre,
         recName:     req.body.creador,
         mensaje:    req.body.mensaje,
@@ -63,7 +107,8 @@ router.post('/addmessage', function (req, res) {
         console.log(mensaje);
         res.status(200).jsonp(mensaje);
     });
-     */
+
     res.status(200).jsonp(mensajeToTTP);
+     */
 });
 module.exports = router;
