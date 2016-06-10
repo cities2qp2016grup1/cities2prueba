@@ -156,62 +156,7 @@ router.post('/addmessage', function (req, res) {
         console.log("ERROR, prueba de origen no coincide.")
     }
 
-    ////////////////
-    /* //recibo la notificación de TTP (3) de que tengo un mensaje y el mensaje (5)
-    var mensaje3 = req.body.mensaje3;
-    console.log("Recibido en Server (mensaje 3): "+mensaje3);
-    var trozos = mensaje3.split("***");
-    var A=trozos[0];
-    var L=trozos[1];
-    var Po=trozos[2];
-    var pubkeyA=JSON.parse(trozos[3]);
-    var keyA = new rsa.publicKey(pubkeyA.bits, bignum(pubkeyA.n), bignum(pubkeyA.e));
-    //desencriptar -Po- para ver si los datos son correctos
-    var recibidoBignum = bignum(Po);
-    var reqdecrip = keyA.decrypt(recibidoBignum);
-    var PoClaro = reqdecrip.toBuffer().toString();
-    console.log("Po en claro: "+PoClaro);
-    var mensaje5 = req.body.mensaje5;
-    console.log("Recibido en Server: (mensaje 5): "+mensaje5);
-    console.log('\n');
-    console.log("4: B-->TTP: (L, Pr)");
-    console.log("Recibido: "+ req.body.mensaje3);
-    var ttp="localhost:3000/ttp/addmessage";
-    //creo Pr = [TTP, A, L, PO]
-    var Pr = ttp+"*_*"+A+"*_*"+L+"*_*"+"Po";
-    //para pasar a base 64 (aun NO) var a=  new Buffer(Pr).toString('base64');
-    //cojo la privada de Server para firmar Pr
-    var prikServer = JSON.parse(localStorage.getItem("Serverprivada"));
-    var pubkServer = JSON.parse(localStorage.getItem("Serverpublica"));
-    var keysServer= {};
-    keysServer.publicKey = new rsa.publicKey(pubkServer.bits, bignum(pubkServer.n), bignum(pubkServer.e));
-    keysServer.privateKey = new rsa.privateKey(bignum(prikServer.p), bignum(prikServer.q), bignum(prikServer.d), keysServer.publicKey);
-    //firmo Ps con la privada
-    var Prbignum = bignum.fromBuffer(new Buffer(Pr.toString()));
-    var Prcrip = keysServer.privateKey.encrypt(Prbignum);
-    //creo el mensaje a A y lo encripto
-    var mensajeToTTP = {
-        L:L,
-        Pr:Prcrip.toString()
-    };
-    console.log("Mensaje 4 a TTP: "+ JSON.stringify(mensajeToTTP));
-    console.log("\n5: TTP-->B: (L, M) ya enviado\n");
-    var mensaje = new Mensaje({
-        sendName:    req.body.nombre,
-        recName:     req.body.creador,
-        mensaje:    req.body.mensaje,
-        fecha:      req.body.fecha
-    });
-    console.log("Guarda mensaje privado en BD: \n"+mensaje);
-    console.log('\n');
-    mensaje.save(function(err, mensaje) {
-        if(err) return res.status(500).send(err.message);
-        console.log(mensaje);
-        res.status(200).jsonp(mensaje);
-    });
-
-    res.status(200).jsonp(mensajeToTTP);
-     */
+    
 });
 //POST - Pasar msg a leido
 router.post('/leerMsg', function (req, res) {
@@ -228,13 +173,23 @@ router.post('/leerMsg', function (req, res) {
 router.post('/compruebaMsg', function (req, res) {
 
     Mensaje.findOneAndUpdate({_id: req.body.id}, { "$set": { confirmado: "Si" } },{new: true}, function(err,doc) {
-        console.log("Devuelve: "+ doc);
+        console.log("Devuelve: " + doc);
         console.log("6: TTP-->A: (TTP, A, B, Td, Pr, Pd)");
-        var msg=doc.ttp+"***"+doc.a+"***"+doc.b+"***"+doc.fecha+"***"+doc.Pr;
-        
-        }
-    );
-    res.status(200).send("ok");
+        /* var Pd =doc.ttp+"***"+doc.a+"***"+doc.b+"***"+doc.fecha+"***"+doc.Pr;
+         var PdHash = crypto.createHash('md5').update(Pd).digest('hex');
+         //coger la Kpriv de TTP para firmar el mensaje cegado
+         var prikTTP = JSON.parse(localStorage.getItem("TTPprivada"));
+         var pubkTTP = JSON.parse(localStorage.getItem("TTPpublica"));
+         var keys= {};
+         keys.publicKey = new rsa.publicKey(pubkTTP.bits, bignum(pubkTTP.n), bignum(pubkTTP.e));
+         keys.privateKey = new rsa.privateKey(bignum(prikTTP.p), bignum(prikTTP.q), bignum(prikTTP.d), keys.publicKey);
+         //firmo KpubCiega con la privada de TTP
+         var PdBignum = bignum.fromBuffer(new Buffer(PdHash.toString()));
+         var PdCrip = keys.privateKey.encrypt(PdBignum);
+         var msg=doc.ttp+"***"+doc.a+"***"+doc.b+"***"+doc.fecha+"***"+doc.Pr+"***"+PdCrip;
+         res.status(200).jsonp({mensaje:msg});
+         */
+    })
 
 });
 //POST - Recibir paso 4 de No repudio
