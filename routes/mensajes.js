@@ -11,15 +11,64 @@ var LocalStorage = require('node-localstorage').LocalStorage;
 localStorage = new LocalStorage('./scratch');
 
 //GET - Recibir mensajes de usuario
-router.get('/getMensajes/:nombre', function (req, res) {
+router.get('/getAllMensajes/:nombre', function (req, res) {
     console.log('Buscando mensajes de: '+req.params.nombre+'\n');
     Mensaje.find({recName: req.params.nombre}, function (err, msj) {
         console.log(msj.length+" mensajes");
         if (msj.length == 0) {
-            return res.status(500).send(err);
+            return res.status(200).jsonp({"respuesta":"no hay mensajes"});
         }
         else {
             return res.status(200).jsonp({"respuesta":msj});
+        }
+    });
+});
+//GET - Recibir mensajes de usuario
+router.get('/getMensajes/:nombre', function (req, res) {
+    console.log('Buscando mensajes de: '+req.params.nombre+'\n');
+    Mensaje.find({recName: req.params.nombre, estado:"enviado"}, function (err, msj) {
+        console.log(msj.length+" mensajes");
+        if (msj.length == 0) {
+            return res.status(200).jsonp({"respuesta":"no hay mensajes sin leer"});
+        }
+        else {
+            var mensajeToB=[];
+            for ( var i=0; i<msj.length; i++)
+            {
+                console.log("3: TTP-->B: (TTP, B, A, Po)");
+                var mensaje = "TTP"+"***"+msj[i].recName+"***"+msj[i].sendName+"***"+msj[i].Po;
+                mensajeToB.push(mensaje);
+            }
+            console.log(mensajeToB);
+            return res.status(200).jsonp({"respuesta":mensajeToB});
+        }
+    });
+});
+//POST - Recibir paso 4 de No repudio
+router.post('/getMensajesTotal/:nombre', function (req, res) {
+    console.log("4: B-->TTP: (B, TTP, A, Po, Pr)");
+    console.log(req.body.mensaje.length);
+    for (var i=0; i<req.body.mensaje.length;i++)
+    {
+        Mensaje.findOneAndUpdate({recName: req.params.nombre, estado: "enviado"}, { "$set": { estado: "recibido" } }, function(err,doc) {
+                // work here
+            }
+        );
+    }
+    Mensaje.find({recName: req.params.nombre}, function (err, msj) {
+        console.log(msj.length + " mensajes");
+        if (msj.length == 0) {
+            return res.status(500).send(err);
+        }
+        else {
+            var mensajeToB = [];
+            for (var i = 0; i < msj.length; i++) {
+                console.log("5: TTP-->B: (TTP, B, M)");
+                var mensaje = "TTP" + "***" + msj[i].recName + "***" + msj[i].mensaje;
+                mensajeToB.push(mensaje);
+            }
+            console.log(mensajeToB);
+            return res.status(200).jsonp({"respuesta": mensajeToB});
         }
     });
 });

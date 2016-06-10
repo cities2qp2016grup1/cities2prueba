@@ -123,6 +123,12 @@ $routeProvider
             controller: "userCtrl"
             //params: {'id':null}
         })
+        .state('mensajes', {
+            url: "/profile/:name/mensajes",
+            templateUrl: "assets/views/mensajes.html",
+            controller: "mensajesCtrl"
+            //params: {'id':null}
+        })
 })
     .run(function ($rootScope) {
         //iniciando el ng-show del navbar
@@ -142,5 +148,9 @@ $routeProvider
         //iniciando el listado de mensajes
         $rootScope.mensajes="Vacio";
         //iniciando el contenedor de mensajes
-        $rootScope.mensajesList=["Tienes 0 mensajes recibidos"];
+        $rootScope.mensajesList=["Tienes 0 mensajes sin leer"];
+        //iniciando el contenedor de mensajes leidos
+        $rootScope.mensajesLeidos=[];
+        //iniciando el contenedor de mensajes NO leidos
+        $rootScope.mensajesNoLeidos=[];
     });
