@@ -31,8 +31,25 @@ cities2.controller('professorCtrl',['$rootScope', '$scope', '$state','$statePara
         var PrCrip;
         if (listaMensajes[0].toString()==="Tienes 0 mensajes sin leer")
         {
-            console.log("baaaad");
-        }
+            $http.get('/mensajes/getAllMensajes/'+$localStorage.user.nombre)
+                .success(function (data) {
+                    if (data.respuesta.toString()==="no hay mensajes"){
+                    }
+                    else{
+                        var msjRec = data.respuesta;
+                        $rootScope.mensajesList=msjRec;
+                        for (var i=0; i<msjRec.length; i++) {
+                            if (msjRec[i].estado.toString() === "recibido") {
+                                $rootScope.mensajesNoLeidos.push(msjRec[i]);
+                            }
+                            else if (msjRec[i].estado.toString() === "leido") {
+                                $rootScope.mensajesLeidos.push(msjRec[i]);
+                            }
+                        }
+                    }
+                })
+                .error(function (data) {
+                });        }
         else{
             //Coger la privada de B para firmar Pr
             var KeyPrivB = $localStorage.privateKey;

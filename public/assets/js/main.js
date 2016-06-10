@@ -124,8 +124,14 @@ $routeProvider
             //params: {'id':null}
         })
         .state('mensajes', {
-            url: "/profile/:name/mensajes",
-            templateUrl: "assets/views/mensajes.html",
+        url: "/profile/:name/mensajes",
+        templateUrl: "assets/views/mensajes.html",
+        controller: "mensajesCtrl"
+        //params: {'id':null}
+        })
+        .state('mensaje', {
+            url: "/profile/:name/mensajes/mensaje/:id",
+            templateUrl: "assets/views/mensaje.html",
             controller: "mensajesCtrl"
             //params: {'id':null}
         })

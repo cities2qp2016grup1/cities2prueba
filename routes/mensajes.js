@@ -187,4 +187,15 @@ router.post('/addmessage', function (req, res) {
     res.status(200).jsonp(mensajeToTTP);
      */
 });
+//POST - Pasar msg a leido
+router.post('/leerMsg', function (req, res) {
+
+    Mensaje.findOneAndUpdate({_id: req.body.id}, { "$set": { estado: "leido" } }, function(err,doc) {
+            // work here
+        }
+    );
+    
+    res.status(200).send("ok");
+    
+});
 module.exports = router;

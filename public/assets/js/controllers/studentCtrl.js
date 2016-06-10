@@ -56,8 +56,25 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
         var PrCrip;
         if (listaMensajes[0].toString()==="Tienes 0 mensajes sin leer")
         {
-            console.log("baaaad");
-        }
+            $http.get('/mensajes/getAllMensajes/'+$localStorage.user.nombre)
+                .success(function (data) {
+                    if (data.respuesta.toString()==="no hay mensajes"){
+                    }
+                    else{
+                        var msjRec = data.respuesta;
+                        $rootScope.mensajesList=msjRec;
+                        for (var i=0; i<msjRec.length; i++) {
+                            if (msjRec[i].estado.toString() === "recibido") {
+                                $rootScope.mensajesNoLeidos.push(msjRec[i]);
+                            }
+                            else if (msjRec[i].estado.toString() === "leido") {
+                                $rootScope.mensajesLeidos.push(msjRec[i]);
+                            }
+                        }
+                    }
+                })
+                .error(function (data) {
+                });        }
         else{
             //Coger la privada de B para firmar Pr
             var KeyPrivB = $localStorage.privateKey;
@@ -221,5 +238,21 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
         //var c = $scope.CiegaFirmada.multiply($scope.r.modInverse.mod($scope.blindPub.n);
         console.log('(unblinded) valid encryption    *1/r mod n:', '\n', s.toString(10), '\n');
 
+        //Coger la privada NUEVA del cliente para firmar el voto
+        var KeyPrivB = $localStorage.blindPriv;
+        var KeyPubB = $localStorage.blindPub;
+        var pubKeyB = new rsaMax.publicKey(KeyPubB.bits, new BigInteger(KeyPubB.n), new BigInteger(KeyPubB.e));
+        var privKeyB = new rsaMax.privateKey(new BigInteger(KeyPrivB.p), new BigInteger(KeyPrivB.q), new BigInteger(KeyPrivB.d), pubKeyB);
+        var votoFirmado = privKeyB.encrypt(new BigInteger(voto)).toString();
+        var envioVoto = {
+            voto: votoFirmado,
+            kpub: s
+        };
+        $http.post('/server/votar', envioVoto)
+            .success(function (data) {
+               
+            })
+            .error(function (data) {
+            })
     }
 }]);

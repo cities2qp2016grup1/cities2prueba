@@ -5,6 +5,7 @@ cities2.controller('mensajesCtrl',['$rootScope', '$scope', '$state','$stateParam
     $rootScope.isLogged=true;
     $rootScope.isLogged2=false;
     $rootScope.salir=true;
+    $scope.ver=[];
     //recargar asignaturas para el usuario que se conecta
     $scope.cargaMensajes = function () {
         $http.get('/mensajes/getAllMensajes/'+$localStorage.user.nombre)
@@ -14,17 +15,12 @@ cities2.controller('mensajesCtrl',['$rootScope', '$scope', '$state','$stateParam
                 else{
                     var msjRec = data.respuesta;
                     $rootScope.mensajesList=msjRec;
-                    console.log($rootScope.mensajesList);
-                    console.log(msjRec[0]);
-                    console.log(msjRec[0].estado.toString());
                     for (var i=0; i<msjRec.length; i++) {
                         if (msjRec[i].estado.toString() === "recibido") {
                             $rootScope.mensajesNoLeidos.push(msjRec[i]);
-                            console.log($rootScope.mensajesNoLeidos);
                         }
                         else if (msjRec[i].estado.toString() === "leido") {
                             $rootScope.mensajesLeidos.push(msjRec[i]);
-                            console.log($rootScope.mensajesLeidos);
                         }
                     }
                 }
@@ -32,7 +28,20 @@ cities2.controller('mensajesCtrl',['$rootScope', '$scope', '$state','$stateParam
             .error(function (data) {
             });
     };
-    $scope.abrirMsg= function () {
-        $http.post('/mensajes/leerMsg/'+$localStorage.user.nombre)
+    $scope.abrirMsg= function (id) {
+        $http.post('/mensajes/leerMsg', {id:id})
+            .success(function (data) {
+                for (var i=0; i<$rootScope.mensajesNoLeidos.length; i++) {
+                    if ($rootScope.mensajesNoLeidos[i]._id.toString() == id) {
+                        $scope.ver=$rootScope.mensajesNoLeidos[i];
+                        console.log($scope.ver);
+                    }
+                    else {
+                        
+                    }
+                }
+            })
+            .error(function (data) {
+            });
     };
 }]);
