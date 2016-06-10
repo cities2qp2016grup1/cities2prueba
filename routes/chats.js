@@ -45,25 +45,25 @@ router.post('/addchat', function (req, res) {
 router.post('/votar', function (req, res) {
 
     var votorecibido = req.body.voto;
-    var sextr = req.body.kpub;
+    var sextr = bignum(req.body.kpub);
 
     console.log ("voto recibido:" + votorecibido + " K pub: " + sextr);
 
 
+    var pubkServer = JSON.parse(localStorage.getItem("TTPpublica"));
+    var keys ={};
+    keys.publicKey = new rsa.publicKey(pubkServer.bits, bignum(pubkServer.n), bignum(pubkServer.e));
 
+    console.log ("Publica ttp: " + pubkServer.toString());
 
-    /*
-     var envioVoto = {
-     voto: votoFirmado,
-     kpub: s
-     };
-     $http.post('/server/votar', envioVoto)
-     .success(function (data) {
+    /*var reqdecrip1 = keys.publicKey.decrypt(sextr).mod(keys.publicKey.n);
+    //var votodecrip = decrips.decrypt(votorecibido);
 
-     })
-     .error(function (data) {
-     })
-     */
+    console.log("public desencriptada: " + reqdecrip1);
+    keys.keypub = new rsa.publicKey(reqdecrip1.bits, bignum(reqdecrip1.n), bignum(reqdecrip1.e));
+    var decripguai = keys.keypub.decrypt(votorecibido).mod(keys.keypub.n);
+    console.log("public desencriptada: " + decripguai);*/
+
 
     var chat = new Chat({
         nombre: req.body.nombre,
