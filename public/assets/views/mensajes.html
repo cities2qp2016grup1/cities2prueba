@@ -27,7 +27,7 @@
                                 <h4>{{mensaj.sendName}}</h4>
                                 <p>Fecha: {{mensaj.fecha}}</p>
                             </div>
-                            <md-button class="md-secondary">Abrir</md-button>
+                            <md-button class="md-secondary" ng-click="leerMsg(mensaj._id)" ui-sref="mensaje({id:mensaj._id, name:mensaj.recName})">Abrir</md-button>
                             <md-divider ng-if="!$last"></md-divider>
                         </md-list-item>
                     </md-list>

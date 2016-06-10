@@ -37,7 +37,7 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
         $http.get('/mensajes/getMensajes/'+$localStorage.user.nombre)
             .success(function (data) {
                 if (data.respuesta.toString()==="no hay mensajes sin leer"){
-                    $rootScope.mensajes="Tienes 0 mensajes sin leer";
+                    $rootScope.mensajes="Tienes 0 mensajes nuevos";
                 }
                 else{
                     var msjRec = data.respuesta;
@@ -54,7 +54,7 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
         var listaMensajes = $rootScope.mensajesList;
         var Pr;
         var PrCrip;
-        if (listaMensajes[0].toString()==="Tienes 0 mensajes sin leer")
+        if (listaMensajes[0].toString()==="Tienes 0 mensajes nuevos")
         {
             $http.get('/mensajes/getAllMensajes/'+$localStorage.user.nombre)
                 .success(function (data) {
@@ -63,6 +63,8 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
                     else{
                         var msjRec = data.respuesta;
                         $rootScope.mensajesList=msjRec;
+                        $rootScope.mensajesNoLeidos.length=0;
+                        $rootScope.mensajesLeidos.length=0;
                         for (var i=0; i<msjRec.length; i++) {
                             if (msjRec[i].estado.toString() === "recibido") {
                                 $rootScope.mensajesNoLeidos.push(msjRec[i]);
@@ -163,31 +165,31 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
 
 
     $scope.addShare = function () {
-            console.log($scope.share);
-            $scope.shares.push($scope.share);
-            console.log($scope.shares);
-            $scope.share = "";
+        console.log($scope.share);
+        $scope.shares.push($scope.share);
+        console.log($scope.shares);
+        $scope.share = "";
     };
 
 
     $scope.combine = function () {
 
-            console.log('\n Recuperar Secreto Compartido \n');
+        console.log('\n Recuperar Secreto Compartido \n');
 
-            // Combina los shares (mínimo de "t" para conseguir descifrar el secreto)
-            //$scope.comb = secrets.combine( [ $scope.s0, $scope.s1, $scope.s2 ] );
-            // Combina toods los shares
-            $scope.comb = secrets.combine($scope.shares);
-            // Combina "x" shares seguidos
-            //var comb = secrets.combine($scope.shares.slice(2, 6));
+        // Combina los shares (mínimo de "t" para conseguir descifrar el secreto)
+        //$scope.comb = secrets.combine( [ $scope.s0, $scope.s1, $scope.s2 ] );
+        // Combina toods los shares
+        $scope.comb = secrets.combine($scope.shares);
+        // Combina "x" shares seguidos
+        //var comb = secrets.combine($scope.shares.slice(2, 6));
 
-            // Convierte de nuevo a UTF
-            $scope.comb = secrets.hex2str($scope.comb);
+        // Convierte de nuevo a UTF
+        $scope.comb = secrets.hex2str($scope.comb);
 
-            console.log('\nCombinación de los shares:', $scope.comb);
-            console.log('Descifrado correctamente:', $scope.comb === $scope.secreto); // => true / false
+        console.log('\nCombinación de los shares:', $scope.comb);
+        console.log('Descifrado correctamente:', $scope.comb === $scope.secreto); // => true / false
 
-            $scope.supported = false;
+        $scope.supported = false;
     };
 
     $scope.getBlindEncryption =function (votaChat) {
@@ -207,8 +209,8 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
         $scope.blindPriv=privKeyJSON;
         $scope.blindPub=pubKeyJSON;
         /*Generation of blinding factor*/
-     //   var r = Math.floor(Math.random()*65537)+1;
-     //   console.log("Factor de cegado: " + r);
+        //   var r = Math.floor(Math.random()*65537)+1;
+        //   console.log("Factor de cegado: " + r);
         var r = new BigInteger(keys.publicKey.bits,1,new SecureRandom());
         $scope.r=r;
         console.log("Factor de cegado: " + r);
@@ -250,7 +252,7 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
         };
         $http.post('/server/votar', envioVoto)
             .success(function (data) {
-               
+
             })
             .error(function (data) {
             })

@@ -12,7 +12,7 @@ cities2.controller('professorCtrl',['$rootScope', '$scope', '$state','$statePara
         $http.get('/mensajes/getMensajes/'+$localStorage.user.nombre)
             .success(function (data) {
                 if (data.respuesta.toString()==="no hay mensajes sin leer"){
-                    $rootScope.mensajes="Tienes 0 mensajes sin leer";
+                    $rootScope.mensajes="Tienes 0 mensajes nuevos";
                 }
                 else{
                     var msjRec = data.respuesta;
@@ -29,7 +29,10 @@ cities2.controller('professorCtrl',['$rootScope', '$scope', '$state','$statePara
         var listaMensajes = $rootScope.mensajesList;
         var Pr;
         var PrCrip;
-        if (listaMensajes[0].toString()==="Tienes 0 mensajes sin leer")
+        $rootScope.mensajesList=[];
+        $rootScope.mensajesNoLeidos=[];
+        $rootScope.mensajesLeidos=[];
+        if (listaMensajes[0].toString()==="Tienes 0 mensajes nuevos")
         {
             $http.get('/mensajes/getAllMensajes/'+$localStorage.user.nombre)
                 .success(function (data) {
@@ -38,6 +41,7 @@ cities2.controller('professorCtrl',['$rootScope', '$scope', '$state','$statePara
                     else{
                         var msjRec = data.respuesta;
                         $rootScope.mensajesList=msjRec;
+
                         for (var i=0; i<msjRec.length; i++) {
                             if (msjRec[i].estado.toString() === "recibido") {
                                 $rootScope.mensajesNoLeidos.push(msjRec[i]);

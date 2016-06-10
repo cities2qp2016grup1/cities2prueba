@@ -159,4 +159,6 @@ $routeProvider
         $rootScope.mensajesLeidos=[];
         //iniciando el contenedor de mensajes NO leidos
         $rootScope.mensajesNoLeidos=[];
+        //iniciando el contenedor de 1 mensaje
+        $rootScope.ver=[];
     });

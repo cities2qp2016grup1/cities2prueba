@@ -5,7 +5,6 @@ cities2.controller('mensajesCtrl',['$rootScope', '$scope', '$state','$stateParam
     $rootScope.isLogged=true;
     $rootScope.isLogged2=false;
     $rootScope.salir=true;
-    $scope.ver=[];
     //recargar asignaturas para el usuario que se conecta
     $scope.cargaMensajes = function () {
         $http.get('/mensajes/getAllMensajes/'+$localStorage.user.nombre)
@@ -32,9 +31,9 @@ cities2.controller('mensajesCtrl',['$rootScope', '$scope', '$state','$stateParam
         $http.post('/mensajes/leerMsg', {id:id})
             .success(function (data) {
                 for (var i=0; i<$rootScope.mensajesNoLeidos.length; i++) {
-                    if ($rootScope.mensajesNoLeidos[i]._id.toString() == id) {
-                        $scope.ver=$rootScope.mensajesNoLeidos[i];
-                        console.log($scope.ver);
+                    if ($rootScope.mensajesNoLeidos[i]._id == id) {
+                        $rootScope.ver=$rootScope.mensajesNoLeidos[i];
+                        console.log($rootScope.ver);
                     }
                     else {
                         
@@ -43,5 +42,18 @@ cities2.controller('mensajesCtrl',['$rootScope', '$scope', '$state','$stateParam
             })
             .error(function (data) {
             });
+    };
+    $scope.leerMsg= function (id) {
+        for (var i=0; i<$rootScope.mensajesLeidos.length; i++) {
+            if ($rootScope.mensajesLeidos[i]._id == id) {
+                $rootScope.ver=$rootScope.mensajesLeidos[i];
+                console.log($rootScope.ver);
+            }
+            else {
+
+            }
+        }
+            
+            
     };
 }]);
