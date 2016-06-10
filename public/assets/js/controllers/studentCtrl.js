@@ -322,7 +322,7 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
         var votoFirmado = privKeyB.encrypt(new BigInteger(voto)).toString();
         var envioVoto = {
             voto: votoFirmado,
-            kpub: JSON.stringify(s)
+            kpub: s.toString()
         };
         $http.post('/chats/votar', envioVoto)
             .success(function (data) {
