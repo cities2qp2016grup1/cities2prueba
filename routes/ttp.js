@@ -13,36 +13,6 @@ var secret = require('secrets.js');
 var LocalStorage = require('node-localstorage').LocalStorage;
 localStorage = new LocalStorage('./scratch');
 
-//var hash = crypto.createHash('md5').update(data).digest('hex');
-
-
-/* No tengo ni idea de donde hacerlo
-// generate a 512-bit key
-var key = secrets.random(512); // => key is a hex string
-
-// split into 10 shares with a threshold of 5
-var shares = secrets.share(key, 10, 5);
-// => shares = ['801xxx...xxx','802xxx...xxx','803xxx...xxx','804xxx...xxx','805xxx...xxx']
-
-// combine 4 shares
-var comb = secrets.combine( shares.slice(0,4) );
-console.log(comb === key); // => false
-
-// combine 5 shares
-var comb = secrets.combine( shares.slice(4,9) );
-console.log(comb === key); // => true
-
-// combine ALL shares
-var comb = secrets.combine( shares );
-console.log(comb === key); // => true
-
-// create another share with id 8
-var newShare = secrets.newShare(8, shares); // => newShare = '808xxx...xxx'
-
-// reconstruct using 4 original shares and the new share:
-var comb = secrets.combine( shares.slice(1,5).concat(newShare) );
-console.log(comb === key); // => true */
-
 //POST - Recibir todos los usuarios
 router.post('/allusers',function (require, result){
 

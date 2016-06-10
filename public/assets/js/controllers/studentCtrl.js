@@ -236,6 +236,8 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
         console.log($scope.r);
         //var c = $scope.CiegaFirmada.multiply($scope.r.modInverse.mod($scope.blindPub.n);/****NO funciona***/
 
+        //BigInteger s = ((one.divide(r)).multiply(bs)).mod(n);BigInteger s = r.modInverse(n).multiply(bs).mod(n);
+
         var s = new BigInteger($scope.r.modInverse($scope.blindPub.n).multiply($scope.CiegaFirmada).mod($scope.blindPub.n));/**Esta es la que mejor pinta tiene creo que tengo que seguir probando**/
         //var c = $scope.CiegaFirmada.multiply($scope.r.modInverse.mod($scope.blindPub.n);
         console.log('(unblinded) valid encryption    *1/r mod n:', '\n', s.toString(10), '\n');
