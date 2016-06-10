@@ -32,6 +32,20 @@
                         </md-list-item>
                     </md-list>
                 </section>
+                <section>
+                    <md-subheader class="md-primary">Mensajes enviados</md-subheader>
+                    <md-list layout-padding>
+                        <md-list-item class="md-3-line" ng-repeat="mens in mensajesEnviados">
+                            <div class="md-list-item-text">
+                                <h3>Mensaje enviado a:</h3>
+                                <h4>{{mens.recName}}</h4>
+                                <p>Fecha: {{mens.fecha}}</p>
+                                <h3>Visto? {{mens.confirmado}}</h3>
+                            </div>
+
+                        </md-list-item>
+                    </md-list>
+                </section>
             </md-content>
     </div>
 </div>

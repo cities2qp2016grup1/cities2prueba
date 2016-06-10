@@ -227,12 +227,27 @@ router.post('/leerMsg', function (req, res) {
 //POST - Pasar msg a leido
 router.post('/compruebaMsg', function (req, res) {
 
-    Mensaje.findOneAndUpdate({_id: req.body.id}, { "$set": { confirmado: "Si" } }, function(err,doc) {
-            // work here
+    Mensaje.findOneAndUpdate({_id: req.body.id}, { "$set": { confirmado: "Si" } },{new: true}, function(err,doc) {
+        console.log("Devuelve: "+ doc);
+        console.log("6: TTP-->A: (TTP, A, B, Td, Pr, Pd)");
+        var msg=doc.ttp+"***"+doc.a+"***"+doc.b+"***"+doc.fecha+"***"+doc.Pr;
+        
         }
     );
-
     res.status(200).send("ok");
 
+});
+//POST - Recibir paso 4 de No repudio
+router.get('/getMensajesEnviados/:nombre', function (req, res) {
+    Mensaje.find({sendName: req.params.nombre}, function (err, msj) {
+        if (msj.length == 0) {
+            console.log("No tiene mensajes enviados");
+            return res.status(200).jsonp({"respuesta":"no hay mensajes"});
+        }
+        else {
+            console.log("Mensajes enviados: "+msj);
+            return res.status(200).jsonp({"respuesta": msj});
+        }
+    });
 });
 module.exports = router;

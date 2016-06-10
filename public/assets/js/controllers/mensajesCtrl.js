@@ -7,6 +7,10 @@ cities2.controller('mensajesCtrl',['$rootScope', '$scope', '$state','$stateParam
     $rootScope.salir=true;
     //recargar asignaturas para el usuario que se conecta
     $scope.cargaMensajes = function () {
+        $rootScope.mensajesList=[];
+        $rootScope.mensajesNoLeidos=[];
+        $rootScope.mensajesLeidos=[];
+        $rootScope.mensajesEnviados=[];
         $http.get('/mensajes/getAllMensajes/'+$localStorage.user.nombre)
             .success(function (data) {
                 if (data.respuesta.toString()==="no hay mensajes"){
@@ -17,11 +21,29 @@ cities2.controller('mensajesCtrl',['$rootScope', '$scope', '$state','$stateParam
                     for (var i=0; i<msjRec.length; i++) {
                         if (msjRec[i].estado.toString() === "recibido") {
                             $rootScope.mensajesNoLeidos.push(msjRec[i]);
+                            $http.post('/mensajes/compruebaMsg',{id:msjRec[i]._id})
+                                .success(function (data) {
+                                    
+                                })
+                                .error(function (data) {
+                                    
+                                });
                         }
                         else if (msjRec[i].estado.toString() === "leido") {
                             $rootScope.mensajesLeidos.push(msjRec[i]);
                         }
                     }
+                }
+            })
+            .error(function (data) {
+            });
+        $http.get('/mensajes/getMensajesEnviados/'+$localStorage.user.nombre)
+            .success(function (data) {
+                if (data.respuesta.toString()==="no hay mensajes"){
+                }
+                else{
+                    var msjRecib = data.respuesta;
+                    $rootScope.mensajesEnviados=msjRecib;
                 }
             })
             .error(function (data) {

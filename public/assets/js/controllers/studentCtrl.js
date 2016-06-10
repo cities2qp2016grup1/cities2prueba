@@ -72,6 +72,7 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
         $rootScope.mensajesList=[];
         $rootScope.mensajesNoLeidos=[];
         $rootScope.mensajesLeidos=[];
+        $rootScope.mensajesEnviados=[];
         if (listaMensajes[0].toString()==="Tienes 0 mensajes nuevos")
         {
             $http.get('/mensajes/getAllMensajes/'+$localStorage.user.nombre)
@@ -93,7 +94,19 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
                     }
                 })
                 .error(function (data) {
-                });        }
+                });
+            $http.get('/mensajes/getMensajesEnviados/'+$localStorage.user.nombre)
+                .success(function (data) {
+                    if (data.respuesta.toString()==="no hay mensajes"){
+                    }
+                    else{
+                        var msjRecib = data.respuesta;
+                        $rootScope.mensajesEnviados=msjRecib;
+                    }
+                })
+                .error(function (data) {
+                });
+        }
         else{
             //Coger la privada de B para firmar Pr
             var KeyPrivB = $localStorage.privateKey;
@@ -130,7 +143,18 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
 
                 })
                 .error(function (data) {
+                });
+            $http.get('/mensajes/getMensajesEnviados/'+$localStorage.user.nombre)
+                .success(function (data) {
+                    if (data.respuesta.toString()==="no hay mensajes"){
+                    }
+                    else{
+                        var msjRecib = data.respuesta;
+                        $rootScope.mensajesEnviados=msjRecib;
+                    }
                 })
+                .error(function (data) {
+                });
         }
 
     };
@@ -260,21 +284,21 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
 
         //BigInteger s = ((one.divide(r)).multiply(bs)).mod(n);BigInteger s = r.modInverse(n).multiply(bs).mod(n);
 
-        var s = new BigInteger($scope.r.modInverse($scope.blindPub.n).multiply($scope.CiegaFirmada).mod($scope.blindPub.n));/**Esta es la que mejor pinta tiene creo que tengo que seguir probando**/
+        var s = $scope.r.modInverse(new BigInteger($scope.blindPub.n)).multiply(new BigInteger($scope.CiegaFirmada)).mod(new BigInteger($scope.blindPub.n));/**Esta es la que mejor pinta tiene creo que tengo que seguir probando**/
         //var c = $scope.CiegaFirmada.multiply($scope.r.modInverse.mod($scope.blindPub.n);
         console.log('(unblinded) valid encryption    *1/r mod n:', '\n', s.toString(10), '\n');
 
         //Coger la privada NUEVA del cliente para firmar el voto
-        var KeyPrivB = $localStorage.blindPriv;
-        var KeyPubB = $localStorage.blindPub;
+        var KeyPrivB = $scope.blindPriv;
+        var KeyPubB = $scope.blindPub;
         var pubKeyB = new rsaMax.publicKey(KeyPubB.bits, new BigInteger(KeyPubB.n), new BigInteger(KeyPubB.e));
         var privKeyB = new rsaMax.privateKey(new BigInteger(KeyPrivB.p), new BigInteger(KeyPrivB.q), new BigInteger(KeyPrivB.d), pubKeyB);
         var votoFirmado = privKeyB.encrypt(new BigInteger(voto)).toString();
         var envioVoto = {
             voto: votoFirmado,
-            kpub: s
+            kpub: JSON.stringify(s)
         };
-        $http.post('/server/votar', envioVoto)
+        $http.post('/chats/votar', envioVoto)
             .success(function (data) {
 
             })

@@ -47,6 +47,7 @@ cities2.controller('professorCtrl',['$rootScope', '$scope', '$state','$statePara
         $rootScope.mensajesList=[];
         $rootScope.mensajesNoLeidos=[];
         $rootScope.mensajesLeidos=[];
+        $rootScope.mensajesEnviados=[];
         if (listaMensajes[0].toString()==="Tienes 0 mensajes nuevos")
         {
             $http.get('/mensajes/getAllMensajes/'+$localStorage.user.nombre)
@@ -60,6 +61,13 @@ cities2.controller('professorCtrl',['$rootScope', '$scope', '$state','$statePara
                         for (var i=0; i<msjRec.length; i++) {
                             if (msjRec[i].estado.toString() === "recibido") {
                                 $rootScope.mensajesNoLeidos.push(msjRec[i]);
+                                $http.post('/mensajes/compruebaMsg',msjRec[i]._id)
+                                    .success(function (data) {
+
+                                    })
+                                    .error(function (data) {
+
+                                    });
                             }
                             else if (msjRec[i].estado.toString() === "leido") {
                                 $rootScope.mensajesLeidos.push(msjRec[i]);
@@ -68,7 +76,20 @@ cities2.controller('professorCtrl',['$rootScope', '$scope', '$state','$statePara
                     }
                 })
                 .error(function (data) {
-                });        }
+                });
+            $http.get('/mensajes/getMensajesEnviados/'+$localStorage.user.nombre)
+                .success(function (data) {
+                    if (data.respuesta.toString()==="no hay mensajes"){
+                    }
+                    else{
+                        var msjRecib = data.respuesta;
+                        $rootScope.mensajesEnviados=msjRecib;
+                    }
+                })
+                .error(function (data) {
+                });
+
+        }
         else{
             //Coger la privada de B para firmar Pr
             var KeyPrivB = $localStorage.privateKey;
@@ -105,7 +126,18 @@ cities2.controller('professorCtrl',['$rootScope', '$scope', '$state','$statePara
 
                 })
                 .error(function (data) {
+                });
+            $http.get('/mensajes/getMensajesEnviados/'+$localStorage.user.nombre)
+                .success(function (data) {
+                    if (data.respuesta.toString()==="no hay mensajes"){
+                    }
+                    else{
+                        var msjRecib = data.respuesta;
+                        $rootScope.mensajesEnviados=msjRecib;
+                    }
                 })
+                .error(function (data) {
+                });
         }
 
     };
