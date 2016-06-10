@@ -63,7 +63,26 @@ cities2.controller('professorCtrl',['$rootScope', '$scope', '$state','$statePara
                                 $rootScope.mensajesNoLeidos.push(msjRec[i]);
                                 $http.post('/mensajes/compruebaMsg',msjRec[i]._id)
                                     .success(function (data) {
-
+                                    /*    var trozos = data.mensaje.split("***");
+                                        var ttp=trozos[0];
+                                        var a=trozos[1];
+                                        var b=trozos[2];
+                                        var Td=trozos[3];
+                                        var Pr=trozos[4];
+                                        var Pd=trozos[5];
+                                        var Pd2=ttp+"***"+a+"***"+b+"***"+Td+"***"+Pr;
+                                        var PrHash=md5.createHash(Pd2);
+                                        var KeyPubTTP = $localStorage.ttp;
+                                        var pubKeyTTP = new rsaMax.publicKey(KeyPubTTP.bits, new BigInteger(KeyPubTTP.n), new BigInteger(KeyPubTTP.e));
+                                        var PdDecrip = pubKeyTTP.decrypt(new BigInteger(Pd)).toString();
+                                        console.log(PdDecrip);
+                                        if(PdDecrip==PrHash)
+                                        {
+                                            console.log("Pd comprobada!");
+                                        }
+                                        else{
+                                            console.log("ERROR en Pd");
+                                        }*/
                                     })
                                     .error(function (data) {
 
