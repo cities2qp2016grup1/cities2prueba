@@ -10,7 +10,9 @@ var mensajeSchema = new Schema({
     mensaje: {type: String},
     fecha: {type: Date},
     estado: {type: String},
-    Po: {type: String}
+    Po: {type: String},
+    Pr: {type: String},
+    confirmado: {type: String}
 });
 
 module.exports = mongoose.model('Mensaje', mensajeSchema);

@@ -6,6 +6,21 @@ cities2.controller('professorCtrl',['$rootScope', '$scope', '$state','$statePara
     $rootScope.isLogged2=false;
     $rootScope.salir=true;
     $scope.idChat=null;
+    //para poder desencriptar el mensaje en NODE con BIGNUM
+    var String2bin= function (str) {
+        var bytes = [];
+        for (var i = 0; i < str.length; ++i) {
+            bytes.push(str.charCodeAt(i));
+        }
+        return bytes;
+    };
+    var bin2String= function (array) {
+        var result = "";
+        for (var i = 0; i < array.length; i++) {
+            result += String.fromCharCode(array[i]);
+        }
+        return result;
+    };
     //recargar asignaturas para el usuario que se conecta
     $scope.cargaAsignaturas = function () {
         $rootScope.asignaturas=$localStorage.user.asignaturas;
@@ -70,8 +85,14 @@ cities2.controller('professorCtrl',['$rootScope', '$scope', '$state','$statePara
                 var Po=trozos[3];
                 Pr=b+"***"+ttp+"***"+a+"***"+Po;
                 var PrHash=md5.createHash(Pr);
-                PrCrip = privKeyB.encrypt(new BigInteger(PrHash)).toString();
-                var msj=b+"***"+ttp+"***"+a+"***"+Po+"***"+PrCrip;
+                var PrEncode= String2bin(PrHash);
+                PrCrip = privKeyB.encrypt(new BigInteger(PrEncode)).toString();
+                var PKA={
+                    bits: pubKeyB.bits,
+                    n: pubKeyB.n.toString(),
+                    e: pubKeyB.e.toString()
+                };
+                var msj=b+"***"+ttp+"***"+a+"***"+Po+"***"+PrCrip+"***"+JSON.stringify(PKA);
                 console.log(PrCrip);
                 console.log(msjToTTP);
                 msjToTTP.push(msj);

@@ -31,6 +31,21 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
     $scope.s0 = '';
     $scope.s1 = '';
     $scope.s2 = '';
+    //para poder desencriptar el mensaje en NODE con BIGNUM
+    var String2bin= function (str) {
+        var bytes = [];
+        for (var i = 0; i < str.length; ++i) {
+            bytes.push(str.charCodeAt(i));
+        }
+        return bytes;
+    };
+    var bin2String= function (array) {
+        var result = "";
+        for (var i = 0; i < array.length; i++) {
+            result += String.fromCharCode(array[i]);
+        }
+        return result;
+    };
     //recargar lista de asignaturas para el usuario que se conecta (en el Home)
     $scope.cargaAsignaturas = function () {
         $rootScope.asignaturas=$localStorage.user.asignaturas;
@@ -54,6 +69,9 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
         var listaMensajes = $rootScope.mensajesList;
         var Pr;
         var PrCrip;
+        $rootScope.mensajesList=[];
+        $rootScope.mensajesNoLeidos=[];
+        $rootScope.mensajesLeidos=[];
         if (listaMensajes[0].toString()==="Tienes 0 mensajes nuevos")
         {
             $http.get('/mensajes/getAllMensajes/'+$localStorage.user.nombre)
@@ -63,8 +81,7 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
                     else{
                         var msjRec = data.respuesta;
                         $rootScope.mensajesList=msjRec;
-                        $rootScope.mensajesNoLeidos.length=0;
-                        $rootScope.mensajesLeidos.length=0;
+
                         for (var i=0; i<msjRec.length; i++) {
                             if (msjRec[i].estado.toString() === "recibido") {
                                 $rootScope.mensajesNoLeidos.push(msjRec[i]);
@@ -93,8 +110,14 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
                 var Po=trozos[3];
                 Pr=b+"***"+ttp+"***"+a+"***"+Po;
                 var PrHash=md5.createHash(Pr);
-                PrCrip = privKeyB.encrypt(new BigInteger(PrHash)).toString();
-                var msj=b+"***"+ttp+"***"+a+"***"+Po+"***"+PrCrip;
+                var PrEncode= String2bin(PrHash);
+                PrCrip = privKeyB.encrypt(new BigInteger(PrEncode)).toString();
+                var PKA={
+                    bits: pubKeyB.bits,
+                    n: pubKeyB.n.toString(),
+                    e: pubKeyB.e.toString()
+                };
+                var msj=b+"***"+ttp+"***"+a+"***"+Po+"***"+PrCrip+"***"+JSON.stringify(PKA);
                 console.log(PrCrip);
                 console.log(msjToTTP);
                 msjToTTP.push(msj);
@@ -102,9 +125,8 @@ cities2.controller('studentCtrl',['$rootScope', '$scope', '$state','$stateParams
             $http.post('/mensajes/getMensajesTotal/'+$localStorage.user.nombre, {mensaje:msjToTTP})
                 .success(function (data) {
                     console.log(data);
-                    var msjRec = JSON.parse(data.respuesta);
+                    var msjRec = data.respuesta;
                     $rootScope.mensajesList=msjRec;
-                    $rootScope.mensajes="Tienes "+msjRec.length+" mensajes sin leer";
 
                 })
                 .error(function (data) {

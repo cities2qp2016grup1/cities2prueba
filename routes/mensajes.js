@@ -48,9 +48,34 @@ router.get('/getMensajes/:nombre', function (req, res) {
 router.post('/getMensajesTotal/:nombre', function (req, res) {
     console.log("4: B-->TTP: (B, TTP, A, Po, Pr)");
     console.log(req.body.mensaje.length);
+
     for (var i=0; i<req.body.mensaje.length;i++)
     {
-        Mensaje.findOneAndUpdate({recName: req.params.nombre, estado: "enviado"}, { "$set": { estado: "recibido" } }, function(err,doc) {
+        var trozos = req.body.mensaje[i].split("***");
+        var b=trozos[0];
+        var ttp=trozos[1];
+        var a=trozos[2];
+        var Po=trozos[3];
+        var Pr=trozos[4];
+        var comprovar=b+"***"+ttp+"***"+a+"***"+Po;
+        var ComprovarHash = crypto.createHash('md5').update(comprovar).digest('hex');
+        var pubkA= JSON.parse(trozos[5]);
+        var keyA = new rsa.publicKey(pubkA.bits, bignum(pubkA.n), bignum(pubkA.e));
+
+        //desencriptar -Po- para ver si los datos son correctos
+        var recibidoBignum = bignum(Pr);
+        var reqdecrip = keyA.decrypt(recibidoBignum);
+        var PrClaro = reqdecrip.toBuffer().toString();
+        console.log("Pr en claro: "+PrClaro);
+        console.log(ComprovarHash);
+        if (PrClaro==ComprovarHash)
+        {
+            console.log("Prueba Pr confirmada!")
+        }
+        else {
+            console.log("ERROR. Pr invalida")
+        }
+        Mensaje.findOneAndUpdate({recName: req.params.nombre, estado: "enviado"}, { "$set": { estado: "recibido" , Pr: PrClaro} }, function(err,doc) {
                 // work here
             }
         );
@@ -117,7 +142,8 @@ router.post('/addmessage', function (req, res) {
             mensaje: M,
             fecha: Tr,
             estado: "enviado",
-            Po: PoClaro
+            Po: PoClaro,
+            confirmado: "No"
         });
         console.log('\n');
         mensaje.save(function(err, msj) {
@@ -197,5 +223,16 @@ router.post('/leerMsg', function (req, res) {
     
     res.status(200).send("ok");
     
+});
+//POST - Pasar msg a leido
+router.post('/compruebaMsg', function (req, res) {
+
+    Mensaje.findOneAndUpdate({_id: req.body.id}, { "$set": { confirmado: "Si" } }, function(err,doc) {
+            // work here
+        }
+    );
+
+    res.status(200).send("ok");
+
 });
 module.exports = router;
