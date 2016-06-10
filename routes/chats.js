@@ -11,55 +11,76 @@ localStorage = new LocalStorage('./scratch');
 
 //GET - Comprovar chats en DB
 router.get('/getChats/:asignatura', function (req, res) {
-    console.log('Buscando chats en la BBDD de: '+req.params.asignatura+'\n');
+    console.log('Buscando chats en la BBDD de: ' + req.params.asignatura + '\n');
     Chat.find({asignatura: req.params.asignatura}, function (err, chats) {
-        console.log(chats.length+" chats");
+        console.log(chats.length + " chats");
         if (chats.length == 0) {
             return res.status(404).jsonp({"respuesta": "no hay chats"});
         }
         else {
-            return res.status(200).jsonp({"chats":chats});
+            return res.status(200).jsonp({"chats": chats});
         }
     });
 });
 //POST - Crear chat
 router.post('/addchat', function (req, res) {
     var chat = new Chat({
-        nombre:    req.body.nombre,
-        creador:     req.body.creador,
-        estado:    req.body.estado,
+        nombre: req.body.nombre,
+        creador: req.body.creador,
+        estado: req.body.estado,
         asignatura: req.body.asignatura,
         votacion: "No realizada",
         key: req.body.key,
-        mensajes:[
-        ]
+        mensajes: []
     });
-    console.log("Crea chat en BD: \n"+chat);
+    console.log("Crea chat en BD: \n" + chat);
     console.log('\n');
-    chat.save(function(err, chat) {
-        if(err) return res.status(500).send(err.message);
+    chat.save(function (err, chat) {
+        if (err) return res.status(500).send(err.message);
         console.log(chat);
         res.status(200).jsonp(chat);
     });
 });
 //POST - Crear chat
 router.post('/votar', function (req, res) {
+
+    var votorecibido = req.body.voto;
+    var sextr = req.body.kpub;
+
+    console.log ("voto recibido:" + votorecibido + " K pub: " + sextr);
+
+
+
+
+    /*
+     var envioVoto = {
+     voto: votoFirmado,
+     kpub: s
+     };
+     $http.post('/server/votar', envioVoto)
+     .success(function (data) {
+
+     })
+     .error(function (data) {
+     })
+     */
+
     var chat = new Chat({
-        nombre:    req.body.nombre,
-        creador:     req.body.creador,
-        estado:    req.body.estado,
+        nombre: req.body.nombre,
+        creador: req.body.creador,
+        estado: req.body.estado,
         asignatura: req.body.asignatura,
         votacion: "No realizada",
         key: req.body.key,
-        mensajes:[
-        ]
+        mensajes: []
     });
-    console.log("Meter votación en la BD: \n"+chat);
+    console.log("Meter votación en la BD: \n" + chat);
     console.log('\n');
-    chat.save(function(err, chat) {
-        if(err) return res.status(500).send(err.message);
+    chat.save(function (err, chat) {
+        if (err) return res.status(500).send(err.message);
         console.log(chat);
         res.status(200).jsonp(chat);
     });
 });
+
 module.exports = router;

@@ -90,4 +90,5 @@ router.get('/getUsersByAsignatura/:asignatura', function (req, res) {
     }
   });
 });
+
 module.exports = router;
